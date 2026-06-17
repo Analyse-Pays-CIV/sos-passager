@@ -1420,17 +1420,178 @@ function draw(e,cv){const[x,y]=pos(e,cv);sigCtx.beginPath();sigCtx.moveTo(lastX,
 function drawT(e,cv){const[x,y]=posT(e,cv);sigCtx.beginPath();sigCtx.moveTo(lastX,lastY);sigCtx.lineTo(x,y);sigCtx.stroke();[lastX,lastY]=[x,y]}
 function clearSig(){const cv=document.getElementById('sigCanvas');if(sigCtx)sigCtx.clearRect(0,0,cv.width,cv.height);hasSig=false}
 
+/* ─── BARÈME DISTANCES AÉROPORTS (km) ─── */
+const DISTANCES={
+  'CDG-ABJ':4908,'ABJ-CDG':4908,'CDG-DSS':4206,'DSS-CDG':4206,
+  'CDG-OUA':4256,'OUA-CDG':4256,'CDG-BKO':4457,'BKO-CDG':4457,
+  'CDG-LFW':4885,'LFW-CDG':4885,'CDG-COO':4974,'COO-CDG':4974,
+  'CDG-CKY':4558,'CKY-CDG':4558,'CDG-DLA':5089,'DLA-CDG':5089,
+  'CDG-LBV':5432,'LBV-CDG':5432,'CDG-BZV':5513,'BZV-CDG':5513,
+  'CDG-FIH':6270,'FIH-CDG':6270,'CDG-ADD':6185,'ADD-CDG':6185,
+  'CDG-NBO':6340,'NBO-CDG':6340,'CDG-JNB':9071,'JNB-CDG':9071,
+  'CDG-DXB':5253,'DXB-CDG':5253,'CDG-JFK':5837,'JFK-CDG':5837,
+  'CDG-LAX':9124,'LAX-CDG':9124,'CDG-YUL':5536,'YUL-CDG':5536,
+  'CDG-BRU':267,'BRU-CDG':267,'CDG-AMS':430,'AMS-CDG':430,
+  'CDG-LHR':344,'LHR-CDG':344,'CDG-FRA':450,'FRA-CDG':450,
+  'CDG-MAD':1054,'MAD-CDG':1054,'CDG-BCN':1037,'BCN-CDG':1037,
+  'CDG-FCO':1105,'FCO-CDG':1105,'CDG-LIS':1452,'LIS-CDG':1452,
+  'CDG-CMN':2090,'CMN-CDG':2090,'CDG-ZRH':491,'ZRH-CDG':491,
+  'FRA-ABJ':5117,'ABJ-FRA':5117,'FRA-DSS':4432,'DSS-FRA':4432,
+  'AMS-ABJ':5135,'ABJ-AMS':5135,'BRU-ABJ':5002,'ABJ-BRU':5002,
+  'LHR-ABJ':5067,'ABJ-LHR':5067,'ABJ-DSS':670,'DSS-ABJ':670,
+  'ABJ-OUA':690,'OUA-ABJ':690,'ABJ-BKO':750,'BKO-ABJ':750,
+  'ABJ-LFW':340,'LFW-ABJ':340,'ABJ-COO':420,'COO-ABJ':420,
+};
+
+function getDistance(dep,arr){
+  const key=(dep+'-'+arr).toUpperCase();
+  return DISTANCES[key]||null;
+}
+
+function calcIndemnisation(dep,arr,incident,duree,reglement){
+  const dist=getDistance(dep,arr);
+  let montant=0,label='',eligible=true,raison='';
+
+  if(reglement&&reglement.includes('UEMOA')){
+    // Barème UEMOA
+    if(!dist||dist<1500){montant=200;label='200 €'}
+    else if(dist<=3500){montant=400;label='400 €'}
+    else{montant=600;label='600 €'}
+    raison='Règlement UEMOA N°03/2003/CM/UEMOA';
+  } else {
+    // Barème CE 261/2004
+    if(!dist){
+      // Distance inconnue → estimation selon règle générale
+      montant=400;label='250€ à 600€';
+      raison='Distance non calculée — estimation à confirmer';
+    } else if(dist<=1500){
+      montant=250;label='250 €';
+    } else if(dist<=3500){
+      // Réduction possible si réacheminement avec < 3h de retard final
+      montant=400;label='400 €';
+    } else {
+      montant=600;label='600 €';
+    }
+    raison='Règlement CE 261/2004 du Parlement Européen';
+  }
+
+  // Vérifier type incident
+  if(incident&&incident.toLowerCase().includes('retard')){
+    if(duree&&duree.includes('3h et 4')){
+      // Retard 3-4h long courrier : réduction 50%
+      if(dist&&dist>3500){montant=300;label='300 € (réduit 50%)'}
+    }
+  }
+
+  return {eligible,montant,label,dist,raison};
+}
+
 /* ─── FORMSPREE SUBMIT ─── */
 function handleSubmit(e){
-  // Capturer la signature dans le champ caché
+  // Capturer la signature
   const cv=document.getElementById('sigCanvas');
-  if(cv)document.getElementById('sigData').value=cv.toDataURL();
-  // Laisser le formulaire s'envoyer normalement vers Formspree
-  // Afficher la confirmation après 1s
+  const sigDataEl=document.getElementById('sigData');
+  let sigDataURL='';
+  if(cv){sigDataURL=cv.toDataURL();if(sigDataEl)sigDataEl.value=sigDataURL;}
+
+  // Récupérer les données du formulaire pour le verdict
+  const prenom=document.querySelector('[name=prenom]')?document.querySelector('[name=prenom]').value:'';
+  const nom=document.querySelector('[name=nom]')?document.querySelector('[name=nom]').value:'';
+  const vol=document.querySelector('[name=vol_numero]')?document.querySelector('[name=vol_numero]').value:'';
+  const volDate=document.querySelector('[name=vol_date]')?document.querySelector('[name=vol_date]').value:'';
+  const dep=document.querySelector('[name=depart]')?document.querySelector('[name=depart]').value.split('—')[0].trim():'';
+  const arr=document.querySelector('[name=arrivee]')?document.querySelector('[name=arrivee]').value.split('—')[0].trim():'';
+  const compagnie=document.querySelector('[name=compagnie]')?document.querySelector('[name=compagnie]').value:'';
+  const pax=parseInt(document.querySelector('[name=passagers]')?document.querySelector('[name=passagers]').value:'1')||1;
+  const incident=document.querySelector('[name=incident]')?document.querySelector('[name=incident]').value:'';
+  const duree=document.querySelector('[name=duree_retard]')?document.querySelector('[name=duree_retard]').value:'';
+  const reglement=document.querySelector('[name=reglement]')?document.querySelector('[name=reglement]').value:'';
+
+  // Calculer indemnisation
+  const result=calcIndemnisation(dep,arr,incident,duree,reglement);
+  const total=result.montant*pax;
+  const dateFormatted=volDate?new Date(volDate).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):'';
+  const numDossier='SOS-'+new Date().getFullYear()+'-'+Math.floor(1000+Math.random()*9000);
+
+  // Construire le HTML de confirmation avec verdict
+  const confHTML=`
+    <div style="text-align:center;margin-bottom:20px">
+      <i class="fa-solid fa-circle-check" style="font-size:50px;color:var(--green);display:block;margin-bottom:12px"></i>
+      <h3 style="font-size:20px;font-weight:700;color:var(--gd);margin-bottom:4px">Réclamation reçue !</h3>
+      <p style="font-size:13px;color:var(--gt)">Dossier n° <strong>${numDossier}</strong> · Transmis à franckvanie@yahoo.de</p>
+    </div>
+
+    <!-- VERDICT INDEMNISATION -->
+    <div style="background:${result.eligible?'#EAF3DE':'#FFF3F3'};border:2px solid ${result.eligible?'#1B7A3E':'#ffcdd2'};border-radius:12px;padding:20px;margin-bottom:16px;text-align:center">
+      <div style="font-size:13px;font-weight:600;color:${result.eligible?'#145C2F':'#C62828'};margin-bottom:10px">
+        ${result.eligible?'✅ AU VU DE VOTRE DOSSIER':'❌ DOSSIER À ANALYSER'}
+      </div>
+      <div style="font-size:15px;color:var(--tx);line-height:1.7;margin-bottom:12px">
+        Bonjour <strong>${prenom} ${nom}</strong>,<br>
+        au vu des éléments de votre dossier concernant le vol <strong>${vol}</strong> du <strong>${dateFormatted}</strong>
+        (${dep} → ${arr}${result.dist?' · '+result.dist.toLocaleString('fr-FR')+' km':''}),<br>
+        vous déclarez un <strong>${incident.toLowerCase()}</strong> avec <strong>${compagnie}</strong>.<br><br>
+        <span style="font-size:22px;font-weight:800;color:var(--gd)">Vous avez droit à une indemnisation estimée à</span>
+      </div>
+      <div style="font-size:52px;font-weight:800;color:var(--green);line-height:1">${result.label}</div>
+      <div style="font-size:13px;color:var(--gt);margin-top:6px">par passager · ${result.raison}</div>
+      ${pax>1?`<div style="font-size:18px;font-weight:700;color:var(--gd);margin-top:8px">Total estimé : <strong>${total.toLocaleString('fr-FR')} €</strong> pour ${pax} passager(s)</div>`:''}
+    </div>
+
+    <!-- RÉCAPITULATIF DOSSIER -->
+    <div style="background:var(--gb);border-radius:10px;padding:16px;margin-bottom:16px;font-size:13px">
+      <div style="font-weight:700;color:var(--gd);margin-bottom:10px"><i class="fa-solid fa-folder-open" style="color:var(--green);margin-right:6px"></i>Récapitulatif de votre dossier</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div><span style="color:var(--gt)">Vol</span><br><strong>${vol}</strong></div>
+        <div><span style="color:var(--gt)">Date</span><br><strong>${dateFormatted}</strong></div>
+        <div><span style="color:var(--gt)">Trajet</span><br><strong>${dep} → ${arr}</strong></div>
+        <div><span style="color:var(--gt)">Compagnie</span><br><strong>${compagnie}</strong></div>
+        <div><span style="color:var(--gt)">Incident</span><br><strong>${incident}</strong></div>
+        <div><span style="color:var(--gt)">Passagers</span><br><strong>${pax}</strong></div>
+      </div>
+    </div>
+
+    <!-- SIGNATURE -->
+    ${sigDataURL?`
+    <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:16px">
+      <div style="font-size:12px;font-weight:700;color:var(--gd);margin-bottom:8px"><i class="fa-solid fa-signature" style="color:var(--green);margin-right:6px"></i>Votre signature électronique</div>
+      <img src="${sigDataURL}" style="max-width:100%;border-radius:6px;background:#fafafa;display:block" alt="Signature">
+      <p style="font-size:11px;color:#aaa;margin-top:6px">Mandat signé le ${new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})} à ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</p>
+    </div>`:''}
+
+    <!-- PROCHAINES ÉTAPES -->
+    <div style="background:var(--gl);border-left:4px solid var(--green);border-radius:0 8px 8px 0;padding:14px;margin-bottom:16px;font-size:13px;color:var(--gd)">
+      <strong>Prochaines étapes :</strong><br>
+      1️⃣ Analyse de votre dossier sous <strong>48h</strong><br>
+      2️⃣ Envoi de la mise en demeure à ${compagnie}<br>
+      3️⃣ Négociation amiable (2 mois)<br>
+      4️⃣ Procédure judiciaire si refus (taux succès 99%)<br>
+      5️⃣ Virement de <strong>${result.label}</strong> sur votre compte
+    </div>
+
+    <!-- CONTACTS URGENCE -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+      <a href="https://wa.me/491773431460" target="_blank"
+         style="flex:1;background:#25D366;color:#fff;border-radius:8px;padding:10px;display:flex;align-items:center;gap:7px;font-weight:700;font-size:12px;justify-content:center">
+        <i class="fa-brands fa-whatsapp"></i> WhatsApp Europe
+      </a>
+      <a href="https://wa.me/2250503605725" target="_blank"
+         style="flex:1;background:#25D366;color:#fff;border-radius:8px;padding:10px;display:flex;align-items:center;gap:7px;font-weight:700;font-size:12px;justify-content:center">
+        <i class="fa-brands fa-whatsapp"></i> WhatsApp Afrique
+      </a>
+    </div>
+    <button class="green-btn" style="margin:0 auto" onclick="showPage('client')">
+      <i class="fa-solid fa-user-circle"></i> Suivre mon dossier
+    </button>
+  `;
+
+  // Afficher la confirmation
   setTimeout(()=>{
     document.getElementById('formBody').style.display='none';
-    document.getElementById('formConf').style.display='block';
-  },1000);
+    const conf=document.getElementById('formConf');
+    conf.style.display='block';
+    conf.innerHTML=confHTML;
+  },800);
 }
 
 /* ─── ESPACE CLIENT ─── */
