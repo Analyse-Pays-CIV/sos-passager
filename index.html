@@ -329,8 +329,9 @@ footer ul li a:hover{color:var(--acc)}
    <div class="nit">
     <div class="nlk">Partenaires <i class="fa-solid fa-chevron-down chev"></i></div>
     <div class="drop">
-     <div class="dlk" onclick="showPage('contact')"><i class="fa-solid fa-handshake"></i>Partenaires stratégiques</div>
-     <div class="dlk" onclick="showPage('contact')"><i class="fa-solid fa-network-wired"></i>Réseau avocats</div>
+     <div class="dlk" onclick="showPage('partenaires')"><i class="fa-solid fa-handshake"></i>Partenaires stratégiques</div>
+     <div class="dlk" onclick="showPage('partenaires')"><i class="fa-solid fa-network-wired"></i>Réseau avocats</div>
+     <div class="dlk" onclick="showPage('partenaires')"><i class="fa-solid fa-plus"></i>Devenir partenaire</div>
     </div>
    </div>
    <div class="nit"><div class="nlk" onclick="showPage('contact')">Contact</div></div>
@@ -388,16 +389,295 @@ footer ul li a:hover{color:var(--acc)}
    <div class="sp" id="cp1">
     <p style="font-size:13px;color:#666;margin-bottom:12px">Informations sur votre vol</p>
     <div class="fr2">
-     <div class="fg"><label>Numéro de vol *</label><input id="fn" type="text" placeholder="Ex : AF703 ou AF 703" oninput="chk1()"></div>
+     <div class="fg"><label>Numéro de vol *</label><input id="fn" type="text" placeholder="Ex : AF703" oninput="chk1()"></div>
      <div class="fg"><label>Date du vol *</label><input id="fd" type="date" oninput="chk1()"></div>
     </div>
     <div class="fr2">
-     <div class="fg"><label>Aéroport départ *</label><input id="fdep" placeholder="Ex : CDG ou Paris" oninput="chk1()"></div>
-     <div class="fg"><label>Aéroport arrivée *</label><input id="farr" placeholder="Ex : ABJ ou Abidjan" oninput="chk1()"></div>
+     <div class="fg">
+      <label>Aéroport de départ *</label>
+      <select id="fdep" onchange="chk1()" style="font-size:13px">
+       <option value="">-- Sélectionnez un aéroport --</option>
+       <optgroup label="🇫🇷 France">
+        <option value="CDG">CDG — Paris Charles de Gaulle</option>
+        <option value="ORY">ORY — Paris Orly</option>
+        <option value="NCE">NCE — Nice Côte d'Azur</option>
+        <option value="LYS">LYS — Lyon Saint-Exupéry</option>
+        <option value="MRS">MRS — Marseille Provence</option>
+        <option value="TLS">TLS — Toulouse Blagnac</option>
+        <option value="BOD">BOD — Bordeaux Mérignac</option>
+        <option value="NTE">NTE — Nantes Atlantique</option>
+       </optgroup>
+       <optgroup label="🇩🇪 Allemagne">
+        <option value="FRA">FRA — Frankfurt</option>
+        <option value="MUC">MUC — Munich</option>
+        <option value="DUS">DUS — Düsseldorf</option>
+        <option value="BER">BER — Berlin Brandenburg</option>
+        <option value="HAM">HAM — Hamburg</option>
+        <option value="STR">STR — Stuttgart</option>
+        <option value="BSL">BSL — Basel-Mulhouse (EuroAirport)</option>
+       </optgroup>
+       <optgroup label="🇧🇪 Belgique">
+        <option value="BRU">BRU — Bruxelles Zaventem</option>
+       </optgroup>
+       <optgroup label="🇳🇱 Pays-Bas">
+        <option value="AMS">AMS — Amsterdam Schiphol</option>
+       </optgroup>
+       <optgroup label="🇬🇧 Royaume-Uni">
+        <option value="LHR">LHR — London Heathrow</option>
+        <option value="LGW">LGW — London Gatwick</option>
+        <option value="STN">STN — London Stansted</option>
+       </optgroup>
+       <optgroup label="🇨🇭 Suisse">
+        <option value="ZRH">ZRH — Zürich</option>
+        <option value="GVA">GVA — Genève</option>
+       </optgroup>
+       <optgroup label="🇪🇸 Espagne">
+        <option value="MAD">MAD — Madrid Barajas</option>
+        <option value="BCN">BCN — Barcelona El Prat</option>
+       </optgroup>
+       <optgroup label="🇮🇹 Italie">
+        <option value="FCO">FCO — Rome Fiumicino</option>
+        <option value="MXP">MXP — Milan Malpensa</option>
+       </optgroup>
+       <optgroup label="🇵🇹 Portugal">
+        <option value="LIS">LIS — Lisbonne</option>
+       </optgroup>
+       <optgroup label="🇲🇦 Maroc">
+        <option value="CMN">CMN — Casablanca Mohammed V</option>
+        <option value="RAK">RAK — Marrakech Ménara</option>
+        <option value="TNG">TNG — Tanger Ibn Batouta</option>
+       </optgroup>
+       <optgroup label="🇨🇮 Côte d'Ivoire">
+        <option value="ABJ">ABJ — Abidjan Félix Houphouët-Boigny</option>
+       </optgroup>
+       <optgroup label="🇸🇳 Sénégal">
+        <option value="DSS">DSS — Dakar Blaise Diagne</option>
+       </optgroup>
+       <optgroup label="🇧🇫 Burkina Faso">
+        <option value="OUA">OUA — Ouagadougou</option>
+       </optgroup>
+       <optgroup label="🇲🇱 Mali">
+        <option value="BKO">BKO — Bamako Sénou</option>
+       </optgroup>
+       <optgroup label="🇬🇳 Guinée">
+        <option value="CKY">CKY — Conakry</option>
+       </optgroup>
+       <optgroup label="🇹🇬 Togo">
+        <option value="LFW">LFW — Lomé Gnassingbé Eyadéma</option>
+       </optgroup>
+       <optgroup label="🇧🇯 Bénin">
+        <option value="COO">COO — Cotonou Cadjehoun</option>
+       </optgroup>
+       <optgroup label="🇨🇲 Cameroun">
+        <option value="DLA">DLA — Douala</option>
+        <option value="NSI">NSI — Yaoundé Nsimalen</option>
+       </optgroup>
+       <optgroup label="🇬🇦 Gabon">
+        <option value="LBV">LBV — Libreville</option>
+       </optgroup>
+       <optgroup label="🇨🇬 Congo">
+        <option value="BZV">BZV — Brazzaville Maya-Maya</option>
+       </optgroup>
+       <optgroup label="🇨🇩 RDC">
+        <option value="FIH">FIH — Kinshasa N'Djili</option>
+       </optgroup>
+       <optgroup label="🇪🇹 Ethiopie">
+        <option value="ADD">ADD — Addis Abeba Bole</option>
+       </optgroup>
+       <optgroup label="🇰🇪 Kenya">
+        <option value="NBO">NBO — Nairobi Jomo Kenyatta</option>
+       </optgroup>
+       <optgroup label="🇿🇦 Afrique du Sud">
+        <option value="JNB">JNB — Johannesburg O.R. Tambo</option>
+       </optgroup>
+       <optgroup label="🇦🇪 Émirats Arabes Unis">
+        <option value="DXB">DXB — Dubai International</option>
+        <option value="AUH">AUH — Abu Dhabi</option>
+       </optgroup>
+       <optgroup label="🇺🇸 États-Unis">
+        <option value="JFK">JFK — New York John F. Kennedy</option>
+        <option value="LAX">LAX — Los Angeles</option>
+        <option value="ORD">ORD — Chicago O'Hare</option>
+       </optgroup>
+       <optgroup label="🇨🇦 Canada">
+        <option value="YUL">YUL — Montréal Pierre-Elliott-Trudeau</option>
+        <option value="YYZ">YYZ — Toronto Pearson</option>
+       </optgroup>
+      </select>
+     </div>
+     <div class="fg">
+      <label>Aéroport d'arrivée *</label>
+      <select id="farr" onchange="chk1()" style="font-size:13px">
+       <option value="">-- Sélectionnez un aéroport --</option>
+       <optgroup label="🇫🇷 France">
+        <option value="CDG">CDG — Paris Charles de Gaulle</option>
+        <option value="ORY">ORY — Paris Orly</option>
+        <option value="NCE">NCE — Nice Côte d'Azur</option>
+        <option value="LYS">LYS — Lyon Saint-Exupéry</option>
+        <option value="MRS">MRS — Marseille Provence</option>
+        <option value="TLS">TLS — Toulouse Blagnac</option>
+        <option value="BOD">BOD — Bordeaux Mérignac</option>
+        <option value="NTE">NTE — Nantes Atlantique</option>
+       </optgroup>
+       <optgroup label="🇩🇪 Allemagne">
+        <option value="FRA">FRA — Frankfurt</option>
+        <option value="MUC">MUC — Munich</option>
+        <option value="DUS">DUS — Düsseldorf</option>
+        <option value="BER">BER — Berlin Brandenburg</option>
+        <option value="HAM">HAM — Hamburg</option>
+        <option value="STR">STR — Stuttgart</option>
+        <option value="BSL">BSL — Basel-Mulhouse (EuroAirport)</option>
+       </optgroup>
+       <optgroup label="🇧🇪 Belgique">
+        <option value="BRU">BRU — Bruxelles Zaventem</option>
+       </optgroup>
+       <optgroup label="🇳🇱 Pays-Bas">
+        <option value="AMS">AMS — Amsterdam Schiphol</option>
+       </optgroup>
+       <optgroup label="🇬🇧 Royaume-Uni">
+        <option value="LHR">LHR — London Heathrow</option>
+        <option value="LGW">LGW — London Gatwick</option>
+        <option value="STN">STN — London Stansted</option>
+       </optgroup>
+       <optgroup label="🇨🇭 Suisse">
+        <option value="ZRH">ZRH — Zürich</option>
+        <option value="GVA">GVA — Genève</option>
+       </optgroup>
+       <optgroup label="🇪🇸 Espagne">
+        <option value="MAD">MAD — Madrid Barajas</option>
+        <option value="BCN">BCN — Barcelona El Prat</option>
+       </optgroup>
+       <optgroup label="🇮🇹 Italie">
+        <option value="FCO">FCO — Rome Fiumicino</option>
+        <option value="MXP">MXP — Milan Malpensa</option>
+       </optgroup>
+       <optgroup label="🇵🇹 Portugal">
+        <option value="LIS">LIS — Lisbonne</option>
+       </optgroup>
+       <optgroup label="🇲🇦 Maroc">
+        <option value="CMN">CMN — Casablanca Mohammed V</option>
+        <option value="RAK">RAK — Marrakech Ménara</option>
+        <option value="TNG">TNG — Tanger Ibn Batouta</option>
+       </optgroup>
+       <optgroup label="🇨🇮 Côte d'Ivoire">
+        <option value="ABJ">ABJ — Abidjan Félix Houphouët-Boigny</option>
+       </optgroup>
+       <optgroup label="🇸🇳 Sénégal">
+        <option value="DSS">DSS — Dakar Blaise Diagne</option>
+       </optgroup>
+       <optgroup label="🇧🇫 Burkina Faso">
+        <option value="OUA">OUA — Ouagadougou</option>
+       </optgroup>
+       <optgroup label="🇲🇱 Mali">
+        <option value="BKO">BKO — Bamako Sénou</option>
+       </optgroup>
+       <optgroup label="🇬🇳 Guinée">
+        <option value="CKY">CKY — Conakry</option>
+       </optgroup>
+       <optgroup label="🇹🇬 Togo">
+        <option value="LFW">LFW — Lomé Gnassingbé Eyadéma</option>
+       </optgroup>
+       <optgroup label="🇧🇯 Bénin">
+        <option value="COO">COO — Cotonou Cadjehoun</option>
+       </optgroup>
+       <optgroup label="🇨🇲 Cameroun">
+        <option value="DLA">DLA — Douala</option>
+        <option value="NSI">NSI — Yaoundé Nsimalen</option>
+       </optgroup>
+       <optgroup label="🇬🇦 Gabon">
+        <option value="LBV">LBV — Libreville</option>
+       </optgroup>
+       <optgroup label="🇨🇬 Congo">
+        <option value="BZV">BZV — Brazzaville Maya-Maya</option>
+       </optgroup>
+       <optgroup label="🇨🇩 RDC">
+        <option value="FIH">FIH — Kinshasa N'Djili</option>
+       </optgroup>
+       <optgroup label="🇪🇹 Ethiopie">
+        <option value="ADD">ADD — Addis Abeba Bole</option>
+       </optgroup>
+       <optgroup label="🇰🇪 Kenya">
+        <option value="NBO">NBO — Nairobi Jomo Kenyatta</option>
+       </optgroup>
+       <optgroup label="🇿🇦 Afrique du Sud">
+        <option value="JNB">JNB — Johannesburg O.R. Tambo</option>
+       </optgroup>
+       <optgroup label="🇦🇪 Émirats Arabes Unis">
+        <option value="DXB">DXB — Dubai International</option>
+        <option value="AUH">AUH — Abu Dhabi</option>
+       </optgroup>
+       <optgroup label="🇺🇸 États-Unis">
+        <option value="JFK">JFK — New York John F. Kennedy</option>
+        <option value="LAX">LAX — Los Angeles</option>
+        <option value="ORD">ORD — Chicago O'Hare</option>
+       </optgroup>
+       <optgroup label="🇨🇦 Canada">
+        <option value="YUL">YUL — Montréal Pierre-Elliott-Trudeau</option>
+        <option value="YYZ">YYZ — Toronto Pearson</option>
+       </optgroup>
+      </select>
+     </div>
     </div>
     <div class="fr2">
-     <div class="fg"><label>Compagnie aérienne</label><input id="fcomp" placeholder="Ex : Air France"></div>
+     <div class="fg">
+      <label>Compagnie aérienne</label>
+      <select id="fcomp" style="font-size:13px">
+       <option value="">-- Sélectionnez --</option>
+       <optgroup label="🇫🇷 France">
+        <option>Air France</option>
+        <option>Corsair</option>
+        <option>Transavia France</option>
+        <option>Vueling</option>
+       </optgroup>
+       <optgroup label="🇩🇪 Allemagne">
+        <option>Lufthansa</option>
+        <option>Condor</option>
+        <option>Eurowings</option>
+       </optgroup>
+       <optgroup label="Europe">
+        <option>KLM</option>
+        <option>Brussels Airlines</option>
+        <option>Swiss</option>
+        <option>Austrian Airlines</option>
+        <option>Iberia</option>
+        <option>Alitalia / ITA Airways</option>
+        <option>TAP Air Portugal</option>
+        <option>Ryanair</option>
+        <option>easyJet</option>
+        <option>Wizz Air</option>
+        <option>Volotea</option>
+       </optgroup>
+       <optgroup label="🌍 Afrique">
+        <option>Air Côte d'Ivoire</option>
+        <option>Air Sénégal</option>
+        <option>Air Burkina</option>
+        <option>Air Mali</option>
+        <option>Ethiopian Airlines</option>
+        <option>Kenya Airways</option>
+        <option>Royal Air Maroc</option>
+        <option>Tunisair</option>
+        <option>Air Algérie</option>
+        <option>South African Airways</option>
+        <option>Africa World Airlines</option>
+       </optgroup>
+       <optgroup label="🌐 Monde">
+        <option>Emirates</option>
+        <option>Qatar Airways</option>
+        <option>Turkish Airlines</option>
+        <option>Delta Air Lines</option>
+        <option>American Airlines</option>
+        <option>United Airlines</option>
+        <option>Air Canada</option>
+        <option>Singapore Airlines</option>
+        <option>British Airways</option>
+       </optgroup>
+      </select>
+     </div>
      <div class="fg"><label>Nombre de passagers</label><input id="fpax" type="number" min="1" value="1"></div>
+    </div>
+    <div style="background:#EAF3DE;border-radius:8px;padding:10px 14px;font-size:12px;color:#1B7A3E;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+     <i class="fa-solid fa-magnifying-glass"></i>
+     <span>Vérifiez d'abord votre vol sur <a href="https://fr.flightaware.com" target="_blank" style="color:#145C2F;font-weight:700;text-decoration:underline">FlightAware</a> ou <a href="https://www.flightradar24.com" target="_blank" style="color:#145C2F;font-weight:700;text-decoration:underline">FlightRadar24</a> pour noter le numéro exact.</span>
     </div>
     <div class="cnav"><button class="bkb" onclick="goC(0)"><i class="fa-solid fa-arrow-left"></i> Retour</button><button class="nxb" id="cn1" disabled onclick="goC(2);checkFlight()">Suivant → Vérification temps réel</button></div>
    </div>
@@ -455,9 +735,9 @@ footer ul li a:hover{color:var(--acc)}
 
  <!-- IMAGES -->
  <div class="iband" style="margin-top:0">
-  <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fit=crop" alt="Passagers aéroport">
-  <img src="https://images.unsplash.com/photo-1569629743817-70d8db6c323b?w=600&q=80&fit=crop" alt="Vol annulé">
-  <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80&fit=crop" alt="Voyage Afrique">
+  <img src="https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=600&q=80&fit=crop" alt="Passagers aéroport terminal">
+  <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80&fit=crop" alt="Avion en vol">
+  <img src="https://images.unsplash.com/photo-1488085061387-422e29b40080?w=600&q=80&fit=crop" alt="Voyageur aéroport">
  </div>
 
  <!-- COMMENT -->
@@ -536,47 +816,199 @@ footer ul li a:hover{color:var(--acc)}
 <div class="page" id="page-reclamer">
  <div style="background:var(--green);padding:40px 1.5rem 20px;text-align:center">
   <h1 style="color:#fff;font-size:28px;font-weight:800;margin-bottom:8px">Déposez votre réclamation</h1>
-  <p style="color:rgba(255,255,255,.8)">Gratuit · Sans engagement · Analyse sous 48h</p>
+  <p style="color:rgba(255,255,255,.8)">Gratuit · Sans engagement · Réponse sous 48h · franckvanie@yahoo.de</p>
  </div>
  <section>
   <div class="si">
+
+   <!-- BACKUP WHATSAPP -->
+   <div style="display:flex;gap:12px;max-width:700px;margin:0 auto 20px;flex-wrap:wrap">
+    <a href="https://wa.me/491773431460?text=Bonjour%20SOS%20PASSAGER%2C%20je%20souhaite%20d%C3%A9poser%20une%20r%C3%A9clamation%20pour%20mon%20vol."
+       target="_blank"
+       style="flex:1;background:#25D366;color:#fff;border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;justify-content:center">
+     <i class="fa-brands fa-whatsapp" style="font-size:18px"></i> WhatsApp Europe · +49 177 343 14 60
+    </a>
+    <a href="https://wa.me/2250503605725?text=Bonjour%20SOS%20PASSAGER%2C%20je%20souhaite%20d%C3%A9poser%20une%20r%C3%A9clamation%20pour%20mon%20vol."
+       target="_blank"
+       style="flex:1;background:#25D366;color:#fff;border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;justify-content:center">
+     <i class="fa-brands fa-whatsapp" style="font-size:18px"></i> WhatsApp Afrique · +225 05 03 60 57 25
+    </a>
+   </div>
+
+   <div style="text-align:center;font-size:12px;color:#aaa;margin-bottom:16px">— ou remplissez le formulaire ci-dessous —</div>
+
+   <!-- FORMULAIRE FORMSPREE -->
    <div class="rf">
     <div id="formBody">
      <h3><i class="fa-solid fa-file-pen" style="color:var(--green)"></i> Formulaire de réclamation</h3>
-     <div class="fsl">Vos coordonnées</div>
-     <div class="fr2"><div class="fg"><label>Prénom</label><input id="rp" type="text" placeholder="Kouamé"></div><div class="fg"><label>Nom</label><input id="rn" type="text" placeholder="Assouman"></div></div>
-     <div class="fr2"><div class="fg"><label>Email</label><input id="re" type="email" placeholder="votre@email.com"></div><div class="fg"><label>Téléphone WhatsApp</label><input id="rt" type="tel" placeholder="+225 05 03 60 57 25"></div></div>
-     <div class="fg"><label>Adresse postale</label><input type="text" placeholder="Rue, ville, pays"></div>
-     <div class="fsl">Votre vol</div>
-     <div class="fr2"><div class="fg"><label>Numéro de vol</label><input type="text" id="rfv" placeholder="AF 703"></div><div class="fg"><label>Date du vol</label><input type="date" id="rfd"></div></div>
-     <div class="fr2"><div class="fg"><label>Départ</label><input type="text" placeholder="CDG Paris"></div><div class="fg"><label>Arrivée</label><input type="text" placeholder="ABJ Abidjan"></div></div>
-     <div class="fr2"><div class="fg"><label>Compagnie aérienne</label><input type="text" placeholder="Air France"></div><div class="fg"><label>Nb. passagers</label><input type="number" min="1" placeholder="1"></div></div>
-     <div class="fsl">Nature du problème</div>
-     <div class="fr2"><div class="fg"><label>Type d'incident</label><select><option>Vol retardé (≥ 3h)</option><option>Vol annulé</option><option>Surbooking</option><option>Correspondance manquée</option></select></div><div class="fg"><label>Durée du retard</label><select><option>Entre 3h et 4h</option><option>Entre 4h et 6h</option><option>Plus de 6h</option><option>Annulé / surbooking</option></select></div></div>
-     <div class="fg"><label>Règlement applicable</label><select><option>CE 261/2004 — Europe</option><option>UEMOA N°03/2003 — Afrique de l'Ouest</option><option>Je ne sais pas</option></select></div>
-     <div class="fg"><label>Description (optionnel)</label><textarea placeholder="Décrivez ce qui s'est passé..." style="min-height:70px;resize:vertical"></textarea></div>
-     <div class="fsl">Mandat &amp; Signature électronique</div>
-     <p style="font-size:13px;color:var(--gt);margin-bottom:12px">En signant ci-dessous, vous mandatez SOS PASSAGER pour gérer votre réclamation. La commission (20–30% + TVA) n'est prélevée qu'en cas de succès.</p>
-     <div class="sig-canvas-wrap">
-      <p style="font-size:11px;color:#aaa;margin-bottom:6px">Signez ici avec votre souris ou votre doigt</p>
-      <canvas id="sigCanvas" width="560" height="120"></canvas>
-      <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
-       <button class="sig-clear" onclick="clearSig()"><i class="fa-solid fa-eraser"></i> Effacer</button>
+
+     <!-- IMPORTANT : remplacer YOUR_FORM_ID par votre ID Formspree après inscription sur formspree.io -->
+     <!-- Les réclamations arriveront à franckvanie@yahoo.de -->
+     <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="handleSubmit(event)">
+
+      <div class="fsl">Vos coordonnées</div>
+      <div class="fr2">
+       <div class="fg"><label>Prénom *</label><input name="prenom" type="text" placeholder="Kouamé" required></div>
+       <div class="fg"><label>Nom *</label><input name="nom" type="text" placeholder="Assouman" required></div>
       </div>
-     </div>
-     <div class="cbr"><input type="checkbox" id="cg1"><label for="cg1">Je mandate SOS PASSAGER pour gérer ma réclamation en mon nom et j'accepte les conditions de commission.</label></div>
-     <div class="cbr"><input type="checkbox" id="cg2"><label for="cg2">J'accepte les conditions générales et la politique de confidentialité de SOS PASSAGER.</label></div>
-     <button class="subbtn" onclick="submitForm()"><i class="fa-solid fa-paper-plane"></i> Envoyer ma réclamation — Gratuit</button>
+      <div class="fr2">
+       <div class="fg"><label>Email *</label><input name="email" type="email" placeholder="votre@email.com" required></div>
+       <div class="fg"><label>Téléphone WhatsApp *</label><input name="whatsapp" type="tel" placeholder="+225 05 03 60 57 25" required></div>
+      </div>
+      <div class="fg"><label>Adresse postale</label><input name="adresse" type="text" placeholder="Rue, ville, pays"></div>
+
+      <div class="fsl">Votre vol</div>
+      <div class="fr2">
+       <div class="fg"><label>Numéro de vol *</label><input name="vol_numero" type="text" placeholder="AF 703" required></div>
+       <div class="fg"><label>Date du vol *</label><input name="vol_date" type="date" required></div>
+      </div>
+      <div class="fr2">
+       <div class="fg"><label>Aéroport départ *</label><input name="depart" type="text" placeholder="CDG — Paris" required></div>
+       <div class="fg"><label>Aéroport arrivée *</label><input name="arrivee" type="text" placeholder="ABJ — Abidjan" required></div>
+      </div>
+      <div class="fr2">
+       <div class="fg"><label>Compagnie aérienne *</label><input name="compagnie" type="text" placeholder="Air France" required></div>
+       <div class="fg"><label>Nb. passagers</label><input name="passagers" type="number" min="1" placeholder="1"></div>
+      </div>
+
+      <div class="fsl">Nature du problème</div>
+      <div class="fr2">
+       <div class="fg"><label>Type d'incident *</label>
+        <select name="incident" required>
+         <option value="">-- Choisir --</option>
+         <option>Vol retardé (≥ 3h)</option>
+         <option>Vol annulé</option>
+         <option>Surbooking / refus d'embarquement</option>
+         <option>Correspondance manquée</option>
+        </select>
+       </div>
+       <div class="fg"><label>Durée du retard</label>
+        <select name="duree_retard">
+         <option>Entre 3h et 4h</option>
+         <option>Entre 4h et 6h</option>
+         <option>Plus de 6h</option>
+         <option>Vol annulé / surbooking</option>
+        </select>
+       </div>
+      </div>
+      <div class="fg"><label>Règlement applicable</label>
+       <select name="reglement">
+        <option>CE 261/2004 — Europe</option>
+        <option>UEMOA N°03/2003 — Afrique de l'Ouest</option>
+        <option>Je ne sais pas</option>
+       </select>
+      </div>
+      <div class="fg"><label>Description</label>
+       <textarea name="description" placeholder="Décrivez ce qui s'est passé..." style="min-height:70px;resize:vertical"></textarea>
+      </div>
+
+      <div class="fsl">Mandat &amp; Signature électronique</div>
+      <p style="font-size:13px;color:var(--gt);margin-bottom:12px">En signant ci-dessous, vous mandatez SOS PASSAGER pour gérer votre réclamation. Commission (20–30% + TVA) uniquement en cas de succès.</p>
+      <div class="sig-canvas-wrap">
+       <p style="font-size:11px;color:#aaa;margin-bottom:6px">Signez ici avec votre souris ou votre doigt</p>
+       <canvas id="sigCanvas" width="560" height="120"></canvas>
+       <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+        <button type="button" class="sig-clear" onclick="clearSig()"><i class="fa-solid fa-eraser"></i> Effacer</button>
+       </div>
+      </div>
+      <!-- Champ caché pour transmettre la signature -->
+      <input type="hidden" name="signature" id="sigData" value="non fournie">
+
+      <div class="cbr"><input type="checkbox" id="cg1" required><label for="cg1">Je mandate SOS PASSAGER pour gérer ma réclamation et j'accepte les conditions de commission (20–30% + TVA en cas de succès uniquement).</label></div>
+      <div class="cbr"><input type="checkbox" id="cg2" required><label for="cg2">J'accepte les conditions générales et la politique de confidentialité de SOS PASSAGER.</label></div>
+
+      <!-- Champ anti-spam Formspree -->
+      <input type="text" name="_gotcha" style="display:none">
+      <input type="hidden" name="_subject" value="🆕 Nouvelle réclamation SOS PASSAGER">
+      <input type="hidden" name="_replyto" value="franckvanie@yahoo.de">
+
+      <button type="submit" class="subbtn"><i class="fa-solid fa-paper-plane"></i> Envoyer ma réclamation — Gratuit</button>
+     </form>
     </div>
+
     <div class="conf-box" id="formConf">
      <i class="fa-solid fa-circle-check"></i>
-     <h3>Réclamation reçue &amp; Mandat signé !</h3>
-     <p>Vos experts analysent votre dossier sous <strong>48h</strong>.<br>Un email de confirmation + copie du mandat signé vous sera envoyé.<br><br>
+     <h3>Réclamation envoyée !</h3>
+     <p>Votre dossier a été transmis à <strong>franckvanie@yahoo.de</strong><br>
+     Réponse sous <strong>48h</strong>. Un email de confirmation vous sera envoyé.<br><br>
+     <strong>Urgence ?</strong><br>
      <a href="https://wa.me/491773431460" style="color:var(--green);font-weight:700">WhatsApp Europe +49 177 343 14 60</a><br>
      <a href="https://wa.me/2250503605725" style="color:var(--green);font-weight:700">WhatsApp Afrique +225 05 03 60 57 25</a></p>
-     <br><button class="green-btn" style="margin:0 auto" onclick="showPage('client')"><i class="fa-solid fa-user-circle"></i> Accéder à mon dossier</button>
+     <br>
+     <button class="green-btn" style="margin:0 auto" onclick="showPage('client')"><i class="fa-solid fa-user-circle"></i> Voir mon dossier (démo)</button>
     </div>
    </div>
+
+   <!-- NOTE FORMSPREE -->
+   <div style="max-width:700px;margin:16px auto 0;background:#EAF3DE;border-radius:8px;padding:12px 16px;font-size:12px;color:#1B7A3E;display:flex;gap:8px">
+    <i class="fa-solid fa-circle-info" style="flex-shrink:0;margin-top:2px"></i>
+    <span><strong>Configuration requise :</strong> Pour activer l'envoi réel des réclamations, inscrivez-vous gratuitement sur <a href="https://formspree.io" target="_blank" style="color:#145C2F;font-weight:700">formspree.io</a> → créez un formulaire → remplacez <code>YOUR_FORM_ID</code> dans le code HTML par votre identifiant.</span>
+   </div>
+  </div>
+ </section>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     PAGE : PARTENAIRES
+══════════════════════════════════════ -->
+<div class="page" id="page-partenaires">
+ <div style="background:var(--green);padding:40px 1.5rem 20px;text-align:center">
+  <h1 style="color:#fff;font-size:28px;font-weight:800;margin-bottom:8px">Partenaires &amp; Réseau</h1>
+  <p style="color:rgba(255,255,255,.8)">SOS PASSAGER s'appuie sur un réseau international d'experts juridiques et stratégiques</p>
+ </div>
+ <section>
+  <div class="si">
+
+   <!-- PARTENAIRES STRATÉGIQUES -->
+   <div style="text-align:center;margin-bottom:32px">
+    <div class="st">Partenaires stratégiques</div>
+    <div class="ss">Nos partenaires en Europe et en Afrique de l'Ouest</div>
+   </div>
+   <div class="sg" style="margin-bottom:48px">
+    <div class="sc">
+     <div style="width:60px;height:60px;background:var(--gl);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><i class="fa-solid fa-gavel" style="font-size:24px;color:var(--green)"></i></div>
+     <h3>Réseau d'avocats européens</h3>
+     <p>Cabinet spécialisé en droit aérien — France, Allemagne, Belgique, Pays-Bas. Intervient en cas de procédure judiciaire contre les compagnies.</p>
+    </div>
+    <div class="sc">
+     <div style="width:60px;height:60px;background:var(--gl);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><i class="fa-solid fa-earth-africa" style="font-size:24px;color:var(--green)"></i></div>
+     <h3>Experts juridiques UEMOA</h3>
+     <p>Juristes spécialisés dans le règlement N°03/2003/CM/UEMOA, basés à Abidjan, Dakar et Ouagadougou. Couverture de l'ensemble de la zone UEMOA.</p>
+    </div>
+    <div class="sc">
+     <div style="width:60px;height:60px;background:var(--gl);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><i class="fa-solid fa-building-columns" style="font-size:24px;color:var(--green)"></i></div>
+     <h3>Médiation &amp; Arbitrage</h3>
+     <p>Partenariat avec des organismes de médiation aéronautique agréés pour résoudre les litiges à l'amiable avant toute procédure judiciaire.</p>
+    </div>
+   </div>
+
+   <!-- DEVENIR PARTENAIRE -->
+   <div style="background:var(--gl);border:1.5px solid var(--green);border-radius:12px;padding:36px;max-width:700px;margin:0 auto;text-align:center">
+    <i class="fa-solid fa-handshake" style="font-size:40px;color:var(--green);display:block;margin-bottom:14px"></i>
+    <h3 style="font-size:20px;font-weight:700;color:var(--gd);margin-bottom:10px">Devenir partenaire SOS PASSAGER</h3>
+    <p style="font-size:14px;color:var(--gt);line-height:1.7;margin-bottom:20px">
+     Vous êtes <strong>avocat spécialisé en droit aérien</strong>, <strong>agence de voyage</strong>, <strong>association de consommateurs</strong> ou <strong>organisation de protection des passagers</strong> ?<br><br>
+     SOS PASSAGER développe son réseau en Europe et en Afrique. Rejoignez-nous pour défendre ensemble les droits des passagers.
+    </p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+     <a href="https://wa.me/491773431460?text=Bonjour%2C%20je%20souhaite%20devenir%20partenaire%20SOS%20PASSAGER."
+        target="_blank"
+        style="background:#25D366;color:#fff;border-radius:8px;padding:11px 20px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:7px">
+      <i class="fa-brands fa-whatsapp"></i> WhatsApp Europe
+     </a>
+     <a href="https://wa.me/2250503605725?text=Bonjour%2C%20je%20souhaite%20devenir%20partenaire%20SOS%20PASSAGER."
+        target="_blank"
+        style="background:#25D366;color:#fff;border-radius:8px;padding:11px 20px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:7px">
+      <i class="fa-brands fa-whatsapp"></i> WhatsApp Afrique
+     </a>
+     <a href="mailto:franckvanie@yahoo.de?subject=Partenariat SOS PASSAGER"
+        style="background:var(--green);color:#fff;border-radius:8px;padding:11px 20px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:7px">
+      <i class="fa-solid fa-envelope"></i> Email
+     </a>
+    </div>
+   </div>
+
   </div>
  </section>
 </div>
@@ -988,12 +1420,17 @@ function draw(e,cv){const[x,y]=pos(e,cv);sigCtx.beginPath();sigCtx.moveTo(lastX,
 function drawT(e,cv){const[x,y]=posT(e,cv);sigCtx.beginPath();sigCtx.moveTo(lastX,lastY);sigCtx.lineTo(x,y);sigCtx.stroke();[lastX,lastY]=[x,y]}
 function clearSig(){const cv=document.getElementById('sigCanvas');if(sigCtx)sigCtx.clearRect(0,0,cv.width,cv.height);hasSig=false}
 
-/* ─── FORMULAIRE ─── */
-function submitForm(){
-  document.getElementById('formBody').style.display='none';
-  document.getElementById('formConf').style.display='block';
-  // Auto-notification simulation
-  setTimeout(()=>{showNotifToast('📧 Email de confirmation envoyé à votre adresse')},1500);
+/* ─── FORMSPREE SUBMIT ─── */
+function handleSubmit(e){
+  // Capturer la signature dans le champ caché
+  const cv=document.getElementById('sigCanvas');
+  if(cv)document.getElementById('sigData').value=cv.toDataURL();
+  // Laisser le formulaire s'envoyer normalement vers Formspree
+  // Afficher la confirmation après 1s
+  setTimeout(()=>{
+    document.getElementById('formBody').style.display='none';
+    document.getElementById('formConf').style.display='block';
+  },1000);
 }
 
 /* ─── ESPACE CLIENT ─── */
