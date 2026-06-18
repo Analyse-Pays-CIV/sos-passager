@@ -282,9 +282,60 @@ footer ul li a:hover{color:var(--acc)}
   .stats{gap:18px}
   .nl{display:none}
 }
+
+/* ── POP-UP NON ÉLIGIBLE ── */
+.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9000;display:flex;align-items:center;justify-content:center;padding:1rem}
+.popup-box{background:#fff;border-radius:16px;max-width:520px;width:100%;overflow:hidden;animation:popIn .3s ease}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.popup-header{padding:28px 28px 20px;text-align:center}
+.popup-header i{font-size:52px;display:block;margin-bottom:12px}
+.popup-header h2{font-size:20px;font-weight:800;margin-bottom:6px}
+.popup-header p{font-size:14px;color:var(--gt);line-height:1.6}
+.popup-body{padding:0 28px 20px}
+.popup-rule{background:var(--gb);border-left:4px solid #E57373;border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:#B71C1C;margin-bottom:14px;line-height:1.6}
+.popup-capture{background:var(--gl);border:1.5px solid var(--green);border-radius:10px;padding:16px;margin-bottom:14px}
+.popup-capture p{font-size:13px;color:var(--gd);font-weight:600;margin-bottom:10px}
+.popup-footer{padding:0 28px 24px;display:flex;gap:10px;flex-wrap:wrap}
+.popup-wa{flex:1;background:#25D366;color:#fff;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
+.popup-close{flex:1;background:var(--gb);border:1.5px solid var(--bdr);border-radius:8px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;color:var(--gt)}
 </style>
 </head>
 <body>
+
+<!-- ══ POP-UP NON ÉLIGIBLE ══ -->
+<div class="popup-overlay" id="popupOverlay" style="display:none">
+ <div class="popup-box">
+  <div class="popup-header">
+   <i class="fa-solid fa-circle-xmark" style="color:#E53935"></i>
+   <h2 id="popupTitle" style="color:#B71C1C">Indemnisation non applicable</h2>
+   <p id="popupMsg"></p>
+  </div>
+  <div class="popup-body">
+   <div class="popup-rule" id="popupRule"></div>
+   <div class="popup-capture">
+    <p><i class="fa-solid fa-bell" style="color:var(--green);margin-right:6px"></i>Nous vous alertons si votre situation évolue !</p>
+    <div style="display:flex;gap:8px">
+     <input id="popupEmail" type="email" placeholder="votre@email.com" style="flex:1;border:1.5px solid var(--bdr);border-radius:6px;padding:9px 12px;font-size:13px;outline:none">
+     <button onclick="savePopupEmail()" style="background:var(--green);color:#fff;border:none;border-radius:6px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">
+      <i class="fa-solid fa-bell"></i> M'alerter
+     </button>
+    </div>
+    <p style="font-size:11px;color:#aaa;margin-top:6px">Gratuit · Sans engagement · Nous vous contacterons si les règles changent ou si nous trouvons une autre solution pour vous.</p>
+   </div>
+   <div id="popupEmailConfirm" style="display:none;background:#EAF3DE;border-radius:8px;padding:10px 14px;font-size:13px;color:var(--gd);text-align:center">
+    ✅ Adresse enregistrée ! Nous vous contacterons si votre situation évolue.
+   </div>
+  </div>
+  <div class="popup-footer">
+   <button class="popup-wa" onclick="window.open('https://wa.me/491773431460?text=Bonjour%2C%20j%27ai%20un%20doute%20sur%20mon%20éligibilité.')">
+    <i class="fa-brands fa-whatsapp"></i> Parler à un expert
+   </button>
+   <button class="popup-close" onclick="closePopup()">
+    <i class="fa-solid fa-xmark"></i> Fermer
+   </button>
+  </div>
+ </div>
+</div>
 
 <!-- ══ NAV ══ -->
 <nav>
@@ -348,7 +399,7 @@ footer ul li a:hover{color:var(--acc)}
 
  <!-- HERO -->
  <div class="hero">
-  <img class="hero-img" src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1600&q=80&fit=crop" alt="Avion en vol">
+  <img class="hero-img" src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1600&q=80&fit=crop" alt="Aéroport international">
   <div class="hero-ov"></div>
   <div class="hc">
    <h1>Vol retardé, annulé ou surbooké ?<br>Réclamez jusqu'à <span>600 €</span> d'indemnisation</h1>
@@ -363,14 +414,11 @@ footer ul li a:hover{color:var(--acc)}
  <!-- CALCULATEUR -->
  <div class="cw">
   <div class="cc">
-   <h2><i class="fa-solid fa-calculator" style="color:var(--green)"></i> Calculateur d'indemnisation — Gratuit &amp; Temps réel</h2>
+   <h2><i class="fa-solid fa-calculator" style="color:var(--green)"></i> Calculateur d'indemnisation — Gratuit &amp; Intelligent</h2>
    <div class="ctabs">
     <div class="ctab active" id="ct0">1. Incident</div>
-    <div class="ctab" id="ct1">2. Vol</div>
-    <div class="ctab" id="ct2">3. Vérification</div>
-    <div class="ctab" id="ct3">4. Distance</div>
-    <div class="ctab" id="ct4">5. Éligibilité</div>
-    <div class="ctab" id="ct5">6. Résultat</div>
+    <div class="ctab" id="ct1">2. Votre vol</div>
+    <div class="ctab" id="ct2">3. Résultat</div>
    </div>
 
    <!-- STEP 0 : incident -->
@@ -378,7 +426,7 @@ footer ul li a:hover{color:var(--acc)}
     <p style="font-size:13px;color:#666;margin-bottom:12px">Quel problème avez-vous rencontré ?</p>
     <div class="opts">
      <button class="opt" onclick="pick(this,'inc','retard')"><i class="fa-solid fa-clock"></i>Vol retardé<span class="sub">≥ 3h de retard</span></button>
-     <button class="opt" onclick="pick(this,'inc','annul')"><i class="fa-solid fa-ban"></i>Vol annulé<span class="sub">Supprimé</span></button>
+     <button class="opt" onclick="pick(this,'inc','annul')"><i class="fa-solid fa-ban"></i>Vol annulé<span class="sub">Supprimé par la compagnie</span></button>
      <button class="opt" onclick="pick(this,'inc','surb')"><i class="fa-solid fa-users"></i>Surbooking<span class="sub">Refus d'embarquement</span></button>
      <button class="opt" onclick="pick(this,'inc','corr')"><i class="fa-solid fa-arrows-turn-right"></i>Correspondance<span class="sub">Connexion manquée</span></button>
     </div>
@@ -387,341 +435,100 @@ footer ul li a:hover{color:var(--acc)}
 
    <!-- STEP 1 : infos vol -->
    <div class="sp" id="cp1">
-    <p style="font-size:13px;color:#666;margin-bottom:12px">Informations sur votre vol</p>
+    <p style="font-size:13px;color:#666;margin-bottom:12px">Informations sur votre vol — nous calculons tout automatiquement</p>
     <div class="fr2">
-     <div class="fg"><label>Numéro de vol *</label><input id="fn" type="text" placeholder="Ex : AF703" oninput="chk1()"></div>
-     <div class="fg"><label>Date du vol *</label><input id="fd" type="date" oninput="chk1()"></div>
+     <div class="fg"><label>Numéro de vol *</label><input id="fn" type="text" placeholder="Ex : AF703" oninput="calcChk()"></div>
+     <div class="fg"><label>Date du vol *</label><input id="fd" type="date" oninput="calcChk()"></div>
     </div>
     <div class="fr2">
      <div class="fg">
       <label>Aéroport de départ *</label>
-      <select id="fdep" onchange="chk1()" style="font-size:13px">
-       <option value="">-- Sélectionnez un aéroport --</option>
-       <optgroup label="🇫🇷 France">
-        <option value="CDG">CDG — Paris Charles de Gaulle</option>
-        <option value="ORY">ORY — Paris Orly</option>
-        <option value="NCE">NCE — Nice Côte d'Azur</option>
-        <option value="LYS">LYS — Lyon Saint-Exupéry</option>
-        <option value="MRS">MRS — Marseille Provence</option>
-        <option value="TLS">TLS — Toulouse Blagnac</option>
-        <option value="BOD">BOD — Bordeaux Mérignac</option>
-        <option value="NTE">NTE — Nantes Atlantique</option>
-       </optgroup>
-       <optgroup label="🇩🇪 Allemagne">
-        <option value="FRA">FRA — Frankfurt</option>
-        <option value="MUC">MUC — Munich</option>
-        <option value="DUS">DUS — Düsseldorf</option>
-        <option value="BER">BER — Berlin Brandenburg</option>
-        <option value="HAM">HAM — Hamburg</option>
-        <option value="STR">STR — Stuttgart</option>
-        <option value="BSL">BSL — Basel-Mulhouse (EuroAirport)</option>
-       </optgroup>
-       <optgroup label="🇧🇪 Belgique">
-        <option value="BRU">BRU — Bruxelles Zaventem</option>
-       </optgroup>
-       <optgroup label="🇳🇱 Pays-Bas">
-        <option value="AMS">AMS — Amsterdam Schiphol</option>
-       </optgroup>
-       <optgroup label="🇬🇧 Royaume-Uni">
-        <option value="LHR">LHR — London Heathrow</option>
-        <option value="LGW">LGW — London Gatwick</option>
-        <option value="STN">STN — London Stansted</option>
-       </optgroup>
-       <optgroup label="🇨🇭 Suisse">
-        <option value="ZRH">ZRH — Zürich</option>
-        <option value="GVA">GVA — Genève</option>
-       </optgroup>
-       <optgroup label="🇪🇸 Espagne">
-        <option value="MAD">MAD — Madrid Barajas</option>
-        <option value="BCN">BCN — Barcelona El Prat</option>
-       </optgroup>
-       <optgroup label="🇮🇹 Italie">
-        <option value="FCO">FCO — Rome Fiumicino</option>
-        <option value="MXP">MXP — Milan Malpensa</option>
-       </optgroup>
-       <optgroup label="🇵🇹 Portugal">
-        <option value="LIS">LIS — Lisbonne</option>
-       </optgroup>
-       <optgroup label="🇲🇦 Maroc">
-        <option value="CMN">CMN — Casablanca Mohammed V</option>
-        <option value="RAK">RAK — Marrakech Ménara</option>
-        <option value="TNG">TNG — Tanger Ibn Batouta</option>
-       </optgroup>
-       <optgroup label="🇨🇮 Côte d'Ivoire">
-        <option value="ABJ">ABJ — Abidjan Félix Houphouët-Boigny</option>
-       </optgroup>
-       <optgroup label="🇸🇳 Sénégal">
-        <option value="DSS">DSS — Dakar Blaise Diagne</option>
-       </optgroup>
-       <optgroup label="🇧🇫 Burkina Faso">
-        <option value="OUA">OUA — Ouagadougou</option>
-       </optgroup>
-       <optgroup label="🇲🇱 Mali">
-        <option value="BKO">BKO — Bamako Sénou</option>
-       </optgroup>
-       <optgroup label="🇬🇳 Guinée">
-        <option value="CKY">CKY — Conakry</option>
-       </optgroup>
-       <optgroup label="🇹🇬 Togo">
-        <option value="LFW">LFW — Lomé Gnassingbé Eyadéma</option>
-       </optgroup>
-       <optgroup label="🇧🇯 Bénin">
-        <option value="COO">COO — Cotonou Cadjehoun</option>
-       </optgroup>
-       <optgroup label="🇨🇲 Cameroun">
-        <option value="DLA">DLA — Douala</option>
-        <option value="NSI">NSI — Yaoundé Nsimalen</option>
-       </optgroup>
-       <optgroup label="🇬🇦 Gabon">
-        <option value="LBV">LBV — Libreville</option>
-       </optgroup>
-       <optgroup label="🇨🇬 Congo">
-        <option value="BZV">BZV — Brazzaville Maya-Maya</option>
-       </optgroup>
-       <optgroup label="🇨🇩 RDC">
-        <option value="FIH">FIH — Kinshasa N'Djili</option>
-       </optgroup>
-       <optgroup label="🇪🇹 Ethiopie">
-        <option value="ADD">ADD — Addis Abeba Bole</option>
-       </optgroup>
-       <optgroup label="🇰🇪 Kenya">
-        <option value="NBO">NBO — Nairobi Jomo Kenyatta</option>
-       </optgroup>
-       <optgroup label="🇿🇦 Afrique du Sud">
-        <option value="JNB">JNB — Johannesburg O.R. Tambo</option>
-       </optgroup>
-       <optgroup label="🇦🇪 Émirats Arabes Unis">
-        <option value="DXB">DXB — Dubai International</option>
-        <option value="AUH">AUH — Abu Dhabi</option>
-       </optgroup>
-       <optgroup label="🇺🇸 États-Unis">
-        <option value="JFK">JFK — New York John F. Kennedy</option>
-        <option value="LAX">LAX — Los Angeles</option>
-        <option value="ORD">ORD — Chicago O'Hare</option>
-       </optgroup>
-       <optgroup label="🇨🇦 Canada">
-        <option value="YUL">YUL — Montréal Pierre-Elliott-Trudeau</option>
-        <option value="YYZ">YYZ — Toronto Pearson</option>
-       </optgroup>
+      <select id="fdep" onchange="calcChk();autoCalc()" style="font-size:13px">
+       <option value="">-- Sélectionnez --</option>
+       <optgroup label="🇫🇷 France"><option value="CDG">CDG — Paris Charles de Gaulle</option><option value="ORY">ORY — Paris Orly</option><option value="NCE">NCE — Nice Côte d'Azur</option><option value="LYS">LYS — Lyon Saint-Exupéry</option><option value="MRS">MRS — Marseille Provence</option><option value="TLS">TLS — Toulouse Blagnac</option><option value="BOD">BOD — Bordeaux Mérignac</option></optgroup>
+       <optgroup label="🇩🇪 Allemagne"><option value="FRA">FRA — Frankfurt</option><option value="MUC">MUC — Munich</option><option value="DUS">DUS — Düsseldorf</option><option value="BER">BER — Berlin Brandenburg</option><option value="STR">STR — Stuttgart</option><option value="BSL">BSL — Basel-Mulhouse</option></optgroup>
+       <optgroup label="🇧🇪🇳🇱 Benelux"><option value="BRU">BRU — Bruxelles</option><option value="AMS">AMS — Amsterdam Schiphol</option></optgroup>
+       <optgroup label="🇬🇧 UK"><option value="LHR">LHR — London Heathrow</option><option value="LGW">LGW — London Gatwick</option><option value="STN">STN — London Stansted</option></optgroup>
+       <optgroup label="🇨🇭🇦🇹 Suisse/Autriche"><option value="ZRH">ZRH — Zürich</option><option value="GVA">GVA — Genève</option><option value="VIE">VIE — Vienne</option></optgroup>
+       <optgroup label="🇪🇸🇵🇹 Ibérie"><option value="MAD">MAD — Madrid</option><option value="BCN">BCN — Barcelona</option><option value="LIS">LIS — Lisbonne</option></optgroup>
+       <optgroup label="🇮🇹 Italie"><option value="FCO">FCO — Rome Fiumicino</option><option value="MXP">MXP — Milan Malpensa</option></optgroup>
+       <optgroup label="🇲🇦🇩🇿🇹🇳 Maghreb"><option value="CMN">CMN — Casablanca</option><option value="RAK">RAK — Marrakech</option><option value="ALG">ALG — Alger</option><option value="TUN">TUN — Tunis</option></optgroup>
+       <optgroup label="🇨🇮 Côte d'Ivoire"><option value="ABJ">ABJ — Abidjan</option></optgroup>
+       <optgroup label="🇸🇳🇲🇱🇧🇫 Afrique Ouest"><option value="DSS">DSS — Dakar</option><option value="BKO">BKO — Bamako</option><option value="OUA">OUA — Ouagadougou</option><option value="LFW">LFW — Lomé</option><option value="COO">COO — Cotonou</option><option value="CKY">CKY — Conakry</option></optgroup>
+       <optgroup label="🇨🇲🇬🇦🇨🇬 Afrique Centrale"><option value="DLA">DLA — Douala</option><option value="LBV">LBV — Libreville</option><option value="BZV">BZV — Brazzaville</option></optgroup>
+       <optgroup label="🇪🇹🇰🇪🇿🇦 Afrique Est/Sud"><option value="ADD">ADD — Addis Abeba</option><option value="NBO">NBO — Nairobi</option><option value="JNB">JNB — Johannesburg</option></optgroup>
+       <optgroup label="🇦🇪🇶🇦🇹🇷 Moyen-Orient"><option value="DXB">DXB — Dubai</option><option value="DOH">DOH — Doha</option><option value="IST">IST — Istanbul</option></optgroup>
+       <optgroup label="🇺🇸🇨🇦 Amérique Nord"><option value="JFK">JFK — New York</option><option value="LAX">LAX — Los Angeles</option><option value="YUL">YUL — Montréal</option></optgroup>
+       <optgroup label="🇧🇷🇨🇴 Amérique Sud"><option value="GRU">GRU — São Paulo</option><option value="BOG">BOG — Bogotá</option></optgroup>
+       <optgroup label="🇨🇳🇯🇵🇸🇬 Asie"><option value="PEK">PEK — Pékin</option><option value="TYO">TYO — Tokyo</option><option value="SIN">SIN — Singapour</option></optgroup>
       </select>
      </div>
      <div class="fg">
       <label>Aéroport d'arrivée *</label>
-      <select id="farr" onchange="chk1()" style="font-size:13px">
-       <option value="">-- Sélectionnez un aéroport --</option>
-       <optgroup label="🇫🇷 France">
-        <option value="CDG">CDG — Paris Charles de Gaulle</option>
-        <option value="ORY">ORY — Paris Orly</option>
-        <option value="NCE">NCE — Nice Côte d'Azur</option>
-        <option value="LYS">LYS — Lyon Saint-Exupéry</option>
-        <option value="MRS">MRS — Marseille Provence</option>
-        <option value="TLS">TLS — Toulouse Blagnac</option>
-        <option value="BOD">BOD — Bordeaux Mérignac</option>
-        <option value="NTE">NTE — Nantes Atlantique</option>
-       </optgroup>
-       <optgroup label="🇩🇪 Allemagne">
-        <option value="FRA">FRA — Frankfurt</option>
-        <option value="MUC">MUC — Munich</option>
-        <option value="DUS">DUS — Düsseldorf</option>
-        <option value="BER">BER — Berlin Brandenburg</option>
-        <option value="HAM">HAM — Hamburg</option>
-        <option value="STR">STR — Stuttgart</option>
-        <option value="BSL">BSL — Basel-Mulhouse (EuroAirport)</option>
-       </optgroup>
-       <optgroup label="🇧🇪 Belgique">
-        <option value="BRU">BRU — Bruxelles Zaventem</option>
-       </optgroup>
-       <optgroup label="🇳🇱 Pays-Bas">
-        <option value="AMS">AMS — Amsterdam Schiphol</option>
-       </optgroup>
-       <optgroup label="🇬🇧 Royaume-Uni">
-        <option value="LHR">LHR — London Heathrow</option>
-        <option value="LGW">LGW — London Gatwick</option>
-        <option value="STN">STN — London Stansted</option>
-       </optgroup>
-       <optgroup label="🇨🇭 Suisse">
-        <option value="ZRH">ZRH — Zürich</option>
-        <option value="GVA">GVA — Genève</option>
-       </optgroup>
-       <optgroup label="🇪🇸 Espagne">
-        <option value="MAD">MAD — Madrid Barajas</option>
-        <option value="BCN">BCN — Barcelona El Prat</option>
-       </optgroup>
-       <optgroup label="🇮🇹 Italie">
-        <option value="FCO">FCO — Rome Fiumicino</option>
-        <option value="MXP">MXP — Milan Malpensa</option>
-       </optgroup>
-       <optgroup label="🇵🇹 Portugal">
-        <option value="LIS">LIS — Lisbonne</option>
-       </optgroup>
-       <optgroup label="🇲🇦 Maroc">
-        <option value="CMN">CMN — Casablanca Mohammed V</option>
-        <option value="RAK">RAK — Marrakech Ménara</option>
-        <option value="TNG">TNG — Tanger Ibn Batouta</option>
-       </optgroup>
-       <optgroup label="🇨🇮 Côte d'Ivoire">
-        <option value="ABJ">ABJ — Abidjan Félix Houphouët-Boigny</option>
-       </optgroup>
-       <optgroup label="🇸🇳 Sénégal">
-        <option value="DSS">DSS — Dakar Blaise Diagne</option>
-       </optgroup>
-       <optgroup label="🇧🇫 Burkina Faso">
-        <option value="OUA">OUA — Ouagadougou</option>
-       </optgroup>
-       <optgroup label="🇲🇱 Mali">
-        <option value="BKO">BKO — Bamako Sénou</option>
-       </optgroup>
-       <optgroup label="🇬🇳 Guinée">
-        <option value="CKY">CKY — Conakry</option>
-       </optgroup>
-       <optgroup label="🇹🇬 Togo">
-        <option value="LFW">LFW — Lomé Gnassingbé Eyadéma</option>
-       </optgroup>
-       <optgroup label="🇧🇯 Bénin">
-        <option value="COO">COO — Cotonou Cadjehoun</option>
-       </optgroup>
-       <optgroup label="🇨🇲 Cameroun">
-        <option value="DLA">DLA — Douala</option>
-        <option value="NSI">NSI — Yaoundé Nsimalen</option>
-       </optgroup>
-       <optgroup label="🇬🇦 Gabon">
-        <option value="LBV">LBV — Libreville</option>
-       </optgroup>
-       <optgroup label="🇨🇬 Congo">
-        <option value="BZV">BZV — Brazzaville Maya-Maya</option>
-       </optgroup>
-       <optgroup label="🇨🇩 RDC">
-        <option value="FIH">FIH — Kinshasa N'Djili</option>
-       </optgroup>
-       <optgroup label="🇪🇹 Ethiopie">
-        <option value="ADD">ADD — Addis Abeba Bole</option>
-       </optgroup>
-       <optgroup label="🇰🇪 Kenya">
-        <option value="NBO">NBO — Nairobi Jomo Kenyatta</option>
-       </optgroup>
-       <optgroup label="🇿🇦 Afrique du Sud">
-        <option value="JNB">JNB — Johannesburg O.R. Tambo</option>
-       </optgroup>
-       <optgroup label="🇦🇪 Émirats Arabes Unis">
-        <option value="DXB">DXB — Dubai International</option>
-        <option value="AUH">AUH — Abu Dhabi</option>
-       </optgroup>
-       <optgroup label="🇺🇸 États-Unis">
-        <option value="JFK">JFK — New York John F. Kennedy</option>
-        <option value="LAX">LAX — Los Angeles</option>
-        <option value="ORD">ORD — Chicago O'Hare</option>
-       </optgroup>
-       <optgroup label="🇨🇦 Canada">
-        <option value="YUL">YUL — Montréal Pierre-Elliott-Trudeau</option>
-        <option value="YYZ">YYZ — Toronto Pearson</option>
-       </optgroup>
+      <select id="farr" onchange="calcChk();autoCalc()" style="font-size:13px">
+       <option value="">-- Sélectionnez --</option>
+       <optgroup label="🇫🇷 France"><option value="CDG">CDG — Paris Charles de Gaulle</option><option value="ORY">ORY — Paris Orly</option><option value="NCE">NCE — Nice Côte d'Azur</option><option value="LYS">LYS — Lyon Saint-Exupéry</option><option value="MRS">MRS — Marseille Provence</option><option value="TLS">TLS — Toulouse Blagnac</option><option value="BOD">BOD — Bordeaux Mérignac</option></optgroup>
+       <optgroup label="🇩🇪 Allemagne"><option value="FRA">FRA — Frankfurt</option><option value="MUC">MUC — Munich</option><option value="DUS">DUS — Düsseldorf</option><option value="BER">BER — Berlin Brandenburg</option><option value="STR">STR — Stuttgart</option><option value="BSL">BSL — Basel-Mulhouse</option></optgroup>
+       <optgroup label="🇧🇪🇳🇱 Benelux"><option value="BRU">BRU — Bruxelles</option><option value="AMS">AMS — Amsterdam Schiphol</option></optgroup>
+       <optgroup label="🇬🇧 UK"><option value="LHR">LHR — London Heathrow</option><option value="LGW">LGW — London Gatwick</option><option value="STN">STN — London Stansted</option></optgroup>
+       <optgroup label="🇨🇭🇦🇹 Suisse/Autriche"><option value="ZRH">ZRH — Zürich</option><option value="GVA">GVA — Genève</option><option value="VIE">VIE — Vienne</option></optgroup>
+       <optgroup label="🇪🇸🇵🇹 Ibérie"><option value="MAD">MAD — Madrid</option><option value="BCN">BCN — Barcelona</option><option value="LIS">LIS — Lisbonne</option></optgroup>
+       <optgroup label="🇮🇹 Italie"><option value="FCO">FCO — Rome Fiumicino</option><option value="MXP">MXP — Milan Malpensa</option></optgroup>
+       <optgroup label="🇲🇦🇩🇿🇹🇳 Maghreb"><option value="CMN">CMN — Casablanca</option><option value="RAK">RAK — Marrakech</option><option value="ALG">ALG — Alger</option><option value="TUN">TUN — Tunis</option></optgroup>
+       <optgroup label="🇨🇮 Côte d'Ivoire"><option value="ABJ">ABJ — Abidjan</option></optgroup>
+       <optgroup label="🇸🇳🇲🇱🇧🇫 Afrique Ouest"><option value="DSS">DSS — Dakar</option><option value="BKO">BKO — Bamako</option><option value="OUA">OUA — Ouagadougou</option><option value="LFW">LFW — Lomé</option><option value="COO">COO — Cotonou</option><option value="CKY">CKY — Conakry</option></optgroup>
+       <optgroup label="🇨🇲🇬🇦🇨🇬 Afrique Centrale"><option value="DLA">DLA — Douala</option><option value="LBV">LBV — Libreville</option><option value="BZV">BZV — Brazzaville</option></optgroup>
+       <optgroup label="🇪🇹🇰🇪🇿🇦 Afrique Est/Sud"><option value="ADD">ADD — Addis Abeba</option><option value="NBO">NBO — Nairobi</option><option value="JNB">JNB — Johannesburg</option></optgroup>
+       <optgroup label="🇦🇪🇶🇦🇹🇷 Moyen-Orient"><option value="DXB">DXB — Dubai</option><option value="DOH">DOH — Doha</option><option value="IST">IST — Istanbul</option></optgroup>
+       <optgroup label="🇺🇸🇨🇦 Amérique Nord"><option value="JFK">JFK — New York</option><option value="LAX">LAX — Los Angeles</option><option value="YUL">YUL — Montréal</option></optgroup>
+       <optgroup label="🇧🇷🇨🇴 Amérique Sud"><option value="GRU">GRU — São Paulo</option><option value="BOG">BOG — Bogotá</option></optgroup>
+       <optgroup label="🇨🇳🇯🇵🇸🇬 Asie"><option value="PEK">PEK — Pékin</option><option value="TYO">TYO — Tokyo</option><option value="SIN">SIN — Singapour</option></optgroup>
       </select>
      </div>
+    </div>
+
+    <!-- PREVIEW AUTOMATIQUE distance + règlement -->
+    <div id="autoPreview" style="display:none;background:var(--gl);border:1.5px solid var(--green);border-radius:10px;padding:14px;margin:10px 0;font-size:13px">
+     <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <div><span style="color:var(--gt)">Distance estimée</span><br><strong id="prevDist" style="color:var(--gd);font-size:16px"></strong></div>
+      <div><span style="color:var(--gt)">Règlement applicable</span><br><strong id="prevReg" style="color:var(--gd)"></strong></div>
+      <div><span style="color:var(--gt)">Catégorie</span><br><strong id="prevCat" style="color:var(--gd)"></strong></div>
+     </div>
+    </div>
+
+    <div class="fg">
+     <label>Compagnie aérienne</label>
+     <select id="fcomp" onchange="autoCalc()" style="font-size:13px">
+      <option value="">-- Sélectionnez --</option>
+      <optgroup label="🇫🇷 France"><option value="AF;EU">Air France</option><option value="SS;EU">Corsair</option><option value="TO;EU">Transavia France</option></optgroup>
+      <optgroup label="🇩🇪 Allemagne"><option value="LH;EU">Lufthansa</option><option value="EW;EU">Eurowings</option><option value="DE;EU">Condor</option></optgroup>
+      <optgroup label="Europe"><option value="KL;EU">KLM</option><option value="SN;EU">Brussels Airlines</option><option value="LX;EU">Swiss</option><option value="OS;EU">Austrian Airlines</option><option value="IB;EU">Iberia</option><option value="TP;EU">TAP Air Portugal</option><option value="FR;EU">Ryanair</option><option value="U2;EU">easyJet</option><option value="VY;EU">Vueling</option></optgroup>
+      <optgroup label="🌍 Afrique"><option value="HF;AF">Air Côte d'Ivoire</option><option value="HC;AF">Air Sénégal</option><option value="2J;AF">Air Burkina</option><option value="ET;AF">Ethiopian Airlines</option><option value="KQ;AF">Kenya Airways</option><option value="AT;AF">Royal Air Maroc</option><option value="TU;AF">Tunisair</option><option value="AH;AF">Air Algérie</option></optgroup>
+      <optgroup label="🌐 Monde"><option value="EK;INT">Emirates</option><option value="QR;INT">Qatar Airways</option><option value="TK;INT">Turkish Airlines</option><option value="DL;INT">Delta Air Lines</option><option value="AA;INT">American Airlines</option><option value="AC;INT">Air Canada</option></optgroup>
+     </select>
     </div>
     <div class="fr2">
-     <div class="fg">
-      <label>Compagnie aérienne</label>
-      <select id="fcomp" style="font-size:13px">
-       <option value="">-- Sélectionnez --</option>
-       <optgroup label="🇫🇷 France">
-        <option>Air France</option>
-        <option>Corsair</option>
-        <option>Transavia France</option>
-        <option>Vueling</option>
-       </optgroup>
-       <optgroup label="🇩🇪 Allemagne">
-        <option>Lufthansa</option>
-        <option>Condor</option>
-        <option>Eurowings</option>
-       </optgroup>
-       <optgroup label="Europe">
-        <option>KLM</option>
-        <option>Brussels Airlines</option>
-        <option>Swiss</option>
-        <option>Austrian Airlines</option>
-        <option>Iberia</option>
-        <option>Alitalia / ITA Airways</option>
-        <option>TAP Air Portugal</option>
-        <option>Ryanair</option>
-        <option>easyJet</option>
-        <option>Wizz Air</option>
-        <option>Volotea</option>
-       </optgroup>
-       <optgroup label="🌍 Afrique">
-        <option>Air Côte d'Ivoire</option>
-        <option>Air Sénégal</option>
-        <option>Air Burkina</option>
-        <option>Air Mali</option>
-        <option>Ethiopian Airlines</option>
-        <option>Kenya Airways</option>
-        <option>Royal Air Maroc</option>
-        <option>Tunisair</option>
-        <option>Air Algérie</option>
-        <option>South African Airways</option>
-        <option>Africa World Airlines</option>
-       </optgroup>
-       <optgroup label="🌐 Monde">
-        <option>Emirates</option>
-        <option>Qatar Airways</option>
-        <option>Turkish Airlines</option>
-        <option>Delta Air Lines</option>
-        <option>American Airlines</option>
-        <option>United Airlines</option>
-        <option>Air Canada</option>
-        <option>Singapore Airlines</option>
-        <option>British Airways</option>
-       </optgroup>
+     <div class="fg"><label>Nb. passagers</label><input id="fpax" type="number" min="1" value="1" oninput="autoCalc()"></div>
+     <div class="fg"><label>Durée du retard (si retard)</label>
+      <select id="fduree" onchange="autoCalc()">
+       <option value="Moins de 3h">⚠️ Moins de 3 heures</option>
+       <option value="Entre 3h et 4h">Entre 3h et 4h</option>
+       <option value="Entre 4h et 6h" selected>Entre 4h et 6h</option>
+       <option value="Plus de 6h">Plus de 6h</option>
+       <option value="Annulé">Vol annulé / Surbooking</option>
       </select>
      </div>
-     <div class="fg"><label>Nombre de passagers</label><input id="fpax" type="number" min="1" value="1"></div>
     </div>
-    <div style="background:#EAF3DE;border-radius:8px;padding:10px 14px;font-size:12px;color:#1B7A3E;margin-bottom:10px;display:flex;align-items:center;gap:8px">
-     <i class="fa-solid fa-magnifying-glass"></i>
-     <span>Vérifiez d'abord votre vol sur <a href="https://fr.flightaware.com" target="_blank" style="color:#145C2F;font-weight:700;text-decoration:underline">FlightAware</a> ou <a href="https://www.flightradar24.com" target="_blank" style="color:#145C2F;font-weight:700;text-decoration:underline">FlightRadar24</a> pour noter le numéro exact.</span>
-    </div>
-    <div class="cnav"><button class="bkb" onclick="goC(0)"><i class="fa-solid fa-arrow-left"></i> Retour</button><button class="nxb" id="cn1" disabled onclick="goC(2);checkFlight()">Suivant → Vérification temps réel</button></div>
+    <div class="cnav"><button class="bkb" onclick="goC(0)"><i class="fa-solid fa-arrow-left"></i> Retour</button><button class="nxb" id="cn1" disabled onclick="goC(2);showResAuto()">Voir mon résultat <i class="fa-solid fa-arrow-right"></i></button></div>
    </div>
 
-   <!-- STEP 2 : vérification temps réel -->
+   <!-- STEP 2 : résultat automatique -->
    <div class="sp" id="cp2">
-    <p style="font-size:13px;color:#666;margin-bottom:12px">Vérification du vol en temps réel</p>
-    <div class="vc-box" id="vcBox">
-     <div class="vc-status vc-loading"><span class="spinner"></span> Interrogation de la base de données des vols...</div>
-     <div class="vc-detail" id="vcDetail"></div>
-    </div>
-    <div id="vcExtra"></div>
-    <div class="cnav"><button class="bkb" onclick="goC(1)"><i class="fa-solid fa-arrow-left"></i> Retour</button><button class="nxb" onclick="goC(3)">Continuer <i class="fa-solid fa-arrow-right"></i></button></div>
-   </div>
-
-   <!-- STEP 3 : distance -->
-   <div class="sp" id="cp3">
-    <p style="font-size:13px;color:#666;margin-bottom:12px">Distance du vol</p>
-    <div class="opts" style="grid-template-columns:1fr">
-     <button class="opt" onclick="pick(this,'dist','c')"><i class="fa-solid fa-plane"></i><strong>Court-courrier — moins de 1 500 km</strong><span class="sub">Paris→Lyon, Bruxelles, Casablanca, Barcelone</span></button>
-     <button class="opt" onclick="pick(this,'dist','m')"><i class="fa-solid fa-plane-departure"></i><strong>Moyen-courrier — 1 500 à 3 500 km</strong><span class="sub">Paris→Abidjan, Dakar, Istanbul, Le Caire</span></button>
-     <button class="opt" onclick="pick(this,'dist','l')"><i class="fa-solid fa-earth-africa"></i><strong>Long-courrier — plus de 3 500 km</strong><span class="sub">Paris→New York, Dubaï, Tokyo, São Paulo</span></button>
-    </div>
-    <div class="cnav"><button class="bkb" onclick="goC(2)"><i class="fa-solid fa-arrow-left"></i> Retour</button><button class="nxb" id="cn3" disabled onclick="goC(4)">Suivant <i class="fa-solid fa-arrow-right"></i></button></div>
-   </div>
-
-   <!-- STEP 4 : éligibilité -->
-   <div class="sp" id="cp4">
-    <p style="font-size:13px;color:#666;margin-bottom:12px">Votre vol est-il couvert par un règlement de protection ?</p>
-    <div class="opts" style="grid-template-columns:1fr">
-     <button class="opt" onclick="pick(this,'elig','eu_dep')"><i class="fa-solid fa-map-pin"></i><strong>Départ depuis l'UE / Norvège / Islande / Suisse</strong><span class="sub">Toute compagnie — règlement CE 261/2004</span></button>
-     <button class="opt" onclick="pick(this,'elig','eu_comp')"><i class="fa-solid fa-building"></i><strong>Compagnie européenne, départ hors UE</strong><span class="sub">Air France, Lufthansa, KLM, Corsair, Brussels…</span></button>
-     <button class="opt" onclick="pick(this,'elig','uemoa')"><i class="fa-solid fa-earth-africa"></i><strong>Vol Afrique de l'Ouest — UEMOA</strong><span class="sub">Règlement N°03/2003/CM/UEMOA · jusqu'à 1 219 €</span></button>
-     <button class="opt" onclick="pick(this,'elig','non')"><i class="fa-solid fa-xmark"></i><strong>Aucune de ces situations</strong><span class="sub">Hors UE, compagnie non-européenne, hors UEMOA</span></button>
-    </div>
-    <div class="cnav"><button class="bkb" onclick="goC(3)"><i class="fa-solid fa-arrow-left"></i> Retour</button><button class="nxb" id="cn4" disabled onclick="goC(5);showRes()">Voir mon résultat <i class="fa-solid fa-arrow-right"></i></button></div>
-   </div>
-
-   <!-- STEP 5 : résultat -->
-   <div class="sp" id="cp5">
     <div id="rz"></div>
-    <button class="bkb" onclick="resetC()" style="display:block;margin-top:10px"><i class="fa-solid fa-rotate-left"></i> Nouvelle simulation</button>
+    <button class="bkb" onclick="goC(0);resetC()" style="display:block;margin-top:10px"><i class="fa-solid fa-rotate-left"></i> Nouvelle simulation</button>
    </div>
   </div>
+ </div>
  </div>
 
  <!-- STATS -->
@@ -735,9 +542,9 @@ footer ul li a:hover{color:var(--acc)}
 
  <!-- IMAGES -->
  <div class="iband" style="margin-top:0">
-  <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&q=80&fit=crop&crop=face" alt="Professionnelle africaine">
+  <img src="https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=600&q=80&fit=crop" alt="Terminal aéroport">
   <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80&fit=crop" alt="Avion en vol">
-  <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80&fit=crop" alt="Equipe professionnelle">
+  <img src="https://images.unsplash.com/photo-1488085061387-422e29b40080?w=600&q=80&fit=crop" alt="Voyageur aéroport">
  </div>
 
  <!-- COMMENT -->
@@ -865,6 +672,34 @@ footer ul li a:hover{color:var(--acc)}
       </div>
       <div class="fg"><label>Adresse postale</label><input name="adresse" type="text" placeholder="Rue, ville, pays"></div>
 
+      <div class="fsl">Cette réclamation concerne</div>
+      <div class="fg" style="margin-bottom:10px">
+       <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:8px;background:var(--gb);border:1.5px solid var(--bdr);border-radius:8px;padding:10px 16px;cursor:pointer;font-size:13px;flex:1">
+         <input type="radio" name="pour_qui" value="moi-meme" required onchange="togglePassager(this)"> <i class="fa-solid fa-user" style="color:var(--green)"></i> Moi-même
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;background:var(--gb);border:1.5px solid var(--bdr);border-radius:8px;padding:10px 16px;cursor:pointer;font-size:13px;flex:1">
+         <input type="radio" name="pour_qui" value="autre-personne" onchange="togglePassager(this)"> <i class="fa-solid fa-user-plus" style="color:var(--green)"></i> Une autre personne
+        </label>
+       </div>
+      </div>
+      <div id="autrePassagerFields" style="display:none;background:var(--gl);border-radius:8px;padding:14px;margin-bottom:10px">
+       <p style="font-size:12px;color:var(--gd);font-weight:600;margin-bottom:8px"><i class="fa-solid fa-circle-info"></i> Coordonnées du passager concerné</p>
+       <div class="fr2">
+        <div class="fg"><label>Prénom du passager</label><input name="passager_prenom" type="text" placeholder="Prénom du passager"></div>
+        <div class="fg"><label>Nom du passager</label><input name="passager_nom" type="text" placeholder="Nom du passager"></div>
+       </div>
+       <div class="fg"><label>Votre lien avec ce passager</label>
+        <select name="lien_passager">
+         <option>Conjoint(e) / Partenaire</option>
+         <option>Enfant mineur (représentant légal)</option>
+         <option>Parent</option>
+         <option>Collègue / Employé(e)</option>
+         <option>Autre</option>
+        </select>
+       </div>
+      </div>
+
       <div class="fsl">Votre vol</div>
       <div class="fr2">
        <div class="fg"><label>Numéro de vol *</label><input name="vol_numero" type="text" placeholder="AF 703" required></div>
@@ -892,10 +727,11 @@ footer ul li a:hover{color:var(--acc)}
        </div>
        <div class="fg"><label>Durée du retard</label>
         <select name="duree_retard">
-         <option>Entre 3h et 4h</option>
-         <option>Entre 4h et 6h</option>
-         <option>Plus de 6h</option>
-         <option>Vol annulé / surbooking</option>
+         <option value="Moins de 3h">⚠️ Moins de 3 heures</option>
+         <option value="Entre 3h et 4h">Entre 3h et 4h</option>
+         <option value="Entre 4h et 6h">Entre 4h et 6h</option>
+         <option value="Plus de 6h">Plus de 6h</option>
+         <option value="Annulé / surbooking">Vol annulé / surbooking</option>
         </select>
        </div>
       </div>
@@ -922,6 +758,10 @@ footer ul li a:hover{color:var(--acc)}
       <!-- Champ caché pour transmettre la signature -->
       <input type="hidden" name="signature" id="sigData" value="non fournie">
 
+      <div class="cbr" style="background:#EAF3DE;border-radius:8px;padding:10px;border:1px solid var(--green)">
+       <input type="checkbox" id="cg0" required>
+       <label for="cg0" style="color:var(--gd);font-weight:600"><i class="fa-solid fa-shield-halved" style="margin-right:4px"></i> Je certifie être <strong>majeur(e) (18 ans ou plus)</strong>, ou agir en qualité de <strong>représentant légal</strong> d'un passager mineur, et avoir qualité pour déposer cette réclamation.</label>
+      </div>
       <div class="cbr"><input type="checkbox" id="cg1" required><label for="cg1">Je mandate SOS PASSAGER pour gérer ma réclamation et j'accepte les conditions de commission (20–30% + TVA en cas de succès uniquement).</label></div>
       <div class="cbr"><input type="checkbox" id="cg2" required><label for="cg2">J'accepte les conditions générales et la politique de confidentialité de SOS PASSAGER.</label></div>
 
@@ -1309,337 +1149,210 @@ function setTab(id){
 }
 
 /* ─── CALCULATEUR ─── */
-const S={inc:null,dist:null,elig:null};
-function pick(b,f,v){
-  b.closest('.opts').querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
-  b.classList.add('sel');S[f]=v;
-  const m={inc:'cn0',dist:'cn3',elig:'cn4'};
-  if(m[f])document.getElementById(m[f]).disabled=false;
-}
-function goC(n){
-  document.querySelectorAll('[id^=cp]').forEach(p=>{if(/^cp\d$/.test(p.id))p.classList.remove('active')});
-  document.getElementById('cp'+n).classList.add('active');
-  for(let i=0;i<6;i++){
-    const t=document.getElementById('ct'+i);
-    if(t)t.className='ctab'+(i<n?' done':i===n?' active':'');
-  }
-}
-function chk1(){
-  const ok=document.getElementById('fn').value&&document.getElementById('fd').value&&document.getElementById('fdep').value&&document.getElementById('farr').value;
-  document.getElementById('cn1').disabled=!ok;
-}
+/* ══════════════════════════════════════
+   DONNÉES AÉROPORTS & CALCUL INTELLIGENT
+══════════════════════════════════════ */
+const EU_AIRPORTS = new Set(['CDG','ORY','NCE','LYS','MRS','TLS','BOD','NTE',
+  'FRA','MUC','DUS','BER','HAM','STR','BSL','CGN','NUE',
+  'BRU','AMS','LHR','LGW','STN','MAN','EDI','ZRH','GVA','VIE','PRG','WAW',
+  'MAD','BCN','VLC','AGP','FCO','MXP','LIN','VCE','LIS','OPO','ATH','HEL',
+  'ARN','OSL','CPH','DUB','RIX','VNO','TLL','BTS','BUD','OTP','SOF','ZAG']);
 
-/* ─── VÉRIFICATION VOL TEMPS RÉEL (AviationStack open-source) ─── */
-function checkFlight(){
-  const fn=document.getElementById('fn').value.replace(/\s/g,'');
-  const fd=document.getElementById('fd').value;
-  const box=document.getElementById('vcBox');
-  const detail=document.getElementById('vcDetail');
-  const extra=document.getElementById('vcExtra');
+const EU_COMPANIES = new Set(['AF','SS','TO','U2','LH','EW','DE','KL','SN','LX',
+  'OS','IB','TP','FR','VY','AZ','SK','AY','BA','BE','BT','EI','HV','LO',
+  'OK','OV','PC','PS','RO','VU','W6','WZ','FB']);
 
-  box.innerHTML='<div class="vc-status vc-loading"><span class="spinner"></span> Interrogation base de données vols...</div>';
-  detail.innerHTML='';extra.innerHTML='';
+const UEMOA_AIRPORTS = new Set(['ABJ','DSS','BKO','OUA','LFW','COO','OXB','NIM','CKY']);
 
-  // AviationStack free tier (pas de clé requise pour la démo)
-  // En production: remplacer YOUR_KEY par une vraie clé AviationStack (gratuite sur aviationstack.com)
-  const API_KEY='YOUR_AVIATIONSTACK_KEY'; // Remplacer par votre clé gratuite
-  const url=`http://api.aviationstack.com/v1/flights?access_key=${API_KEY}&flight_iata=${fn}&flight_date=${fd}`;
-
-  // SIMULATION pour la démo (supprimez ce bloc en production et décommentez le fetch ci-dessous)
-  setTimeout(()=>{
-    const scenarios=[
-      {status:'delayed',delay:187,dep:'CDG',arr:'ABJ',airline:'Air France',flight:fn||'AF703'},
-      {status:'cancelled',dep:'CDG',arr:'ABJ',airline:'Air France',flight:fn||'AF703'},
-      {status:'landed',delay:0,dep:'CDG',arr:'ABJ',airline:'Air France',flight:fn||'AF703'},
-    ];
-    // Choisir le scénario selon la 1ère lettre du numéro de vol
-    const first=(fn||'AF703').charCodeAt(0)%3;
-    const sc=scenarios[first];
-    renderFlightStatus(sc,box,detail,extra);
-  },2200);
-
-  /* EN PRODUCTION — décommenter ceci et supprimer le setTimeout ci-dessus:
-  fetch(url)
-    .then(r=>r.json())
-    .then(data=>{
-      if(data.data&&data.data.length>0){
-        const f=data.data[0];
-        const sc={
-          status:f.flight_status,
-          delay:f.arrival&&f.arrival.delay?f.arrival.delay:0,
-          dep:f.departure&&f.departure.iata,
-          arr:f.arrival&&f.arrival.iata,
-          airline:f.airline&&f.airline.name,
-          flight:f.flight&&f.flight.iata
-        };
-        renderFlightStatus(sc,box,detail,extra);
-      } else {
-        box.innerHTML='<div class="vc-status" style="color:#555"><i class="fa-solid fa-circle-question" style="margin-right:6px"></i>Vol non trouvé dans la base de données</div>';
-        detail.innerHTML='<p style="font-size:12px;color:#888">Vérifiez le numéro de vol ou la date. Vous pouvez continuer manuellement.</p>';
-      }
-    })
-    .catch(()=>{
-      box.innerHTML='<div class="vc-status" style="color:#555"><i class="fa-solid fa-wifi" style="margin-right:6px"></i>Connexion API indisponible — continuation manuelle</div>';
-    });
-  */
-}
-
-function renderFlightStatus(sc,box,detail,extra){
-  let html='',cls='',icon='',badge='';
-  if(sc.status==='delayed'){
-    const h=Math.floor(sc.delay/60);const m=sc.delay%60;
-    cls='vc-delay';icon='fa-clock';badge='<span class="vc-badge badge-orange">RETARDÉ</span>';
-    html=`<div class="vc-status ${cls}"><i class="fa-solid ${icon}" style="margin-right:8px"></i>Vol <strong>${sc.flight}</strong> — RETARDÉ${badge}</div>`;
-    detail.innerHTML=`<div class="vc-detail">Retard constaté : <strong>${h}h${m>0?m+'min':''}</strong> (${sc.delay} minutes)<br>Trajet : ${sc.dep||'—'} → ${sc.arr||'—'} · Compagnie : ${sc.airline||'—'}<br><strong style="color:var(--green)">✅ Éligible à indemnisation CE 261/2004</strong></div>`;
-    extra.innerHTML=`<div class="inote"><i class="fa-solid fa-circle-info" style="flex-shrink:0"></i><span>Retard ≥ 3h confirmé. Poursuivez pour calculer votre indemnisation.</span></div>`;
-  } else if(sc.status==='cancelled'){
-    cls='vc-cancel';icon='fa-ban';badge='<span class="vc-badge badge-red">ANNULÉ</span>';
-    html=`<div class="vc-status ${cls}"><i class="fa-solid ${icon}" style="margin-right:8px"></i>Vol <strong>${sc.flight}</strong> — ANNULÉ${badge}</div>`;
-    detail.innerHTML=`<div class="vc-detail">Vol annulé par la compagnie<br>Trajet : ${sc.dep||'—'} → ${sc.arr||'—'} · Compagnie : ${sc.airline||'—'}<br><strong style="color:var(--green)">✅ Éligible à indemnisation + remboursement</strong></div>`;
-    extra.innerHTML=`<div class="inote"><i class="fa-solid fa-circle-info" style="flex-shrink:0"></i><span>Vol annulé confirmé. Vous avez droit à remboursement intégral ET indemnisation.</span></div>`;
-  } else {
-    cls='vc-ok';icon='fa-circle-check';badge='<span class="vc-badge badge-green">À L\'HEURE</span>';
-    html=`<div class="vc-status ${cls}"><i class="fa-solid ${icon}" style="margin-right:8px"></i>Vol <strong>${sc.flight}</strong> — À L'HEURE${badge}</div>`;
-    detail.innerHTML=`<div class="vc-detail">Aucun retard significatif détecté (< 3h)<br>Trajet : ${sc.dep||'—'} → ${sc.arr||'—'} · Compagnie : ${sc.airline||'—'}<br><span style="color:#888">Indemnisation CE 261 non applicable dans ce cas.</span></div>`;
-  }
-  box.innerHTML=html;
-}
-
-function showRes(){
-  const z=document.getElementById('rz');
-  const a={c:250,m:400,l:600};
-  const il={retard:'Vol retardé',annul:'Vol annulé',surb:'Surbooking',corr:'Correspondance manquée'};
-  const dl={c:'< 1 500 km',m:'1 500–3 500 km',l:'> 3 500 km'};
-  if(S.elig==='non'){
-    z.innerHTML=`<div class="rno"><i class="fa-solid fa-circle-xmark" style="font-size:34px;color:#C62828;display:block;margin-bottom:10px"></i><strong style="font-size:14px;color:#C62828">Non éligible</strong><p style="font-size:13px;color:#666;margin-top:7px">Votre vol ne semble pas couvert. Contactez-nous pour analyse personnalisée.</p><button class="ctabtn" style="max-width:260px;margin:12px auto 0" onclick="showPage('contact')">Nous contacter</button></div>`;
-    return;
-  }
-  if(S.elig==='uemoa'){
-    z.innerHTML=`<div class="rok"><div style="font-size:12px;font-weight:700;color:var(--gd);margin-bottom:7px">✅ Éligible — Règlement UEMOA</div><div class="big">1 219 €</div><div class="per">maximum par passager · UEMOA N°03/2003</div></div><button class="ctabtn" onclick="showPage('reclamer')">✈ Déposer ma réclamation — Gratuit</button>`;
-    return;
-  }
-  const base=a[S.dist]||250;
-  const pax=Math.max(1,parseInt(document.getElementById('fpax').value)||1);
-  const tot=base*pax;
-  z.innerHTML=`<div class="rok"><div style="font-size:12px;font-weight:700;color:var(--gd);margin-bottom:7px">✅ Vous êtes éligible !</div><div class="big">${base} €</div><div class="per">par passager · CE 261/2004${pax>1?' · Total : '+tot.toLocaleString('fr-FR')+' € pour '+pax+' passagers':''}</div></div><div class="dets"><div class="det"><span>Incident</span>${il[S.inc]||'—'}</div><div class="det"><span>Distance</span>${dl[S.dist]||'—'}</div><div class="det"><span>Vol</span>${document.getElementById('fn').value||'—'}</div><div class="det"><span>Trajet</span>${document.getElementById('fdep').value||'—'} → ${document.getElementById('farr').value||'—'}</div></div><div class="inote"><i class="fa-solid fa-circle-info" style="flex-shrink:0"></i><span>5 ans pour réclamer · Sans succès, zéro frais</span></div><button class="ctabtn" onclick="showPage('reclamer')"><i class="fa-solid fa-paper-plane"></i> Déposer ma réclamation — Gratuit</button>`;
-}
-function resetC(){
-  S.inc=null;S.dist=null;S.elig=null;
-  document.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
-  ['cn0','cn3','cn4'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=true});
-  goC(0);
-}
-
-/* ─── SIGNATURE CANVAS ─── */
-let isDrawing=false,sigCtx,lastX=0,lastY=0,hasSig=false;
-function initSig(){
-  const cv=document.getElementById('sigCanvas');if(!cv)return;
-  sigCtx=cv.getContext('2d');
-  sigCtx.strokeStyle='#1B7A3E';sigCtx.lineWidth=2;sigCtx.lineCap='round';
-  cv.addEventListener('mousedown',e=>{isDrawing=true;[lastX,lastY]=pos(e,cv)});
-  cv.addEventListener('mousemove',e=>{if(!isDrawing)return;draw(e,cv)});
-  cv.addEventListener('mouseup',()=>{isDrawing=false;hasSig=true});
-  cv.addEventListener('touchstart',e=>{e.preventDefault();isDrawing=true;[lastX,lastY]=posT(e,cv)},{passive:false});
-  cv.addEventListener('touchmove',e=>{e.preventDefault();if(!isDrawing)return;drawT(e,cv)},{passive:false});
-  cv.addEventListener('touchend',()=>{isDrawing=false;hasSig=true});
-}
-function pos(e,cv){const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]}
-function posT(e,cv){const r=cv.getBoundingClientRect();const t=e.touches[0];return[t.clientX-r.left,t.clientY-r.top]}
-function draw(e,cv){const[x,y]=pos(e,cv);sigCtx.beginPath();sigCtx.moveTo(lastX,lastY);sigCtx.lineTo(x,y);sigCtx.stroke();[lastX,lastY]=[x,y]}
-function drawT(e,cv){const[x,y]=posT(e,cv);sigCtx.beginPath();sigCtx.moveTo(lastX,lastY);sigCtx.lineTo(x,y);sigCtx.stroke();[lastX,lastY]=[x,y]}
-function clearSig(){const cv=document.getElementById('sigCanvas');if(sigCtx)sigCtx.clearRect(0,0,cv.width,cv.height);hasSig=false}
-
-/* ─── BARÈME DISTANCES AÉROPORTS (km) ─── */
-const DISTANCES={
-  'CDG-ABJ':4908,'ABJ-CDG':4908,'CDG-DSS':4206,'DSS-CDG':4206,
-  'CDG-OUA':4256,'OUA-CDG':4256,'CDG-BKO':4457,'BKO-CDG':4457,
-  'CDG-LFW':4885,'LFW-CDG':4885,'CDG-COO':4974,'COO-CDG':4974,
-  'CDG-CKY':4558,'CKY-CDG':4558,'CDG-DLA':5089,'DLA-CDG':5089,
-  'CDG-LBV':5432,'LBV-CDG':5432,'CDG-BZV':5513,'BZV-CDG':5513,
-  'CDG-FIH':6270,'FIH-CDG':6270,'CDG-ADD':6185,'ADD-CDG':6185,
-  'CDG-NBO':6340,'NBO-CDG':6340,'CDG-JNB':9071,'JNB-CDG':9071,
-  'CDG-DXB':5253,'DXB-CDG':5253,'CDG-JFK':5837,'JFK-CDG':5837,
-  'CDG-LAX':9124,'LAX-CDG':9124,'CDG-YUL':5536,'YUL-CDG':5536,
-  'CDG-BRU':267,'BRU-CDG':267,'CDG-AMS':430,'AMS-CDG':430,
-  'CDG-LHR':344,'LHR-CDG':344,'CDG-FRA':450,'FRA-CDG':450,
-  'CDG-MAD':1054,'MAD-CDG':1054,'CDG-BCN':1037,'BCN-CDG':1037,
-  'CDG-FCO':1105,'FCO-CDG':1105,'CDG-LIS':1452,'LIS-CDG':1452,
-  'CDG-CMN':2090,'CMN-CDG':2090,'CDG-ZRH':491,'ZRH-CDG':491,
-  'FRA-ABJ':5117,'ABJ-FRA':5117,'FRA-DSS':4432,'DSS-FRA':4432,
-  'AMS-ABJ':5135,'ABJ-AMS':5135,'BRU-ABJ':5002,'ABJ-BRU':5002,
-  'LHR-ABJ':5067,'ABJ-LHR':5067,'ABJ-DSS':670,'DSS-ABJ':670,
-  'ABJ-OUA':690,'OUA-ABJ':690,'ABJ-BKO':750,'BKO-ABJ':750,
-  'ABJ-LFW':340,'LFW-ABJ':340,'ABJ-COO':420,'COO-ABJ':420,
+const COORDS = {
+  CDG:[49.009,2.547],ORY:[48.723,2.379],NCE:[43.665,7.215],LYS:[45.726,5.090],
+  MRS:[43.439,5.221],TLS:[43.629,1.363],BOD:[44.828,-0.715],NTE:[47.153,-1.611],
+  FRA:[50.033,8.570],MUC:[48.354,11.786],DUS:[51.289,6.767],BER:[52.367,13.503],
+  STR:[48.690,9.222],BSL:[47.590,7.529],BRU:[50.901,4.484],AMS:[52.308,4.764],
+  LHR:[51.477,-0.461],LGW:[51.157,-0.182],STN:[51.885,0.235],
+  ZRH:[47.458,8.548],GVA:[46.238,6.109],VIE:[48.110,16.570],
+  MAD:[40.472,-3.561],BCN:[41.297,2.078],LIS:[38.774,-9.134],
+  FCO:[41.804,12.251],MXP:[45.630,8.728],
+  CMN:[33.368,-7.590],RAK:[31.607,-8.036],ALG:[36.691,3.215],TUN:[36.851,10.227],
+  ABJ:[5.261,-3.926],DSS:[14.670,-17.073],BKO:[12.534,-7.950],
+  OUA:[12.353,-1.512],LFW:[6.165,1.254],COO:[6.357,2.384],CKY:[9.577,-13.612],
+  DLA:[4.006,9.719],LBV:[0.458,9.412],BZV:[-4.251,15.253],FIH:[-4.385,15.445],
+  ADD:[8.977,38.799],NBO:[-1.319,36.925],JNB:[-26.133,28.242],
+  DXB:[25.253,55.365],DOH:[25.261,51.565],IST:[40.976,28.815],
+  JFK:[40.640,-73.779],LAX:[33.943,-118.408],YUL:[45.470,-73.741],
+  GRU:[-23.432,-46.469],PEK:[40.080,116.585],TYO:[35.765,140.386],SIN:[1.359,103.989]
 };
 
-function getDistance(dep,arr){
-  const key=(dep+'-'+arr).toUpperCase();
-  return DISTANCES[key]||null;
+function haversine(dep,arr){
+  const c1=COORDS[dep],c2=COORDS[arr];
+  if(!c1||!c2) return null;
+  const R=6371,dLat=(c2[0]-c1[0])*Math.PI/180,dLon=(c2[1]-c1[1])*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(c1[0]*Math.PI/180)*Math.cos(c2[0]*Math.PI/180)*Math.sin(dLon/2)**2;
+  return Math.round(2*R*Math.asin(Math.sqrt(a)));
 }
 
-function calcIndemnisation(dep,arr,incident,duree,reglement){
-  const dist=getDistance(dep,arr);
-  let montant=0,label='',eligible=true,raison='';
-
-  if(reglement&&reglement.includes('UEMOA')){
-    // Barème UEMOA
-    if(!dist||dist<1500){montant=200;label='200 €'}
-    else if(dist<=3500){montant=400;label='400 €'}
-    else{montant=600;label='600 €'}
-    raison='Règlement UEMOA N°03/2003/CM/UEMOA';
-  } else {
-    // Barème CE 261/2004
-    if(!dist){
-      // Distance inconnue → estimation selon règle générale
-      montant=400;label='250€ à 600€';
-      raison='Distance non calculée — estimation à confirmer';
-    } else if(dist<=1500){
-      montant=250;label='250 €';
-    } else if(dist<=3500){
-      // Réduction possible si réacheminement avec < 3h de retard final
-      montant=400;label='400 €';
-    } else {
-      montant=600;label='600 €';
-    }
-    raison='Règlement CE 261/2004 du Parlement Européen';
-  }
-
-  // Vérifier type incident
-  if(incident&&incident.toLowerCase().includes('retard')){
-    if(duree&&duree.includes('3h et 4')){
-      // Retard 3-4h long courrier : réduction 50%
-      if(dist&&dist>3500){montant=300;label='300 € (réduit 50%)'}
-    }
-  }
-
-  return {eligible,montant,label,dist,raison};
+function detectReglement(dep,arr,compCode){
+  const isEUdep=EU_AIRPORTS.has(dep);
+  const isEUcomp=EU_COMPANIES.has(compCode);
+  const isUEMOA=UEMOA_AIRPORTS.has(dep)||UEMOA_AIRPORTS.has(arr);
+  if(isEUdep) return {reg:'CE 261/2004',why:`Départ depuis ${dep} — aéroport UE/EEE : toute compagnie est couverte`};
+  if(isEUcomp) return {reg:'CE 261/2004',why:`Compagnie européenne opérant depuis ${dep} — CE 261/2004 applicable`};
+  if(isUEMOA) return {reg:'UEMOA N°03/2003',why:`Vol en zone UEMOA (${dep}↔${arr}) — règlement africain applicable`};
+  return {reg:'NON_ELIGIBLE',why:`Départ hors UE (${dep}), compagnie non-européenne, hors UEMOA — aucun règlement applicable`};
 }
 
-/* ─── FORMSPREE SUBMIT ─── */
-function handleSubmit(e){
-  // Capturer la signature
-  const cv=document.getElementById('sigCanvas');
-  const sigDataEl=document.getElementById('sigData');
-  let sigDataURL='';
-  if(cv){sigDataURL=cv.toDataURL();if(sigDataEl)sigDataEl.value=sigDataURL;}
+function getMontant(dist,reg,inc,duree){
+  if(reg==='NON_ELIGIBLE') return {montant:0,label:'0 €',cat:'Non éligible'};
+  if(reg.includes('UEMOA')){
+    if(!dist||dist<1500) return {montant:200,label:'200 €',cat:'Court-courrier UEMOA'};
+    if(dist<=3500) return {montant:400,label:'400 €',cat:'Moyen-courrier UEMOA'};
+    return {montant:600,label:'600 €',cat:'Long-courrier UEMOA'};
+  }
+  if(duree&&duree.includes('Moins de 3')) return {montant:0,label:'0 €',cat:'Retard < 3h non indemnisable'};
+  if(!dist||dist<=1500) return {montant:250,label:'250 €',cat:'Court-courrier < 1 500 km'};
+  if(dist<=3500) return {montant:400,label:'400 €',cat:'Moyen-courrier 1 500-3 500 km'};
+  if(duree&&duree.includes('3h et 4')&&(inc==='retard'||inc==='corr'))
+    return {montant:300,label:'300 € *',cat:'Long-courrier > 3 500 km (réduit 50% — réacheminement)'};
+  return {montant:600,label:'600 €',cat:'Long-courrier > 3 500 km'};
+}
 
-  // Récupérer les données du formulaire pour le verdict
-  const prenom=document.querySelector('[name=prenom]')?document.querySelector('[name=prenom]').value:'';
-  const nom=document.querySelector('[name=nom]')?document.querySelector('[name=nom]').value:'';
-  const vol=document.querySelector('[name=vol_numero]')?document.querySelector('[name=vol_numero]').value:'';
-  const volDate=document.querySelector('[name=vol_date]')?document.querySelector('[name=vol_date]').value:'';
-  const dep=document.querySelector('[name=depart]')?document.querySelector('[name=depart]').value.split('—')[0].trim():'';
-  const arr=document.querySelector('[name=arrivee]')?document.querySelector('[name=arrivee]').value.split('—')[0].trim():'';
-  const compagnie=document.querySelector('[name=compagnie]')?document.querySelector('[name=compagnie]').value:'';
-  const pax=parseInt(document.querySelector('[name=passagers]')?document.querySelector('[name=passagers]').value:'1')||1;
-  const incident=document.querySelector('[name=incident]')?document.querySelector('[name=incident]').value:'';
-  const duree=document.querySelector('[name=duree_retard]')?document.querySelector('[name=duree_retard]').value:'';
-  const reglement=document.querySelector('[name=reglement]')?document.querySelector('[name=reglement]').value:'';
+/* ══════════════════════════════════════
+   CALCULATEUR 3 ÉTAPES
+══════════════════════════════════════ */
+const S={inc:null};
 
-  // Calculer indemnisation
-  const result=calcIndemnisation(dep,arr,incident,duree,reglement);
-  const total=result.montant*pax;
-  const dateFormatted=volDate?new Date(volDate).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):'';
-  const numDossier='SOS-'+new Date().getFullYear()+'-'+Math.floor(1000+Math.random()*9000);
+function pick(b,f,v){
+  const grid=b.closest('.opts');
+  if(grid) grid.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
+  b.classList.add('sel');
+  S[f]=v;
+  if(f==='inc'){const btn=document.getElementById('cn0');if(btn)btn.disabled=false;}
+}
 
-  // Construire le HTML de confirmation avec verdict
-  const confHTML=`
-    <div style="text-align:center;margin-bottom:20px">
-      <i class="fa-solid fa-circle-check" style="font-size:50px;color:var(--green);display:block;margin-bottom:12px"></i>
-      <h3 style="font-size:20px;font-weight:700;color:var(--gd);margin-bottom:4px">Réclamation reçue !</h3>
-      <p style="font-size:13px;color:var(--gt)">Dossier n° <strong>${numDossier}</strong> · Transmis à franckvanie@yahoo.de</p>
-    </div>
-
-    <!-- VERDICT INDEMNISATION -->
-    <div style="background:${result.eligible?'#EAF3DE':'#FFF3F3'};border:2px solid ${result.eligible?'#1B7A3E':'#ffcdd2'};border-radius:12px;padding:20px;margin-bottom:16px;text-align:center">
-      <div style="font-size:13px;font-weight:600;color:${result.eligible?'#145C2F':'#C62828'};margin-bottom:10px">
-        ${result.eligible?'✅ AU VU DE VOTRE DOSSIER':'❌ DOSSIER À ANALYSER'}
-      </div>
-      <div style="font-size:15px;color:var(--tx);line-height:1.7;margin-bottom:12px">
-        Bonjour <strong>${prenom} ${nom}</strong>,<br>
-        au vu des éléments de votre dossier concernant le vol <strong>${vol}</strong> du <strong>${dateFormatted}</strong>
-        (${dep} → ${arr}${result.dist?' · '+result.dist.toLocaleString('fr-FR')+' km':''}),<br>
-        vous déclarez un <strong>${incident.toLowerCase()}</strong> avec <strong>${compagnie}</strong>.<br><br>
-        <span style="font-size:22px;font-weight:800;color:var(--gd)">Vous avez droit à une indemnisation estimée à</span>
-      </div>
-      <div style="font-size:52px;font-weight:800;color:var(--green);line-height:1">${result.label}</div>
-      <div style="font-size:13px;color:var(--gt);margin-top:6px">par passager · ${result.raison}</div>
-      ${pax>1?`<div style="font-size:18px;font-weight:700;color:var(--gd);margin-top:8px">Total estimé : <strong>${total.toLocaleString('fr-FR')} €</strong> pour ${pax} passager(s)</div>`:''}
-    </div>
-
-    <!-- RÉCAPITULATIF DOSSIER -->
-    <div style="background:var(--gb);border-radius:10px;padding:16px;margin-bottom:16px;font-size:13px">
-      <div style="font-weight:700;color:var(--gd);margin-bottom:10px"><i class="fa-solid fa-folder-open" style="color:var(--green);margin-right:6px"></i>Récapitulatif de votre dossier</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-        <div><span style="color:var(--gt)">Vol</span><br><strong>${vol}</strong></div>
-        <div><span style="color:var(--gt)">Date</span><br><strong>${dateFormatted}</strong></div>
-        <div><span style="color:var(--gt)">Trajet</span><br><strong>${dep} → ${arr}</strong></div>
-        <div><span style="color:var(--gt)">Compagnie</span><br><strong>${compagnie}</strong></div>
-        <div><span style="color:var(--gt)">Incident</span><br><strong>${incident}</strong></div>
-        <div><span style="color:var(--gt)">Passagers</span><br><strong>${pax}</strong></div>
-      </div>
-    </div>
-
-    <!-- SIGNATURE -->
-    ${sigDataURL?`
-    <div style="background:#fff;border:1.5px solid var(--bdr);border-radius:10px;padding:14px;margin-bottom:16px">
-      <div style="font-size:12px;font-weight:700;color:var(--gd);margin-bottom:8px"><i class="fa-solid fa-signature" style="color:var(--green);margin-right:6px"></i>Votre signature électronique</div>
-      <img src="${sigDataURL}" style="max-width:100%;border-radius:6px;background:#fafafa;display:block" alt="Signature">
-      <p style="font-size:11px;color:#aaa;margin-top:6px">Mandat signé le ${new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})} à ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</p>
-    </div>`:''}
-
-    <!-- PROCHAINES ÉTAPES -->
-    <div style="background:var(--gl);border-left:4px solid var(--green);border-radius:0 8px 8px 0;padding:14px;margin-bottom:16px;font-size:13px;color:var(--gd)">
-      <strong>Prochaines étapes :</strong><br>
-      1️⃣ Analyse de votre dossier sous <strong>48h</strong><br>
-      2️⃣ Envoi de la mise en demeure à ${compagnie}<br>
-      3️⃣ Négociation amiable (2 mois)<br>
-      4️⃣ Procédure judiciaire si refus (taux succès 99%)<br>
-      5️⃣ Virement de <strong>${result.label}</strong> sur votre compte
-    </div>
-
-    <!-- CONTACTS URGENCE -->
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-      <a href="https://wa.me/491773431460" target="_blank"
-         style="flex:1;background:#25D366;color:#fff;border-radius:8px;padding:10px;display:flex;align-items:center;gap:7px;font-weight:700;font-size:12px;justify-content:center">
-        <i class="fa-brands fa-whatsapp"></i> WhatsApp Europe
-      </a>
-      <a href="https://wa.me/2250503605725" target="_blank"
-         style="flex:1;background:#25D366;color:#fff;border-radius:8px;padding:10px;display:flex;align-items:center;gap:7px;font-weight:700;font-size:12px;justify-content:center">
-        <i class="fa-brands fa-whatsapp"></i> WhatsApp Afrique
-      </a>
-    </div>
-    <button class="green-btn" style="margin:0 auto" onclick="showPage('client')">
-      <i class="fa-solid fa-user-circle"></i> Suivre mon dossier
-    </button>
-  `;
-
-  // Collecter toutes les données du form
-  const formEl=document.getElementById('reclamForm');
-  const formData=new FormData(formEl);
-  // Ajouter la signature et métadonnées
-  formData.append('signature_base64', sigDataURL.substring(0,500)+'...[signature]');
-  formData.append('_subject', '🆕 Nouvelle réclamation SOS PASSAGER');
-  formData.append('_replyto', document.querySelector('[name=email]')?document.querySelector('[name=email]').value:'');
-
-  // Envoi AJAX vers Formspree — sans redirection
-  fetch('https://formspree.io/f/mpqeekew', {
-    method: 'POST',
-    body: formData,
-    headers: { 'Accept': 'application/json' }
-  }).then(r=>{
-    // Afficher confirmation que la réponse soit ok ou non
-    document.getElementById('formBody').style.display='none';
-    const conf=document.getElementById('formConf');
-    conf.style.display='block';
-    conf.innerHTML=confHTML;
-  }).catch(()=>{
-    // En cas d'erreur réseau, afficher quand même la confirmation
-    document.getElementById('formBody').style.display='none';
-    const conf=document.getElementById('formConf');
-    conf.style.display='block';
-    conf.innerHTML=confHTML;
+function goC(n){
+  document.querySelectorAll('[id^=cp]').forEach(p=>{if(/^cp\d$/.test(p.id))p.classList.remove('active')});
+  const panel=document.getElementById('cp'+n);if(panel)panel.classList.add('active');
+  ['ct0','ct1','ct2'].forEach((id,i)=>{
+    const t=document.getElementById(id);
+    if(t)t.className='ctab'+(i<n?' done':i===n?' active':'');
   });
+}
+
+function calcChk(){
+  const fn=document.getElementById('fn');
+  const fd=document.getElementById('fd');
+  const dep=document.getElementById('fdep');
+  const arr=document.getElementById('farr');
+  const ok=fn&&fn.value&&fd&&fd.value&&dep&&dep.value&&arr&&arr.value;
+  const btn=document.getElementById('cn1');if(btn)btn.disabled=!ok;
+  autoCalc();
+}
+
+function autoCalc(){
+  const dep=(document.getElementById('fdep')||{value:''}).value;
+  const arr=(document.getElementById('farr')||{value:''}).value;
+  const compVal=(document.getElementById('fcomp')||{value:''}).value;
+  const compCode=compVal.split(';')[0]||'';
+  const duree=(document.getElementById('fduree')||{value:''}).value;
+  if(!dep||!arr)return;
+  const dist=haversine(dep,arr);
+  const {reg}=detectReglement(dep,arr,compCode);
+  const {label,cat}=getMontant(dist,reg,S.inc||'retard',duree);
+  const prev=document.getElementById('autoPreview');
+  if(prev){
+    prev.style.display='block';
+    const pd=document.getElementById('prevDist');
+    const pr=document.getElementById('prevReg');
+    const pc=document.getElementById('prevCat');
+    if(pd)pd.textContent=dist?dist.toLocaleString('fr-FR')+' km':'Distance inconnue';
+    if(pr)pr.textContent=reg;
+    if(pc)pc.textContent=cat+(label&&label!=='0 €'?' → '+label:'');
+  }
+}
+
+function showResAuto(){
+  const dep=(document.getElementById('fdep')||{value:''}).value;
+  const arr=(document.getElementById('farr')||{value:''}).value;
+  const fn=(document.getElementById('fn')||{value:''}).value;
+  const fd=(document.getElementById('fd')||{value:''}).value;
+  const compVal=(document.getElementById('fcomp')||{value:''}).value;
+  const compCode=compVal.split(';')[0]||'';
+  const sel=document.getElementById('fcomp');
+  const compName=sel&&sel.selectedIndex>0?sel.options[sel.selectedIndex].text:'';
+  const pax=Math.max(1,parseInt((document.getElementById('fpax')||{value:'1'}).value)||1);
+  const duree=(document.getElementById('fduree')||{value:''}).value;
+  const inc=S.inc||'retard';
+  const incLabels={retard:'Vol retardé',annul:'Vol annulé',surb:'Surbooking',corr:'Correspondance manquée'};
+
+  // POPUP retard < 3h
+  if(inc==='retard'&&duree.includes('Moins de 3')){
+    document.getElementById('popupTitle').textContent='Retard insuffisant';
+    document.getElementById('popupMsg').textContent=`Votre vol ${fn} (${dep}→${arr}) a moins de 3h de retard. Le règlement CE 261/2004 exige au moins 3 heures à l'arrivée.`;
+    document.getElementById('popupRule').innerHTML=`<strong>Règle CE 261/2004 :</strong> Indemnisation due uniquement à partir de <strong>3 heures de retard</strong> à l'arrivée.`;
+    showPopup();return;
+  }
+
+  // POPUP annulation > 14j
+  if(inc==='annul'&&fd){
+    const diffJ=Math.round((new Date(fd)-new Date())/(1000*60*60*24));
+    if(diffJ>14){
+      document.getElementById('popupTitle').textContent='Annulation trop anticipée';
+      document.getElementById('popupMsg').textContent=`Votre vol ${fn} a été annulé plus de 14 jours avant le départ. Pas d'indemnisation financière dans ce cas.`;
+      document.getElementById('popupRule').innerHTML=`<strong>Règle CE 261/2004 :</strong> Annulation communiquée <strong>plus de 14 jours avant le départ</strong> = pas de compensation financière.`;
+      showPopup();return;
+    }
+  }
+
+  const dist=haversine(dep,arr);
+  const {reg,why}=detectReglement(dep,arr,compCode);
+  const {montant,label,cat}=getMontant(dist,reg,inc,duree);
+  const total=montant*pax;
+  const z=document.getElementById('rz');
+  if(!z)return;
+  const dateStr=fd?new Date(fd).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):'';
+
+  if(montant===0){
+    z.innerHTML=`<div class="rno" style="padding:24px;text-align:center">
+      <i class="fa-solid fa-circle-xmark" style="font-size:40px;color:#C62828;display:block;margin-bottom:12px"></i>
+      <strong style="font-size:16px;color:#C62828">Non éligible à une indemnisation</strong>
+      <div style="background:#FFF3F3;border-left:4px solid #E57373;border-radius:0 8px 8px 0;padding:12px 14px;font-size:13px;color:#B71C1C;text-align:left;margin:14px 0;line-height:1.6">
+        <strong>Pourquoi ?</strong><br>${why}
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <button class="green-btn" style="margin:0" onclick="showPage('contact')"><i class="fa-solid fa-phone"></i> Analyse gratuite</button>
+        <a href="https://wa.me/491773431460" target="_blank" style="display:flex;align-items:center;gap:7px;background:#25D366;color:#fff;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div>`;
+    return;
+  }
+
+  z.innerHTML=`
+    <div class="rok">
+      <div style="font-size:12px;font-weight:700;color:var(--gd);margin-bottom:8px">✅ Vous êtes éligible !</div>
+      <div class="big">${label}</div>
+      <div class="per">par passager · ${reg}</div>
+      ${pax>1?`<div style="font-size:18px;font-weight:700;color:var(--gd);margin-top:8px">Total : <strong>${total.toLocaleString('fr-FR')} €</strong> pour ${pax} passagers</div>`:''}
+    </div>
+    <div class="dets">
+      <div class="det"><span>Incident</span>${incLabels[inc]}</div>
+      <div class="det"><span>Distance calculée</span>${dist?dist.toLocaleString('fr-FR')+' km':'Estimée'}</div>
+      <div class="det"><span>Vol</span>${fn||'—'} · ${dateStr}</div>
+      <div class="det"><span>Trajet</span>${dep} → ${arr}</div>
+      <div class="det"><span>Règlement</span>${reg}</div>
+      <div class="det"><span>Catégorie</span>${cat}</div>
+    </div>
+    <div style="background:var(--gl);border-left:4px solid var(--green);border-radius:0 8px 8px 0;padding:11px 14px;font-size:12px;color:var(--gd);margin:10px 0;line-height:1.6">
+      <strong>Pourquoi êtes-vous éligible ?</strong><br>${why}
+    </div>
+    <div class="inote"><i class="fa-solid fa-circle-info" style="flex-shrink:0"></i><span>Vous disposez de <strong>5 ans</strong> pour réclamer · Sans succès = zéro frais</span></div>
+    <button class="ctabtn" onclick="showPage('reclamer')"><i class="fa-solid fa-paper-plane"></i> Déposer ma réclamation — Gratuit</button>`;
+}
+
+function resetC(){
+  S.inc=null;
+  document.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
+  const btn=document.getElementById('cn0');if(btn)btn.disabled=true;
+  const prev=document.getElementById('autoPreview');if(prev)prev.style.display='none';
 }
 
 /* ─── ESPACE CLIENT ─── */
@@ -1684,8 +1397,40 @@ function closeBlog(){
   document.getElementById('blogFull').style.display='none';
 }
 
+/* ─── POUR QUI ─── */
+function togglePassager(radio){
+  const fields=document.getElementById('autrePassagerFields');
+  if(!fields)return;
+  fields.style.display = radio.value==='autre-personne' ? 'block' : 'none';
+}
+
 /* ─── FAQ ─── */
 function tFaq(el){const a=el.nextElementSibling;el.classList.toggle('open');a.classList.toggle('open')}
+
+/* ─── POP-UP NON ÉLIGIBLE ─── */
+function showPopup(){document.getElementById('popupOverlay').style.display='flex'}
+function closePopup(){
+  document.getElementById('popupOverlay').style.display='none';
+  document.getElementById('popupEmailConfirm').style.display='none';
+}
+function savePopupEmail(){
+  const email=document.getElementById('popupEmail').value.trim();
+  if(!email||!email.includes('@')){alert('Entrez une adresse email valide.');return;}
+  // Envoyer l'email à Formspree pour capture
+  fetch('https://formspree.io/f/mpqeekew',{
+    method:'POST',
+    body:JSON.stringify({email:email,type:'alerte_non_eligible',source:'popup_ineligibilite'}),
+    headers:{'Content-Type':'application/json','Accept':'application/json'}
+  }).catch(()=>{});
+  // Confirmer à l'utilisateur
+  document.getElementById('popupEmailConfirm').style.display='block';
+  showNotifToast('📧 Adresse enregistrée — nous vous contacterons !');
+  setTimeout(closePopup,3000);
+}
+// Fermer en cliquant à l'extérieur
+document.addEventListener('click',function(e){
+  if(e.target.id==='popupOverlay')closePopup();
+});
 
 /* ─── ANIMATION COMPTEURS ─── */
 function animateCounter(id, target, duration=1800){
@@ -1707,6 +1452,147 @@ function startCounters(){
   animateCounter('cnt5',400);
   animateCounter('cnt6',1219);
 }
+
+/* ─── GOOGLE SHEETS URL ─── */
+const GSHEETS_URL = 'https://script.google.com/macros/s/AKfycbwc3czBJr-zapofnq31Ukirg4xloGPJHIgabqLsg8muNjrkff7dVzmIBHYTdMKL5usvzw/exec';
+
+/* ─── FORMULAIRE RÉCLAMATION ─── */
+function handleSubmit(e){
+  e.preventDefault();
+
+  // Récupérer toutes les valeurs
+  const get = name => (document.querySelector(`[name=${name}]`)||{value:''}).value;
+  const prenom=get('prenom'), nom=get('nom'), emailVal=get('email');
+  const vol=get('vol_numero'), volDate=get('vol_date');
+  const dep=get('depart'), arr=get('arrivee'), compagnie=get('compagnie');
+  const pax=parseInt(get('passagers'))||1;
+  const incident=get('incident'), duree=get('duree_retard'), reglement=get('reglement');
+  const description=get('description'), pourQui=get('pour_qui');
+
+  // Capturer signature
+  const cv=document.getElementById('sigCanvas');
+  const sigDataURL=cv?cv.toDataURL():'';
+  const sigEl=document.getElementById('sigData');
+  if(sigEl)sigEl.value=sigDataURL;
+
+  // Calculer indemnisation
+  const compCode=(document.getElementById('fcomp')||{value:''}).value.split(';')[0]||'';
+  const dist=haversine(dep.split('—')[0].trim(), arr.split('—')[0].trim());
+  const {reg,why}=detectReglement(dep.split('—')[0].trim(), arr.split('—')[0].trim(), compCode);
+  const result=getMontant(dist,reg,incident.includes('retard')?'retard':incident.includes('annul')?'annul':incident.includes('surb')?'surb':'corr', duree);
+  const total=result.montant*pax;
+  const dateStr=volDate?new Date(volDate).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):'';
+  const numDossier='SOS-'+new Date().getFullYear()+'-'+Math.floor(1000+Math.random()*9000);
+
+  // ── ENVOI 1 : Formspree → email franckvanie@yahoo.de
+  const formData=new FormData(document.getElementById('reclamForm'));
+  formData.append('_subject','🆕 Nouvelle réclamation SOS PASSAGER — '+numDossier);
+  fetch('https://formspree.io/f/mpqeekew',{method:'POST',body:formData,headers:{'Accept':'application/json'}}).catch(()=>{});
+
+  // ── ENVOI 2 : Google Sheets base de données
+  fetch(GSHEETS_URL,{
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      prenom,nom,email:emailVal,whatsapp:get('whatsapp'),
+      vol_numero:vol,vol_date:volDate,depart:dep,arrivee:arr,
+      compagnie,passagers:pax,incident,duree_retard:duree,reglement,
+      montant_estime:result.label+' ('+result.cat+')',
+      description,pour_qui:pourQui,
+      num_dossier:numDossier,distance_km:dist||'',reglementation:reg
+    })
+  }).catch(()=>{});
+
+  // ── AFFICHER CONFIRMATION AVEC VERDICT
+  const incLabels={retard:'Vol retardé',annul:'Vol annulé',surb:'Surbooking',corr:'Correspondance manquée'};
+  const confHTML=`
+    <div style="text-align:center;margin-bottom:20px">
+      <i class="fa-solid fa-circle-check" style="font-size:50px;color:var(--green);display:block;margin-bottom:12px"></i>
+      <h3 style="font-size:20px;font-weight:700;color:var(--gd);margin-bottom:4px">Réclamation reçue !</h3>
+      <p style="font-size:13px;color:var(--gt)">Dossier <strong>${numDossier}</strong> · Transmis à franckvanie@yahoo.de + Google Sheets</p>
+    </div>
+    <div style="background:${result.montant>0?'#EAF3DE':'#FFF3F3'};border:2px solid ${result.montant>0?'var(--green)':'#ffcdd2'};border-radius:12px;padding:20px;margin-bottom:16px;text-align:center">
+      <div style="font-size:13px;font-weight:600;color:${result.montant>0?'var(--gd)':'#C62828'};margin-bottom:10px">
+        ${result.montant>0?'✅ AU VU DE VOTRE DOSSIER — VOUS AVEZ DROIT À UNE INDEMNISATION DE':'❌ Dossier à analyser'}
+      </div>
+      <div style="font-size:52px;font-weight:800;color:var(--gd);line-height:1">${result.label}</div>
+      <div style="font-size:13px;color:var(--gt);margin-top:6px">par passager · ${reg}</div>
+      ${pax>1?`<div style="font-size:18px;font-weight:700;color:var(--gd);margin-top:8px">Total estimé : <strong>${total.toLocaleString('fr-FR')} €</strong> pour ${pax} passagers</div>`:''}
+    </div>
+    <div style="background:var(--gb);border-radius:10px;padding:14px;margin-bottom:14px;font-size:13px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
+      <div><span style="color:var(--gt);font-size:11px">Vol</span><br><strong>${vol||'—'}</strong></div>
+      <div><span style="color:var(--gt);font-size:11px">Date</span><br><strong>${dateStr||'—'}</strong></div>
+      <div><span style="color:var(--gt);font-size:11px">Trajet</span><br><strong>${dep} → ${arr}</strong></div>
+      <div><span style="color:var(--gt);font-size:11px">Distance</span><br><strong>${dist?dist.toLocaleString('fr-FR')+' km':'—'}</strong></div>
+      <div><span style="color:var(--gt);font-size:11px">Incident</span><br><strong>${incident||'—'}</strong></div>
+      <div><span style="color:var(--gt);font-size:11px">Règlement</span><br><strong>${reg}</strong></div>
+    </div>
+    ${sigDataURL?`<div style="background:#fff;border:1px solid var(--bdr);border-radius:8px;padding:12px;margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;color:var(--gd);margin-bottom:6px"><i class="fa-solid fa-signature" style="color:var(--green);margin-right:5px"></i>Signature électronique</div>
+      <img src="${sigDataURL}" style="max-width:100%;border-radius:4px;background:#fafafa">
+      <p style="font-size:10px;color:#aaa;margin-top:4px">Signé le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</p>
+    </div>`:''}
+    <div style="background:var(--gl);border-left:4px solid var(--green);border-radius:0 8px 8px 0;padding:12px 14px;font-size:12px;color:var(--gd);margin-bottom:12px;line-height:1.6">
+      <strong>Prochaines étapes :</strong><br>
+      1️⃣ Analyse sous 48h · 2️⃣ Mise en demeure à ${compagnie||'la compagnie'} · 3️⃣ Négociation · 4️⃣ Virement de ${result.label}
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="https://wa.me/491773431460" target="_blank" style="flex:1;background:#25D366;color:#fff;border-radius:8px;padding:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:12px">
+        <i class="fa-brands fa-whatsapp"></i> WhatsApp Europe
+      </a>
+      <a href="https://wa.me/2250503605725" target="_blank" style="flex:1;background:#25D366;color:#fff;border-radius:8px;padding:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:12px">
+        <i class="fa-brands fa-whatsapp"></i> WhatsApp Afrique
+      </a>
+    </div>`;
+
+  setTimeout(()=>{
+    document.getElementById('formBody').style.display='none';
+    const conf=document.getElementById('formConf');
+    conf.style.display='block';
+    conf.innerHTML=confHTML;
+    showNotifToast('✅ Dossier '+numDossier+' enregistré dans Google Sheets !');
+  },600);
+}
+
+/* ─── NOTIFICATIONS TOAST ─── */
+function showNotifToast(msg){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:20px;right:20px;background:var(--gd);color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999';
+  t.textContent=msg;document.body.appendChild(t);
+  setTimeout(()=>t.remove(),3500);
+}
+
+/* ─── ESPACE CLIENT ─── */
+function loginClient(){
+  document.getElementById('clientLogin').style.display='none';
+  document.getElementById('clientDash').style.display='block';
+}
+function demoLogin(){loginClient();}
+function logoutClient(){
+  document.getElementById('clientDash').style.display='none';
+  document.getElementById('clientLogin').style.display='block';
+}
+
+/* ─── SIGNATURE ─── */
+let isDrawing=false,sigCtx,lastX=0,lastY=0;
+function initSig(){
+  const cv=document.getElementById('sigCanvas');if(!cv)return;
+  sigCtx=cv.getContext('2d');
+  sigCtx.strokeStyle='#1B7A3E';sigCtx.lineWidth=2;sigCtx.lineCap='round';
+  const pos=(e,c)=>{const r=c.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
+  const posT=(e,c)=>{const r=c.getBoundingClientRect(),t=e.touches[0];return[t.clientX-r.left,t.clientY-r.top]};
+  const draw=(x,y)=>{sigCtx.beginPath();sigCtx.moveTo(lastX,lastY);sigCtx.lineTo(x,y);sigCtx.stroke();[lastX,lastY]=[x,y]};
+  cv.addEventListener('mousedown',e=>{isDrawing=true;[lastX,lastY]=pos(e,cv)});
+  cv.addEventListener('mousemove',e=>{if(isDrawing)draw(...pos(e,cv))});
+  cv.addEventListener('mouseup',()=>{isDrawing=false});
+  cv.addEventListener('touchstart',e=>{e.preventDefault();isDrawing=true;[lastX,lastY]=posT(e,cv)},{passive:false});
+  cv.addEventListener('touchmove',e=>{e.preventDefault();if(isDrawing)draw(...posT(e,cv))},{passive:false});
+  cv.addEventListener('touchend',()=>{isDrawing=false});
+}
+function clearSig(){const cv=document.getElementById('sigCanvas');if(sigCtx)sigCtx.clearRect(0,0,cv.width,cv.height);}
+
+/* ─── NOTIFICATIONS PREFS ─── */
+function saveNotif(){showNotifToast('✅ Préférences enregistrées');}
 
 /* ─── INIT ─── */
 window.addEventListener('load',()=>{
