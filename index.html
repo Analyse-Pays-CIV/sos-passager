@@ -400,22 +400,22 @@ footer ul li a:hover{color:var(--acc)}
     <div class="nlk">Vos droits <i class="fa-solid fa-chevron-down chev"></i></div>
     <div class="drop">
      <div class="drop-header">Règlement CE 261/2004</div>
-     <div class="dlk" onclick="nav('droits','r0')"><i class="fa-solid fa-clock"></i>Vol retardé</div>
-     <div class="dlk" onclick="nav('droits','r1')"><i class="fa-solid fa-ban"></i>Vol annulé</div>
-     <div class="dlk" onclick="nav('droits','r2')"><i class="fa-solid fa-users"></i>Surbooking / refus embarquement</div>
-     <div class="dlk" onclick="nav('droits','r3')"><i class="fa-solid fa-arrows-turn-right"></i>Correspondance manquée</div>
+     <div class="dlk" onclick="navDroits('r0')"><i class="fa-solid fa-clock"></i>Vol retardé</div>
+     <div class="dlk" onclick="navDroits('r1')"><i class="fa-solid fa-ban"></i>Vol annulé</div>
+     <div class="dlk" onclick="navDroits('r2')"><i class="fa-solid fa-users"></i>Surbooking / refus embarquement</div>
+     <div class="dlk" onclick="navDroits('r3')"><i class="fa-solid fa-arrows-turn-right"></i>Correspondance manquée</div>
      <div class="drop-header">Montants</div>
      <div class="dlk" onclick="nav('montants')"><i class="fa-solid fa-euro-sign"></i>Tableau des indemnisations</div>
-     <div class="dlk" onclick="nav('droits','r4')"><i class="fa-solid fa-earth-africa"></i>Droits UEMOA <span class="dbadge">Afrique</span></div>
+     <div class="dlk" onclick="navDroits('r4')"><i class="fa-solid fa-earth-africa"></i>Droits UEMOA <span class="dbadge">Afrique</span></div>
     </div>
    </div>
    <div class="nit">
     <div class="nlk">Vol Afrique <i class="fa-solid fa-chevron-down chev"></i></div>
     <div class="drop">
      <div class="drop-header">Zone UEMOA</div>
-     <div class="dlk" onclick="nav('droits','r4')"><i class="fa-solid fa-earth-africa"></i>Droits UEMOA</div>
-     <div class="dlk" onclick="nav('droits','r4')"><i class="fa-solid fa-clock"></i>Vol retardé Afrique</div>
-     <div class="dlk" onclick="nav('droits','r4')"><i class="fa-solid fa-ban"></i>Vol annulé Afrique</div>
+     <div class="dlk" onclick="navDroits('r4')"><i class="fa-solid fa-earth-africa"></i>Droits UEMOA</div>
+     <div class="dlk" onclick="navDroits('r4')"><i class="fa-solid fa-clock"></i>Vol retardé Afrique</div>
+     <div class="dlk" onclick="navDroits('r4')"><i class="fa-solid fa-ban"></i>Vol annulé Afrique</div>
      <div class="dlk" onclick="nav('montants')"><i class="fa-solid fa-euro-sign"></i>Montants UEMOA</div>
     </div>
    </div>
@@ -611,7 +611,7 @@ footer ul li a:hover{color:var(--acc)}
  </div>
 
  <!-- COMMENT -->
- <section class="sec-bg">
+ <section class="sec-bg" id="section-comment">
   <div class="si">
    <div style="text-align:center;margin-bottom:32px"><div class="st">Comment ça marche ?</div><div class="ss">3 étapes simples pour obtenir votre indemnisation</div></div>
    <div class="sg">
@@ -1211,15 +1211,18 @@ footer ul li a:hover{color:var(--acc)}
 const GSHEETS_URL = 'https://script.google.com/macros/s/AKfycbwc3czBJr-zapofnq31Ukirg4xloGPJHIgabqLsg8muNjrkff7dVzmIBHYTdMKL5usvzw/exec';
 
 /* ── NAVIGATION ── */
-function nav(id, tab) {
+function nav(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   var pg = document.getElementById('page-' + id);
   if (pg) {
     pg.classList.add('active');
     window.scrollTo(0, 0);
   }
-  if (tab) { setTimeout(function(){ setTab(tab); }, 100); }
   if (id === 'montants') { setTimeout(startCounters, 300); }
+}
+function navDroits(tab) {
+  nav('droits');
+  setTimeout(function(){ setTab(tab); }, 150);
 }
 function showPage(id) { nav(id); }
 
