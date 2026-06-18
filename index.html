@@ -1234,27 +1234,70 @@ function haversine(dep,arr){
 }
 
 function detectReglement(dep,arr,compCode){
-  const isEUdep=EU_AIRPORTS.has(dep);
-  const isEUcomp=EU_COMPANIES.has(compCode);
-  const isUEMOA=UEMOA_AIRPORTS.has(dep)||UEMOA_AIRPORTS.has(arr);
-  if(isEUdep) return {reg:'CE 261/2004',why:`Départ depuis ${dep} — aéroport UE/EEE : toute compagnie est couverte`};
-  if(isEUcomp) return {reg:'CE 261/2004',why:`Compagnie européenne opérant depuis ${dep} — CE 261/2004 applicable`};
-  if(isUEMOA) return {reg:'UEMOA N°03/2003',why:`Vol en zone UEMOA (${dep}↔${arr}) — règlement africain applicable`};
-  return {reg:'NON_ELIGIBLE',why:`Départ hors UE (${dep}), compagnie non-européenne, hors UEMOA — aucun règlement applicable`};
+  const isEUdep = EU_AIRPORTS.has(dep);
+  const isEUcomp = EU_COMPANIES.has(compCode);
+  // UEMOA : les DEUX aéroports doivent être en zone UEMOA (vol intérieur/régional Afrique Ouest)
+  const isUEMOAdep = UEMOA_AIRPORTS.has(dep);
+  const isUEMOAarr = UEMOA_AIRPORTS.has(arr);
+  const isUEMOA = isUEMOAdep && isUEMOAarr;
+
+  // Priorité 1 : départ UE → CE 261/2004 (toute compagnie)
+  if(isEUdep) return {
+    reg:'CE 261/2004',
+    why:`Départ depuis ${dep} (aéroport UE/EEE) — le règlement CE 261/2004 s'applique à toute compagnie`
+  };
+  // Priorité 2 : compagnie européenne au départ hors UE → CE 261/2004
+  if(isEUcomp) return {
+    reg:'CE 261/2004',
+    why:`Compagnie européenne (${compCode}) opérant depuis ${dep} — CE 261/2004 applicable même hors UE`
+  };
+  // Priorité 3 : vol INTRA-UEMOA (départ ET arrivée dans la zone UEMOA)
+  if(isUEMOA) return {
+    reg:'UEMOA N°03/2003',
+    why:`Vol intra-zone UEMOA (${dep} et ${arr} sont tous les deux en Afrique de l'Ouest) — règlement N°03/2003/CM/UEMOA applicable`
+  };
+  // Non éligible : expliquer pourquoi
+  let reason = '';
+  if(isUEMOAdep && !isUEMOAarr) reason = `${dep} est en zone UEMOA mais ${arr} ne l'est pas — le règlement UEMOA ne couvre que les vols intra-zone`;
+  else if(!isUEMOAdep && isUEMOAarr) reason = `${arr} est en zone UEMOA mais ${dep} ne l'est pas — CE 261/2004 non applicable (départ hors UE), UEMOA non applicable (départ hors zone)`;
+  else reason = `Départ hors UE (${dep}), compagnie non-européenne, vol hors zone UEMOA`;
+
+  return {
+    reg:'NON_ELIGIBLE',
+    why:`Non couvert : ${reason}. Contactez-nous pour une analyse personnalisée.`
+  };
 }
 
 function getMontant(dist,reg,inc,duree){
   if(reg==='NON_ELIGIBLE') return {montant:0,label:'0 €',cat:'Non éligible'};
+
+  // ── BARÈME UEMOA (Règlement N°03/2003/CM/UEMOA)
+  // Vols intra-zone Afrique de l'Ouest uniquement
   if(reg.includes('UEMOA')){
-    if(!dist||dist<1500) return {montant:200,label:'200 €',cat:'Court-courrier UEMOA'};
-    if(dist<=3500) return {montant:400,label:'400 €',cat:'Moyen-courrier UEMOA'};
-    return {montant:600,label:'600 €',cat:'Long-courrier UEMOA'};
+    if(!dist||dist<=1500){
+      return {montant:150,label:'150 €',cat:'Vol court UEMOA ≤ 1 500 km (≈ 100 000 FCFA)'};
+    }
+    if(dist<=3500){
+      return {montant:300,label:'300 €',cat:'Vol moyen UEMOA 1 500–3 500 km (≈ 200 000 FCFA)'};
+    }
+    return {montant:500,label:'500 €',cat:'Vol long UEMOA > 3 500 km (≈ 328 000 FCFA)'};
   }
-  if(duree&&duree.includes('Moins de 3')) return {montant:0,label:'0 €',cat:'Retard < 3h non indemnisable'};
-  if(!dist||dist<=1500) return {montant:250,label:'250 €',cat:'Court-courrier < 1 500 km'};
-  if(dist<=3500) return {montant:400,label:'400 €',cat:'Moyen-courrier 1 500-3 500 km'};
-  if(duree&&duree.includes('3h et 4')&&(inc==='retard'||inc==='corr'))
-    return {montant:300,label:'300 € *',cat:'Long-courrier > 3 500 km (réduit 50% — réacheminement)'};
+
+  // ── BARÈME CE 261/2004 (Europe)
+  if(duree&&duree.includes('Moins de 3')){
+    return {montant:0,label:'0 €',cat:'Retard < 3h — pas d'indemnisation CE 261'};
+  }
+  if(!dist||dist<=1500){
+    return {montant:250,label:'250 €',cat:'Court-courrier ≤ 1 500 km'};
+  }
+  if(dist<=3500){
+    return {montant:400,label:'400 €',cat:'Moyen-courrier 1 500–3 500 km'};
+  }
+  // Long-courrier > 3 500 km
+  // Réduction 50% si réacheminement avec retard limité (art. 7.2 CE 261)
+  if(duree&&duree.includes('3h et 4')&&(inc==='retard'||inc==='corr')){
+    return {montant:300,label:'300 € *',cat:'Long-courrier > 3 500 km — réduit 50% (réacheminement accepté, retard < 4h)'};
+  }
   return {montant:600,label:'600 €',cat:'Long-courrier > 3 500 km'};
 }
 
@@ -1293,7 +1336,7 @@ function calcChk(){
   // ❌ Départ = Arrivée
   if(dep&&arr&&dep===arr){
     showCalcErr('errDep','⚠️ Départ et arrivée identiques — impossible ! Choisissez deux aéroports différents.');
-    showCalcErr('errArr','⚠️ Veuillez sélectionner un aéroport d'arrivée différent du départ.');
+    showCalcErr("errArr","Veuillez selectionner un aeroport d arrivee different.");
     valid=false;
   }
 
@@ -1305,7 +1348,7 @@ function calcChk(){
   const NAMES={AF:'Air France',SS:'Corsair',TO:'Transavia France',U2:'easyJet',FR:'Ryanair',
     LH:'Lufthansa',EW:'Eurowings',DE:'Condor',KL:'KLM',SN:'Brussels Airlines',
     LX:'Swiss',OS:'Austrian Airlines',IB:'Iberia',TP:'TAP Air Portugal',VY:'Vueling',
-    HF:"Air Côte d'Ivoire",HC:'Air Sénégal',ET:'Ethiopian Airlines',KQ:'Kenya Airways',
+    HF:"Air Cote dIvoire",HC:'Air Sénégal',ET:'Ethiopian Airlines',KQ:'Kenya Airways',
     AT:'Royal Air Maroc',TU:'Tunisair',AH:'Air Algérie',EK:'Emirates',
     QR:'Qatar Airways',TK:'Turkish Airlines',DL:'Delta Air Lines',AA:'American Airlines',AC:'Air Canada'};
 
@@ -1375,8 +1418,8 @@ function showResAuto(){
   // POPUP retard < 3h
   if(inc==='retard'&&duree.includes('Moins de 3')){
     document.getElementById('popupTitle').textContent='Retard insuffisant';
-    document.getElementById('popupMsg').textContent=`Votre vol ${fn} (${dep}→${arr}) a moins de 3h de retard. Le règlement CE 261/2004 exige au moins 3 heures à l'arrivée.`;
-    document.getElementById('popupRule').innerHTML=`<strong>Règle CE 261/2004 :</strong> Indemnisation due uniquement à partir de <strong>3 heures de retard</strong> à l'arrivée.`;
+    document.getElementById('popupMsg').textContent=`Votre vol ${fn} (${dep} vers ${arr}) a moins de 3h de retard. CE 261/2004 exige au moins 3 heures a l'arrivee.`;
+    document.getElementById('popupRule').innerHTML=`<strong>Regle CE 261/2004 :</strong> Indemnisation due a partir de <strong>3 heures de retard</strong> a l'arrivee.`;
     showPopup();return;
   }
 
@@ -1385,8 +1428,8 @@ function showResAuto(){
     const diffJ=Math.round((new Date(fd)-new Date())/(1000*60*60*24));
     if(diffJ>14){
       document.getElementById('popupTitle').textContent='Annulation trop anticipée';
-      document.getElementById('popupMsg').textContent=`Votre vol ${fn} a été annulé plus de 14 jours avant le départ. Pas d'indemnisation financière dans ce cas.`;
-      document.getElementById('popupRule').innerHTML=`<strong>Règle CE 261/2004 :</strong> Annulation communiquée <strong>plus de 14 jours avant le départ</strong> = pas de compensation financière.`;
+      document.getElementById('popupMsg').textContent=`Votre vol ${fn} a ete annule plus de 14 jours avant le depart. Pas d'indemnisation dans ce cas.`;
+      document.getElementById('popupRule').innerHTML=`<strong>Regle CE 261/2004 :</strong> Annulation communiquee <strong>plus de 14 jours avant le depart</strong> = pas de compensation.`;
       showPopup();return;
     }
   }
