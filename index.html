@@ -515,7 +515,7 @@ nav{background:#0D5C2E}
    <div class="sp" id="cp1">
     <p style="font-size:13px;color:#666;margin-bottom:12px">Informations sur votre vol — nous calculons tout automatiquement</p>
     <div class="fr2">
-     <div class="fg"><label>Numéro de vol *</label><input id="fn" type="text" placeholder="Ex : AF703" oninput="calcChk()"></div>
+     <div class="fg"><label>Numéro de vol *</label><input id="fn" type="text" placeholder="Ex : AF703" oninput="calcChk()" onblur="lookupFlight()"></div>
      <div class="fg"><label>Date du vol *</label><div id="errDate" style="display:none;color:#C62828;font-size:12px;font-weight:600;background:#FFF3F3;border-radius:6px;padding:6px 10px;margin-bottom:4px"></div><input id="fd" type="date" oninput="calcChk()"></div>
     </div>
     <div class="fr2">
@@ -532,7 +532,9 @@ nav{background:#0D5C2E}
        <optgroup label="🇮🇹 Italie"><option value="FCO">FCO — Rome Fiumicino</option><option value="MXP">MXP — Milan Malpensa</option></optgroup>
        <optgroup label="🇲🇦🇩🇿🇹🇳 Maghreb"><option value="CMN">CMN — Casablanca</option><option value="RAK">RAK — Marrakech</option><option value="ALG">ALG — Alger</option><option value="TUN">TUN — Tunis</option></optgroup>
        <optgroup label="🇨🇮 Côte d'Ivoire"><option value="ABJ">ABJ — Abidjan</option></optgroup>
-       <optgroup label="🇸🇳🇲🇱🇧🇫 Afrique Ouest"><option value="DSS">DSS — Dakar</option><option value="BKO">BKO — Bamako</option><option value="OUA">OUA — Ouagadougou</option><option value="LFW">LFW — Lomé</option><option value="COO">COO — Cotonou</option><option value="CKY">CKY — Conakry</option></optgroup>
+       <optgroup label="🇸🇳🇲🇱🇧🇫 Afrique Ouest"><option value="DSS">DSS — Dakar</option><option value="BKO">BKO — Bamako</option><option value="OUA">OUA — Ouagadougou</option><option value="LFW">LFW — Lomé</option><option value="COO">COO — Cotonou</option><option value="CKY">CKY — Conakry</option>
+       <option value="NIM">NIM — Niamey</option>
+       <option value="OXB">OXB — Bissau</option></optgroup>
        <optgroup label="🇨🇲🇬🇦🇨🇬 Afrique Centrale"><option value="DLA">DLA — Douala</option><option value="LBV">LBV — Libreville</option><option value="BZV">BZV — Brazzaville</option></optgroup>
        <optgroup label="🇪🇹🇰🇪🇿🇦 Afrique Est/Sud"><option value="ADD">ADD — Addis Abeba</option><option value="NBO">NBO — Nairobi</option><option value="JNB">JNB — Johannesburg</option></optgroup>
        <optgroup label="🇦🇪🇶🇦🇹🇷 Moyen-Orient"><option value="DXB">DXB — Dubai</option><option value="DOH">DOH — Doha</option><option value="IST">IST — Istanbul</option></optgroup>
@@ -554,7 +556,9 @@ nav{background:#0D5C2E}
        <optgroup label="🇮🇹 Italie"><option value="FCO">FCO — Rome Fiumicino</option><option value="MXP">MXP — Milan Malpensa</option></optgroup>
        <optgroup label="🇲🇦🇩🇿🇹🇳 Maghreb"><option value="CMN">CMN — Casablanca</option><option value="RAK">RAK — Marrakech</option><option value="ALG">ALG — Alger</option><option value="TUN">TUN — Tunis</option></optgroup>
        <optgroup label="🇨🇮 Côte d'Ivoire"><option value="ABJ">ABJ — Abidjan</option></optgroup>
-       <optgroup label="🇸🇳🇲🇱🇧🇫 Afrique Ouest"><option value="DSS">DSS — Dakar</option><option value="BKO">BKO — Bamako</option><option value="OUA">OUA — Ouagadougou</option><option value="LFW">LFW — Lomé</option><option value="COO">COO — Cotonou</option><option value="CKY">CKY — Conakry</option></optgroup>
+       <optgroup label="🇸🇳🇲🇱🇧🇫 Afrique Ouest"><option value="DSS">DSS — Dakar</option><option value="BKO">BKO — Bamako</option><option value="OUA">OUA — Ouagadougou</option><option value="LFW">LFW — Lomé</option><option value="COO">COO — Cotonou</option><option value="CKY">CKY — Conakry</option>
+       <option value="NIM">NIM — Niamey</option>
+       <option value="OXB">OXB — Bissau</option></optgroup>
        <optgroup label="🇨🇲🇬🇦🇨🇬 Afrique Centrale"><option value="DLA">DLA — Douala</option><option value="LBV">LBV — Libreville</option><option value="BZV">BZV — Brazzaville</option></optgroup>
        <optgroup label="🇪🇹🇰🇪🇿🇦 Afrique Est/Sud"><option value="ADD">ADD — Addis Abeba</option><option value="NBO">NBO — Nairobi</option><option value="JNB">JNB — Johannesburg</option></optgroup>
        <optgroup label="🇦🇪🇶🇦🇹🇷 Moyen-Orient"><option value="DXB">DXB — Dubai</option><option value="DOH">DOH — Doha</option><option value="IST">IST — Istanbul</option></optgroup>
@@ -2150,41 +2154,117 @@ nav{background:#0D5C2E}
     <span><strong>Configuration requise :</strong> Pour activer l'envoi réel des réclamations, inscrivez-vous gratuitement sur <a href="https://formspree.io" target="_blank" style="color:#145C2F;font-weight:700">formspree.io</a> → créez un formulaire → remplacez <code>YOUR_FORM_ID</code> dans le code HTML par votre identifiant.</span>
    </div>
   </div>
- </section>
-</div>
-
-<footer>
- <div class="fg4">
-  <div>
-   <div class="logo" style="margin-bottom:11px"><div class="lc">✈</div><div><span class="lt">SOS PASSAGER</span><span class="ls">INDEMNISATION VOL</span></div></div>
-   <p style="font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;max-width:260px">Experts droits des passagers — Europe (CE 261/2004) et Afrique de l'Ouest (UEMOA). Sans succès, sans frais.</p>
-  </div>
-  <div><h4>Navigation</h4><ul>
-   <li><a onclick="showPage('home')">Accueil / SOS</a></li>
-   <li><a onclick="showPage('reclamer')">Réclamez</a></li>
-   <li><a onclick="showPage('client')">Mon dossier</a></li>
-   <li><a onclick="showPage('notif')">Notifications</a></li>
-  </ul></div>
-  <div><h4>Droits</h4><ul>
-   <li><a onclick="showPage('droits');setTab('r0')">Vol retardé</a></li>
-   <li><a onclick="showPage('droits');setTab('r1')">Vol annulé</a></li>
-   <li><a onclick="showPage('droits');setTab('r2')">Surbooking</a></li>
-   <li><a onclick="showPage('droits');setTab('r4')">UEMOA Afrique</a></li>
-  </ul></div>
-  <div><h4>Ressources</h4><ul>
-   <li><a onclick="showPage('blog')">Blog juridique</a></li>
-   <li><a onclick="showPage('faq')">FAQ</a></li>
-   <li><a onclick="showPage('contact')">Contact</a></li>
-   <li><a onclick="showPage('notif')">Alertes email</a></li>
-  </ul></div>
- </div>
- <div class="fbot">
-  © 2025 SOS PASSAGER · <a href="#" style="color:rgba(255,255,255,.4)">Mentions légales</a> · <a href="#" style="color:rgba(255,255,255,.4)">Confidentialité</a><br>
-  <span style="font-size:10px;margin-top:3px;display:block">CE 261/2004 · UEMOA N°03/2003/CM/UEMOA · Photos : Unsplash (licence libre) · API vols : AviationStack open-source</span>
- </div>
-</footer>
-
+ </s
 <script>
+/* ═══════════════════════════════════════════════════════
+   AERODATABOX via RapidAPI — Vérification automatique du vol
+   HTTPS + CORS compatibles GitHub Pages
+   Plan gratuit : 500 req/mois sur rapidapi.com
+   
+   Pour activer sur GitHub :
+   1. Allez sur rapidapi.com, cherchez AeroDataBox, abonnez-vous (gratuit)
+   2. Ouvrez index.html sur GitHub (crayon Edit)
+   3. Cherchez VOTRE_CLE_RAPIDAPI et remplacez par votre clé
+═══════════════════════════════════════════════════════ */
+
+const RAPIDAPI_KEY  = "VOTRE_CLE_RAPIDAPI";
+const RAPIDAPI_HOST = "aerodatabox.p.rapidapi.com";
+
+const IATA_TO_SELECT = {
+  'AF':'AF;EU','SS':'SS;EU','TO':'TO;EU','KL':'KL;EU','SN':'SN;EU',
+  'LH':'LH;EU','EW':'EW;EU','DE':'DE;EU','LX':'LX;EU','OS':'OS;EU',
+  'IB':'IB;EU','TP':'TP;EU','FR':'FR;EU','U2':'U2;EU','VY':'VY;EU',
+  'HF':'HF;AF','HC':'HC;AF','ET':'ET;AF','KQ':'KQ;AF',
+  'AT':'AT;AF','TU':'TU;AF','AH':'AH;AF',
+  'EK':'EK;INT','QR':'QR;INT','TK':'TK;INT','DL':'DL;INT','AA':'AA;INT','AC':'AC;INT'
+};
+
+async function lookupFlight() {
+  var fnEl = document.getElementById('fn');
+  var fdEl = document.getElementById('fd');
+  if (!fnEl || !fdEl) return;
+  var flightNum = fnEl.value.trim().toUpperCase().replace(/[ ]/g,'');
+  var flightDate = fdEl.value;
+  if (!flightNum || flightNum.length < 4 || !flightDate) return;
+  if (RAPIDAPI_KEY === 'VOTRE_CLE_RAPIDAPI') { return; }
+  showFlightStatus('loading','Recherche du vol en cours...');
+  try {
+    var url = 'https://aerodatabox.p.rapidapi.com/flights/number/'+flightNum+'/'+flightDate;
+    var resp = await fetch(url,{
+      method:'GET',
+      headers:{'X-RapidAPI-Key':RAPIDAPI_KEY,'X-RapidAPI-Host':RAPIDAPI_HOST}
+    });
+    if (!resp.ok) {
+      if (resp.status===429) showFlightStatus('warn','Quota mensuel atteint. Remplissez manuellement.');
+      else if (resp.status===404) showFlightStatus('warn','Vol non trouvé. Vérifiez le numéro et la date.');
+      else showFlightStatus('warn','Vérification indisponible. Remplissez manuellement.');
+      return;
+    }
+    var data = await resp.json();
+    var flight = Array.isArray(data) ? data[0] : data;
+    if (!flight) { showFlightStatus('warn','Vol non trouvé. Remplissez manuellement.'); return; }
+    var filled = [];
+    var airlineIATA = flight.airline && flight.airline.iata ? flight.airline.iata : null;
+    if (airlineIATA) {
+      var compSel = document.getElementById('fcomp');
+      if (compSel && IATA_TO_SELECT[airlineIATA]) { compSel.value = IATA_TO_SELECT[airlineIATA]; compSel.dispatchEvent(new Event('change')); }
+      var formComp = document.querySelector('input[name="compagnie"]');
+      if (formComp && flight.airline.name) formComp.value = flight.airline.name;
+      filled.push('Compagnie : '+(flight.airline.name||airlineIATA));
+    }
+    var depIATA = flight.departure && flight.departure.airport ? flight.departure.airport.iata : null;
+    if (depIATA) {
+      var depSel = document.getElementById('fdep');
+      if (depSel) { depSel.value = depIATA; depSel.dispatchEvent(new Event('change')); }
+      var formDep = document.querySelector('input[name="depart"]');
+      if (formDep) formDep.value = depIATA+(flight.departure.airport.name?' — '+flight.departure.airport.name:'');
+      filled.push('Départ : '+depIATA);
+    }
+    var arrIATA = flight.arrival && flight.arrival.airport ? flight.arrival.airport.iata : null;
+    if (arrIATA) {
+      var arrSel = document.getElementById('farr');
+      if (arrSel) { arrSel.value = arrIATA; arrSel.dispatchEvent(new Event('change')); }
+      var formArr = document.querySelector('input[name="arrivee"]');
+      if (formArr) formArr.value = arrIATA+(flight.arrival.airport.name?' — '+flight.arrival.airport.name:'');
+      filled.push('Arrivée : '+arrIATA);
+    }
+    var delayMin = flight.arrival && flight.arrival.delay ? flight.arrival.delay : null;
+    if (delayMin && delayMin > 0) {
+      var dureeEl = document.getElementById('fduree');
+      if (dureeEl) {
+        if (delayMin<180) dureeEl.value='Moins de 3h';
+        else if (delayMin<240) dureeEl.value='Entre 3h et 4h';
+        else if (delayMin<360) dureeEl.value='Entre 4h et 6h';
+        else dureeEl.value='Plus de 6h';
+      }
+      filled.push('Retard : '+delayMin+' min');
+    }
+    if (filled.length > 0) showFlightStatus('found','Vol trouvé — '+filled.join(' · '));
+    else showFlightStatus('warn','Vol trouvé mais données incomplètes. Vérifiez manuellement.');
+    calcChk();
+  } catch(err) {
+    showFlightStatus('warn','Vérification indisponible. Remplissez le formulaire manuellement.');
+  }
+}
+
+function showFlightStatus(type, msg) {
+  var el = document.getElementById('flightStatus');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'flightStatus';
+    var fnEl = document.getElementById('fn');
+    if (fnEl && fnEl.parentNode) fnEl.parentNode.insertBefore(el, fnEl.nextSibling);
+  }
+  var colors = {
+    loading:'background:#EEF4FF;border:1.5px solid #93C5FD;color:#1E40AF',
+    found:'background:var(--gl);border:1.5px solid var(--green);color:var(--gd)',
+    warn:'background:#FFFBEB;border:1.5px solid #F59E0B;color:#92400E'
+  };
+  el.style.cssText = 'border-radius:7px;padding:8px 12px;font-size:12px;font-weight:600;margin-top:6px;display:block;'+(colors[type]||colors.warn);
+  el.innerHTML = type==='loading' ? '<span class="spinner"></span> '+msg : msg;
+}
+
+
 
 /* ─── NAVIGATION PAGES ─── */
 function showPage(id){
@@ -2462,7 +2542,7 @@ function showNotifToast(msg){
 
 /* ─── BLOG ─── */
 const posts=[
-  {cat:'Droits UE',title:'CE 261/2004 : tout ce que vous devez savoir en 2025',date:'15 juin 2025',content:`<p>Le règlement CE 261/2004 est le texte fondateur des droits des passagers aériens en Europe. Adopté en 2004, il protège les voyageurs en cas de <strong>retard de vol</strong>, d'<strong>annulation</strong> et de <strong>surbooking</strong>.</p><p><strong>Qui est couvert ?</strong><br>Tout vol décollant d'un aéroport de l'UE, quel que soit la compagnie. Également tout vol à destination de l'UE opéré par une compagnie européenne.</p><p><strong>Quels montants ?</strong><br>• 250€ pour les vols de moins de 1 500 km<br>• 400€ pour les vols entre 1 500 et 3 500 km<br>• 600€ pour les vols de plus de 3 500 km</p><p><strong>Quand réclamer ?</strong><br>À titre d'exemple : 5 ans en France — délai variable selon les pays et le règlement. Vérifiez avec SOS PASSAGER.</p>`},
+  {cat:'Droits UE',title:'CE 261/2004 : tout ce que vous devez savoir en 2025',date:'15 juin 2025',content:`<p>Le règlement CE 261/2004 est le texte fondateur des droits des passagers aériens en Europe. Adopté en 2004, il protège les voyageurs en cas de <strong>retard de vol</strong>, d'<strong>annulation</strong> et de <strong>surbooking</strong>.</p><p><strong>Qui est couvert ?</strong><br>Tout vol décollant d'un aéroport de l'UE, quel que soit la compagnie. Également tout vol à destination de l'UE opéré par une compagnie européenne.</p><p><strong>Quels montants ?</strong><br>• 250€ pour les vols de moins de 1 500 km<br>• 400€ pour les vols entre 1 500 et 3 500 km<br>• 600€ pour les vols de plus de 3 500 km</p><p><strong>Quand réclamer ?</strong><br>Vous disposez de 5 ans en France. N'attendez pas !</p>`},
   {cat:'Afrique de l\'Ouest',title:'UEMOA : vos droits sur les vols Abidjan-Dakar-Ouagadougou',date:'10 juin 2025',content:`<p>Le <strong>Règlement N°03/2003/CM/UEMOA</strong> protège les passagers sur les vols intérieurs et régionaux en Afrique de l'Ouest. Très peu connu, il est pourtant puissant.</p><p><strong>Pays couverts :</strong> Bénin, Burkina Faso, Côte d'Ivoire, Guinée-Bissau, Mali, Niger, Sénégal, Togo.</p><p><strong>Montants d'indemnisation :</strong><br>• Vols courts : jusqu'à 200€<br>• Vols moyens : jusqu'à 400€<br>• Maximum : 1 219€ par passager</p><p>SOS PASSAGER est le seul service maîtrisant à la fois le droit européen et le droit UEMOA.</p>`},
   {cat:'Jurisprudence',title:'Ryanair condamné : comment les low-cost perdent en justice',date:'5 juin 2025',content:`<p>Ryanair, easyJet, Transavia : les compagnies low-cost multiplient les refus de payer les indemnisations CE 261. Mais la justice européenne leur donne systématiquement tort.</p><p><strong>Arrêt CJUE C-501/17 :</strong> la panne technique n'est pas une circonstance extraordinaire si elle résulte d'un défaut d'entretien normal.</p><p><strong>Notre conseil :</strong> Ne laissez pas la compagnie vous décourager avec des formulaires complexes ou des refus automatiques. SOS PASSAGER connaît toutes leurs tactiques et les contourne.</p>`},
   {cat:'Conseils pratiques',title:'5 preuves à conserver en cas de vol retardé ou annulé',date:'1 juin 2025',content:`<p>La preuve est clé pour obtenir votre indemnisation. Voici les 5 documents à absolument conserver :</p><p><strong>1. Votre carte d'embarquement</strong> — physique ou électronique, elle prouve que vous étiez bien présent.</p><p><strong>2. La confirmation de réservation</strong> — indispensable pour prouver votre contrat avec la compagnie.</p><p><strong>3. Les SMS/emails de la compagnie</strong> — concernant le retard ou l'annulation.</p><p><strong>4. Vos reçus de repas et hébergement</strong> — si vous avez dû payer de votre poche.</p><p><strong>5. Les témoignages d'autres passagers</strong> — échangez vos coordonnées avec d'autres passagers à l'aéroport.</p>`},
@@ -2693,6 +2773,7 @@ window.addEventListener('load',()=>{
 
 function mobileNav(id){showPage(id);document.querySelectorAll('.mnav-btn').forEach(function(b){b.classList.remove('active');});var btn=document.getElementById('mb-'+id);if(btn)btn.classList.add('active');}
 </script>
+
 
 <div class="cta-band">
  <div class="cta-band-inner">
