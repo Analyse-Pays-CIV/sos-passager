@@ -1,0 +1,21 @@
+{
+  "name": "SOS PASSAGER — Indemnisation vol",
+  "short_name": "SOS PASSAGER",
+  "description": "Vol retarde, annule ou surbooke ? Reclamez jusqu a 600 EUR. Gratuit, sans avance de frais.",
+  "start_url": "/sos-passager/",
+  "display": "standalone",
+  "background_color": "#1B7A3E",
+  "theme_color": "#1B7A3E",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%231B7A3E' rx='40'/><text y='150' x='20' font-size='140'>✈</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["travel", "finance", "utilities"],
+  "lang": "fr",
+  "dir": "ltr"
+}
