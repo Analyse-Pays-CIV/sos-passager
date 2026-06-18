@@ -13,27 +13,30 @@ a{text-decoration:none;color:inherit}
 html{scroll-behavior:smooth}
 
 /* NAV */
-nav{background:var(--green);height:60px;display:flex;align-items:center;padding:0 1.5rem;position:sticky;top:0;z-index:500}
-.ni{width:100%;max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
-.logo{display:flex;align-items:center;gap:9px}
-.lc{width:36px;height:36px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--green);font-weight:900}
-.lt{color:#fff;font-size:14px;font-weight:700;line-height:1.1}
-.ls{color:rgba(255,255,255,.6);font-size:9px;letter-spacing:1.5px;display:block}
-.nl{display:flex;align-items:center}
+nav{background:var(--green);height:72px;display:flex;align-items:center;padding:0 2rem;position:sticky;top:0;z-index:500;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.ni{width:100%;max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+.lc{width:42px;height:42px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--green);font-weight:900;flex-shrink:0}
+.lt{color:#fff;font-size:16px;font-weight:800;line-height:1.1;letter-spacing:.3px}
+.ls{color:rgba(255,255,255,.65);font-size:9px;letter-spacing:2px;display:block;margin-top:1px}
+.nl{display:flex;align-items:center;gap:0}
 .nit{position:relative}
-.nlk{color:rgba(255,255,255,.9);font-size:12px;font-weight:500;padding:0 11px;height:60px;display:flex;align-items:center;gap:4px;border-bottom:3px solid transparent;transition:all .15s;white-space:nowrap;cursor:pointer}
+.nlk{color:rgba(255,255,255,.92);font-size:13.5px;font-weight:500;padding:0 14px;height:72px;display:flex;align-items:center;gap:5px;border-bottom:3px solid transparent;transition:all .15s;white-space:nowrap;cursor:pointer;letter-spacing:.2px}
 .nlk:hover,.nlk.act{color:#fff;background:rgba(255,255,255,.1);border-bottom-color:var(--acc)}
-.nlk i.chev{font-size:10px;transition:transform .2s}
+.nlk i.chev{font-size:11px;transition:transform .2s;opacity:.8}
 .nit:hover .nlk i.chev{transform:rotate(180deg)}
-.ncta{background:var(--acc);color:#3a2500!important;border-radius:6px;padding:7px 14px!important;height:auto!important;border-bottom:none!important;font-weight:700!important;margin-left:6px}
-.ncta:hover{background:#e0951f!important}
-.drop{display:none;position:absolute;top:100%;left:0;background:#fff;border-radius:8px;border:1px solid #ddd;min-width:220px;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.ncta{background:var(--acc);color:#3a2500!important;border-radius:7px;padding:10px 18px!important;height:auto!important;border-bottom:none!important;font-weight:700!important;margin-left:8px;font-size:13.5px!important}
+.ncta:hover{background:#e0951f!important;transform:translateY(-1px)}
+.ndossier{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:7px;padding:8px 14px!important;height:auto!important;border-bottom:none!important;margin-left:6px;font-size:13px!important}
+.ndossier:hover{background:rgba(255,255,255,.25)!important}
+.drop{display:none;position:absolute;top:calc(100% + 4px);left:0;background:#fff;border-radius:10px;border:1px solid #e0e0e0;min-width:240px;z-index:999;box-shadow:0 6px 24px rgba(0,0,0,.14)}
 .nit:hover .drop{display:block}
-.dlk{display:flex;align-items:center;gap:9px;padding:10px 14px;font-size:13px;color:#222;border-bottom:.5px solid #eee;transition:background .15s;cursor:pointer}
+.drop-header{padding:10px 16px 6px;font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;font-weight:700;border-bottom:1px solid #f0f0f0}
+.dlk{display:flex;align-items:center;gap:10px;padding:11px 16px;font-size:13.5px;color:#222;border-bottom:.5px solid #f5f5f5;transition:background .15s;cursor:pointer}
 .dlk:last-child{border-bottom:none}
 .dlk:hover{background:#EAF3DE;color:#27500A}
-.dlk i{color:var(--green);font-size:13px;width:14px}
-.dbadge{background:var(--acc);color:#633806;font-size:9px;font-weight:700;padding:2px 6px;border-radius:20px;margin-left:4px}
+.dlk i{color:var(--green);font-size:14px;width:16px;flex-shrink:0}
+.dbadge{background:var(--acc);color:#633806;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:6px;vertical-align:middle}
 
 /* PAGES */
 .page{display:none}.page.active{display:block}
@@ -338,56 +341,71 @@ footer ul li a:hover{color:var(--acc)}
 </div>
 
 <!-- ══ NAV ══ -->
-<nav>
+<nav id="mainNav">
  <div class="ni">
-  <a class="logo" href="#" onclick="showPage('home')">
+  <div class="logo" onclick="nav('home')">
    <div class="lc">✈</div>
    <div><span class="lt">SOS PASSAGER</span><span class="ls">INDEMNISATION VOL</span></div>
-  </a>
-  <div class="nl">
-   <div class="nit"><div class="nlk" onclick="showPage('home')">SOS</div></div>
-   <div class="nit"><div class="nlk" onclick="showPage('reclamer')">Réclamez</div></div>
+  </div>
+  <div class="nl" id="navLinks">
+   <div class="nit">
+    <div class="nlk" onclick="nav('home')"><i class="fa-solid fa-house" style="font-size:12px;opacity:.7"></i> SOS</div>
+   </div>
+   <div class="nit">
+    <div class="nlk" onclick="nav('reclamer')"><i class="fa-solid fa-paper-plane" style="font-size:12px;opacity:.7"></i> Réclamez</div>
+   </div>
    <div class="nit">
     <div class="nlk">Vos droits <i class="fa-solid fa-chevron-down chev"></i></div>
     <div class="drop">
-     <div class="dlk" onclick="showPage('droits');setTab('r0')"><i class="fa-solid fa-clock"></i>Vol retardé</div>
-     <div class="dlk" onclick="showPage('droits');setTab('r1')"><i class="fa-solid fa-ban"></i>Vol annulé</div>
-     <div class="dlk" onclick="showPage('droits');setTab('r2')"><i class="fa-solid fa-users"></i>Surbooking</div>
-     <div class="dlk" onclick="showPage('droits');setTab('r3')"><i class="fa-solid fa-arrows-turn-right"></i>Correspondance manquée</div>
-     <div class="dlk" onclick="showPage('droits');setTab('r4')"><i class="fa-solid fa-earth-africa"></i>Droits UEMOA <span class="dbadge">Afrique</span></div>
-     <div class="dlk" onclick="showPage('montants')"><i class="fa-solid fa-euro-sign"></i>Montant indemnisation</div>
-     <div class="dlk" onclick="showPage('droits')"><i class="fa-solid fa-file-text"></i>Cadre juridique</div>
+     <div class="drop-header">Règlement CE 261/2004</div>
+     <div class="dlk" onclick="nav('droits','r0')"><i class="fa-solid fa-clock"></i>Vol retardé</div>
+     <div class="dlk" onclick="nav('droits','r1')"><i class="fa-solid fa-ban"></i>Vol annulé</div>
+     <div class="dlk" onclick="nav('droits','r2')"><i class="fa-solid fa-users"></i>Surbooking / refus embarquement</div>
+     <div class="dlk" onclick="nav('droits','r3')"><i class="fa-solid fa-arrows-turn-right"></i>Correspondance manquée</div>
+     <div class="drop-header">Montants</div>
+     <div class="dlk" onclick="nav('montants')"><i class="fa-solid fa-euro-sign"></i>Tableau des indemnisations</div>
+     <div class="dlk" onclick="nav('droits','r4')"><i class="fa-solid fa-earth-africa"></i>Droits UEMOA <span class="dbadge">Afrique</span></div>
     </div>
    </div>
    <div class="nit">
     <div class="nlk">Vol Afrique <i class="fa-solid fa-chevron-down chev"></i></div>
     <div class="drop">
-     <div class="dlk" onclick="showPage('droits');setTab('r4')"><i class="fa-solid fa-earth-africa"></i>Droits UEMOA <span class="dbadge">Afrique</span></div>
-     <div class="dlk" onclick="showPage('droits');setTab('r4')"><i class="fa-solid fa-clock"></i>Vol retardé Afrique</div>
-     <div class="dlk" onclick="showPage('droits');setTab('r4')"><i class="fa-solid fa-ban"></i>Vol annulé Afrique</div>
-     <div class="dlk" onclick="showPage('montants')"><i class="fa-solid fa-euro-sign"></i>Montants UEMOA</div>
+     <div class="drop-header">Zone UEMOA</div>
+     <div class="dlk" onclick="nav('droits','r4')"><i class="fa-solid fa-earth-africa"></i>Droits UEMOA</div>
+     <div class="dlk" onclick="nav('droits','r4')"><i class="fa-solid fa-clock"></i>Vol retardé Afrique</div>
+     <div class="dlk" onclick="nav('droits','r4')"><i class="fa-solid fa-ban"></i>Vol annulé Afrique</div>
+     <div class="dlk" onclick="nav('montants')"><i class="fa-solid fa-euro-sign"></i>Montants UEMOA</div>
     </div>
    </div>
    <div class="nit">
     <div class="nlk">À propos <i class="fa-solid fa-chevron-down chev"></i></div>
     <div class="drop">
-     <div class="dlk" onclick="showPage('home')"><i class="fa-solid fa-circle-info"></i>Comment ça marche</div>
-     <div class="dlk" onclick="showPage('faq')"><i class="fa-solid fa-question-circle"></i>FAQ</div>
-     <div class="dlk" onclick="showPage('blog')"><i class="fa-solid fa-newspaper"></i>Blog juridique</div>
-     <div class="dlk" onclick="showPage('contact')"><i class="fa-solid fa-users"></i>Notre équipe</div>
+     <div class="drop-header">SOS PASSAGER</div>
+     <div class="dlk" onclick="nav('home')"><i class="fa-solid fa-circle-info"></i>Comment ça marche</div>
+     <div class="dlk" onclick="nav('faq')"><i class="fa-solid fa-circle-question"></i>FAQ</div>
+     <div class="dlk" onclick="nav('blog')"><i class="fa-solid fa-newspaper"></i>Blog juridique</div>
+     <div class="dlk" onclick="nav('notif')"><i class="fa-solid fa-bell"></i>Alertes &amp; notifications</div>
+     <div class="dlk" onclick="nav('contact')"><i class="fa-solid fa-address-card"></i>Notre équipe &amp; contact</div>
     </div>
    </div>
    <div class="nit">
     <div class="nlk">Partenaires <i class="fa-solid fa-chevron-down chev"></i></div>
     <div class="drop">
-     <div class="dlk" onclick="showPage('partenaires')"><i class="fa-solid fa-handshake"></i>Partenaires stratégiques</div>
-     <div class="dlk" onclick="showPage('partenaires')"><i class="fa-solid fa-network-wired"></i>Réseau avocats</div>
-     <div class="dlk" onclick="showPage('partenaires')"><i class="fa-solid fa-plus"></i>Devenir partenaire</div>
+     <div class="drop-header">Réseau SOS PASSAGER</div>
+     <div class="dlk" onclick="nav('partenaires')"><i class="fa-solid fa-handshake"></i>Partenaires stratégiques</div>
+     <div class="dlk" onclick="nav('partenaires')"><i class="fa-solid fa-scale-balanced"></i>Réseau d'avocats</div>
+     <div class="dlk" onclick="nav('partenaires')"><i class="fa-solid fa-circle-plus"></i>Devenir partenaire</div>
     </div>
    </div>
-   <div class="nit"><div class="nlk" onclick="showPage('contact')">Contact</div></div>
-   <div class="nit"><div class="nlk ncta" onclick="showPage('reclamer')">Réclamer maintenant</div></div>
-   <div class="nit"><div class="nlk" onclick="showPage('client')" style="gap:5px"><i class="fa-solid fa-user-circle"></i>Mon dossier</div></div>
+   <div class="nit">
+    <div class="nlk" onclick="nav('contact')"><i class="fa-solid fa-phone" style="font-size:12px;opacity:.7"></i> Contact</div>
+   </div>
+   <div class="nit">
+    <div class="nlk ncta" onclick="nav('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer maintenant</div>
+   </div>
+   <div class="nit">
+    <div class="nlk ndossier" onclick="nav('client')"><i class="fa-solid fa-user-circle"></i> Mon dossier</div>
+   </div>
   </div>
  </div>
 </nav>
@@ -405,7 +423,7 @@ footer ul li a:hover{color:var(--acc)}
    <h1>Vol retardé, annulé ou surbooké ?<br>Réclamez jusqu'à <span>600 €</span> d'indemnisation</h1>
    <p>SOS PASSAGER défend vos droits en Europe (CE 261/2004) et en Afrique de l'Ouest (UEMOA).<br>Vérification en temps réel · Sans avance de frais</p>
    <div class="hbtns">
-    <button class="btnp" onclick="showPage('reclamer')"><i class="fa-solid fa-calculator"></i> Vérifier mon indemnisation</button>
+    <button class="btnp" onclick="nav('reclamer')"><i class="fa-solid fa-calculator"></i> Vérifier mon indemnisation</button>
     <button class="btns" onclick="scrollTo(0,700)"><i class="fa-solid fa-circle-play"></i> Comment ça marche</button>
    </div>
   </div>
@@ -443,6 +461,7 @@ footer ul li a:hover{color:var(--acc)}
     <div class="fr2">
      <div class="fg">
       <label>Aéroport de départ *</label>
+      <div id="errDep" style="display:none;color:#C62828;font-size:12px;font-weight:600;background:#FFF3F3;border-radius:6px;padding:6px 10px;margin-bottom:4px"></div>
       <select id="fdep" onchange="calcChk();autoCalc()" style="font-size:13px">
        <option value="">-- Sélectionnez --</option>
        <optgroup label="🇫🇷 France"><option value="CDG">CDG — Paris Charles de Gaulle</option><option value="ORY">ORY — Paris Orly</option><option value="NCE">NCE — Nice Côte d'Azur</option><option value="LYS">LYS — Lyon Saint-Exupéry</option><option value="MRS">MRS — Marseille Provence</option><option value="TLS">TLS — Toulouse Blagnac</option><option value="BOD">BOD — Bordeaux Mérignac</option></optgroup>
@@ -465,6 +484,7 @@ footer ul li a:hover{color:var(--acc)}
      </div>
      <div class="fg">
       <label>Aéroport d'arrivée *</label>
+      <div id="errArr" style="display:none;color:#C62828;font-size:12px;font-weight:600;background:#FFF3F3;border-radius:6px;padding:6px 10px;margin-bottom:4px"></div>
       <select id="farr" onchange="calcChk();autoCalc()" style="font-size:13px">
        <option value="">-- Sélectionnez --</option>
        <optgroup label="🇫🇷 France"><option value="CDG">CDG — Paris Charles de Gaulle</option><option value="ORY">ORY — Paris Orly</option><option value="NCE">NCE — Nice Côte d'Azur</option><option value="LYS">LYS — Lyon Saint-Exupéry</option><option value="MRS">MRS — Marseille Provence</option><option value="TLS">TLS — Toulouse Blagnac</option><option value="BOD">BOD — Bordeaux Mérignac</option></optgroup>
@@ -498,7 +518,8 @@ footer ul li a:hover{color:var(--acc)}
 
     <div class="fg">
      <label>Compagnie aérienne</label>
-     <select id="fcomp" onchange="autoCalc()" style="font-size:13px">
+     <div id="errComp" style="display:none;color:#C62828;font-size:12px;font-weight:600;background:#FFF3F3;border-radius:6px;padding:6px 10px;margin-bottom:4px"></div>
+     <select id="fcomp" onchange="calcChk()" style="font-size:13px">
       <option value="">-- Sélectionnez --</option>
       <optgroup label="🇫🇷 France"><option value="AF;EU">Air France</option><option value="SS;EU">Corsair</option><option value="TO;EU">Transavia France</option></optgroup>
       <optgroup label="🇩🇪 Allemagne"><option value="LH;EU">Lufthansa</option><option value="EW;EU">Eurowings</option><option value="DE;EU">Condor</option></optgroup>
@@ -597,23 +618,23 @@ footer ul li a:hover{color:var(--acc)}
     <div class="rtab" id="rtab-r4" onclick="setTab('r4')">UEMOA <span class="ubadge">Afrique</span></div>
    </div>
    <div class="rc active" id="r0">
-    <div><h3>Vol retardé — CE 261/2004</h3><p>Dès lors que votre vol accuse un retard de <strong>3h ou plus à l'arrivée</strong>, vous avez droit à une compensation financière, sauf circonstance extraordinaire.</p><ul><li>Retard mesuré à l'arrivée (pas au départ)</li><li>Cause interne : panne technique, manque de personnel</li><li>Retard ≥ 5h : remboursement intégral possible</li><li>5 ans pour réclamer</li></ul><br><button class="green-btn" onclick="showPage('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer maintenant</button></div>
+    <div><h3>Vol retardé — CE 261/2004</h3><p>Dès lors que votre vol accuse un retard de <strong>3h ou plus à l'arrivée</strong>, vous avez droit à une compensation financière, sauf circonstance extraordinaire.</p><ul><li>Retard mesuré à l'arrivée (pas au départ)</li><li>Cause interne : panne technique, manque de personnel</li><li>Retard ≥ 5h : remboursement intégral possible</li><li>5 ans pour réclamer</li></ul><br><button class="green-btn" onclick="nav('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer maintenant</button></div>
     <div><div class="amtt"><div class="arow" style="background:var(--gl)"><i class="fa-solid fa-plane"></i><div class="d">Court-courrier &lt; 1 500 km</div><div class="e">250 €</div></div><div class="arow"><i class="fa-solid fa-plane-departure"></i><div class="d">Moyen-courrier 1 500–3 500 km</div><div class="e">400 €</div></div><div class="arow" style="background:var(--gl)"><i class="fa-solid fa-earth-africa"></i><div class="d">Long-courrier &gt; 3 500 km</div><div class="e">600 €</div></div></div><p style="font-size:11px;color:#aaa;margin-top:7px">* Par passager. Réductible 50% si réacheminement accepté.</p></div>
    </div>
    <div class="rc" id="r1">
-    <div><h3>Vol annulé — CE 261/2004</h3><p>Annulation communiquée <strong>moins de 14 jours avant</strong> le départ → droit à l'indemnisation + remboursement intégral OU réacheminement.</p><ul><li>Remboursement sous 7 jours obligatoire</li><li>Assistance aéroport (repas, hébergement)</li><li>Circonstances extraordinaires : météo, grève externe → pas d'indemnisation</li><li>5 ans pour réclamer</li></ul><br><button class="green-btn" onclick="showPage('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer maintenant</button></div>
+    <div><h3>Vol annulé — CE 261/2004</h3><p>Annulation communiquée <strong>moins de 14 jours avant</strong> le départ → droit à l'indemnisation + remboursement intégral OU réacheminement.</p><ul><li>Remboursement sous 7 jours obligatoire</li><li>Assistance aéroport (repas, hébergement)</li><li>Circonstances extraordinaires : météo, grève externe → pas d'indemnisation</li><li>5 ans pour réclamer</li></ul><br><button class="green-btn" onclick="nav('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer maintenant</button></div>
     <div><div class="amtt"><div class="arow" style="background:var(--gl)"><i class="fa-solid fa-plane"></i><div class="d">Court-courrier &lt; 1 500 km</div><div class="e">250 €</div></div><div class="arow"><i class="fa-solid fa-plane-departure"></i><div class="d">Moyen-courrier 1 500–3 500 km</div><div class="e">400 €</div></div><div class="arow" style="background:var(--gl)"><i class="fa-solid fa-earth-africa"></i><div class="d">Long-courrier &gt; 3 500 km</div><div class="e">600 €</div></div></div></div>
    </div>
    <div class="rc" id="r2">
-    <div><h3>Surbooking — refus d'embarquement</h3><p>La compagnie vous refuse l'embarquement involontairement → <strong>indemnisation immédiate</strong> + assistance complète.</p><ul><li>Remboursement intégral OU réacheminement au choix</li><li>Repas, boissons, hébergement gratuits</li><li>Vérifiez que les compensations volontaires couvrent vos droits légaux</li></ul><br><button class="green-btn" onclick="showPage('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer maintenant</button></div>
+    <div><h3>Surbooking — refus d'embarquement</h3><p>La compagnie vous refuse l'embarquement involontairement → <strong>indemnisation immédiate</strong> + assistance complète.</p><ul><li>Remboursement intégral OU réacheminement au choix</li><li>Repas, boissons, hébergement gratuits</li><li>Vérifiez que les compensations volontaires couvrent vos droits légaux</li></ul><br><button class="green-btn" onclick="nav('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer maintenant</button></div>
     <div><div class="amtt"><div class="arow" style="background:var(--gl)"><i class="fa-solid fa-plane"></i><div class="d">Court-courrier &lt; 1 500 km</div><div class="e">250 €</div></div><div class="arow"><i class="fa-solid fa-plane-departure"></i><div class="d">Moyen-courrier 1 500–3 500 km</div><div class="e">400 €</div></div><div class="arow" style="background:var(--gl)"><i class="fa-solid fa-earth-africa"></i><div class="d">Long-courrier &gt; 3 500 km</div><div class="e">600 €</div></div></div></div>
    </div>
    <div class="rc" id="r3">
-    <div><h3>Correspondance manquée</h3><p>Arrivée en destination finale avec <strong>+ de 3h de retard</strong> suite à correspondance manquée, sur la <strong>même réservation</strong> → indemnisation possible.</p><ul><li>Même réservation obligatoire</li><li>Réacheminement + assistance fournis par la compagnie</li><li>Retard ≥ 5h au départ : remboursement possible</li></ul><br><button class="green-btn" onclick="showPage('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer maintenant</button></div>
+    <div><h3>Correspondance manquée</h3><p>Arrivée en destination finale avec <strong>+ de 3h de retard</strong> suite à correspondance manquée, sur la <strong>même réservation</strong> → indemnisation possible.</p><ul><li>Même réservation obligatoire</li><li>Réacheminement + assistance fournis par la compagnie</li><li>Retard ≥ 5h au départ : remboursement possible</li></ul><br><button class="green-btn" onclick="nav('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer maintenant</button></div>
     <div><div class="amtt"><div class="arow" style="background:var(--gl)"><i class="fa-solid fa-plane"></i><div class="d">Court-courrier &lt; 1 500 km</div><div class="e">250 €</div></div><div class="arow"><i class="fa-solid fa-plane-departure"></i><div class="d">Moyen-courrier 1 500–3 500 km</div><div class="e">400 €</div></div><div class="arow" style="background:var(--gl)"><i class="fa-solid fa-earth-africa"></i><div class="d">Long-courrier &gt; 3 500 km</div><div class="e">600 €</div></div></div></div>
    </div>
    <div class="rc" id="r4">
-    <div><h3>Droits UEMOA <span class="ubadge">Afrique de l'Ouest</span></h3><p>Le <strong>Règlement N°03/2003/CM/UEMOA</strong> couvre : Côte d'Ivoire, Sénégal, Mali, Burkina Faso, Togo, Bénin, Niger, Guinée-Bissau.</p><ul><li>Vols intérieurs et régionaux UEMOA</li><li>Indemnisation jusqu'à 1 219 €</li><li>Assistance obligatoire dès certains seuils</li><li>SOS PASSAGER : expertise Europe + Afrique</li></ul><br><button class="green-btn" onclick="showPage('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer maintenant</button></div>
+    <div><h3>Droits UEMOA <span class="ubadge">Afrique de l'Ouest</span></h3><p>Le <strong>Règlement N°03/2003/CM/UEMOA</strong> couvre : Côte d'Ivoire, Sénégal, Mali, Burkina Faso, Togo, Bénin, Niger, Guinée-Bissau.</p><ul><li>Vols intérieurs et régionaux UEMOA</li><li>Indemnisation jusqu'à 1 219 €</li><li>Assistance obligatoire dès certains seuils</li><li>SOS PASSAGER : expertise Europe + Afrique</li></ul><br><button class="green-btn" onclick="nav('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer maintenant</button></div>
     <div><div class="amtt"><div class="arow" style="background:var(--gl)"><i class="fa-solid fa-plane"></i><div class="d">Vols courts UEMOA</div><div class="e">200 €</div></div><div class="arow"><i class="fa-solid fa-plane-departure"></i><div class="d">Vols moyens UEMOA</div><div class="e">400 €</div></div><div class="arow" style="background:var(--gl)"><i class="fa-solid fa-earth-africa"></i><div class="d">Maximum UEMOA</div><div class="e">1 219 €</div></div></div></div>
    </div>
   </div>
@@ -783,7 +804,7 @@ footer ul li a:hover{color:var(--acc)}
      <a href="https://wa.me/491773431460" style="color:var(--green);font-weight:700">WhatsApp Europe +49 177 343 14 60</a><br>
      <a href="https://wa.me/2250503605725" style="color:var(--green);font-weight:700">WhatsApp Afrique +225 05 03 60 57 25</a></p>
      <br>
-     <button class="green-btn" style="margin:0 auto" onclick="showPage('client')"><i class="fa-solid fa-user-circle"></i> Voir mon dossier (démo)</button>
+     <button class="green-btn" style="margin:0 auto" onclick="nav('client')"><i class="fa-solid fa-user-circle"></i> Voir mon dossier (démo)</button>
     </div>
    </div>
 
@@ -1105,27 +1126,37 @@ footer ul li a:hover{color:var(--acc)}
    <p style="font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;max-width:260px">Experts droits des passagers — Europe (CE 261/2004) et Afrique de l'Ouest (UEMOA). Sans succès, sans frais.</p>
   </div>
   <div><h4>Navigation</h4><ul>
-   <li><a onclick="showPage('home')">Accueil / SOS</a></li>
-   <li><a onclick="showPage('reclamer')">Réclamez</a></li>
-   <li><a onclick="showPage('client')">Mon dossier</a></li>
-   <li><a onclick="showPage('notif')">Notifications</a></li>
+   <li><a onclick="nav('home')">Accueil / SOS</a></li>
+   <li><a onclick="nav('reclamer')">Réclamez</a></li>
+   <li><a onclick="nav('client')">Mon dossier</a></li>
+   <li><a onclick="nav('notif')">Notifications</a></li>
   </ul></div>
   <div><h4>Droits</h4><ul>
-   <li><a onclick="showPage('droits');setTab('r0')">Vol retardé</a></li>
-   <li><a onclick="showPage('droits');setTab('r1')">Vol annulé</a></li>
-   <li><a onclick="showPage('droits');setTab('r2')">Surbooking</a></li>
-   <li><a onclick="showPage('droits');setTab('r4')">UEMOA Afrique</a></li>
+   <li><a onclick="nav('droits');setTab('r0')">Vol retardé</a></li>
+   <li><a onclick="nav('droits');setTab('r1')">Vol annulé</a></li>
+   <li><a onclick="nav('droits');setTab('r2')">Surbooking</a></li>
+   <li><a onclick="nav('droits');setTab('r4')">UEMOA Afrique</a></li>
   </ul></div>
   <div><h4>Ressources</h4><ul>
-   <li><a onclick="showPage('blog')">Blog juridique</a></li>
-   <li><a onclick="showPage('faq')">FAQ</a></li>
-   <li><a onclick="showPage('contact')">Contact</a></li>
-   <li><a onclick="showPage('notif')">Alertes email</a></li>
+   <li><a onclick="nav('blog')">Blog juridique</a></li>
+   <li><a onclick="nav('faq')">FAQ</a></li>
+   <li><a onclick="nav('contact')">Contact</a></li>
+   <li><a onclick="nav('notif')">Alertes email</a></li>
   </ul></div>
  </div>
  <div class="fbot">
-  © 2025 SOS PASSAGER · <a href="#" style="color:rgba(255,255,255,.4)">Mentions légales</a> · <a href="#" style="color:rgba(255,255,255,.4)">Confidentialité</a><br>
-  <span style="font-size:10px;margin-top:3px;display:block">CE 261/2004 · UEMOA N°03/2003/CM/UEMOA · Photos : Unsplash (licence libre) · API vols : AviationStack open-source</span>
+  <div style="margin-bottom:10px">© 2025 SOS PASSAGER — Ivoire Consulting / AICDI · Freiburg 🇩🇪 · Abidjan 🇨🇮</div>
+  <div style="margin:12px 0;padding:12px 0;border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12)">
+   <span style="color:rgba(255,255,255,.4);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;display:block;margin-bottom:10px">LÉGAL</span>
+   <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px">
+    <a onclick="nav('confidentialite')" style="color:rgba(255,255,255,.7);cursor:pointer;font-size:12px;text-decoration:underline;text-underline-offset:3px;transition:color .2s">Politique de confidentialité &amp; Cookies</a>
+    <a onclick="nav('cgu')" style="color:rgba(255,255,255,.7);cursor:pointer;font-size:12px;text-decoration:underline;text-underline-offset:3px">Conditions Générales</a>
+    <a onclick="nav('mentions')" style="color:rgba(255,255,255,.7);cursor:pointer;font-size:12px;text-decoration:underline;text-underline-offset:3px">Mentions légales</a>
+    <a onclick="nav('compliance')" style="color:rgba(255,255,255,.7);cursor:pointer;font-size:12px;text-decoration:underline;text-underline-offset:3px">Compliance</a>
+    <a onclick="nav('accessibilite')" style="color:rgba(255,255,255,.7);cursor:pointer;font-size:12px;text-decoration:underline;text-underline-offset:3px">Déclaration d'accessibilité</a>
+   </div>
+  </div>
+  <span style="font-size:10px;color:rgba(255,255,255,.3)">CE 261/2004 · UEMOA N°03/2003/CM/UEMOA · Photos : Unsplash (licence libre)</span>
  </div>
 </footer>
 
@@ -1149,6 +1180,17 @@ function setTab(id){
 }
 
 /* ─── CALCULATEUR ─── */
+/* ══ NAVIGATION ══ */
+function nav(id, tab){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg=document.getElementById('page-'+id);
+  if(pg){pg.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+  else{console.warn('Page introuvable: page-'+id);}
+  if(tab) setTimeout(()=>setTab(tab),100);
+  if(id==='montants') setTimeout(startCounters,300);
+}
+function showPage(id){nav(id);}
+
 /* ══════════════════════════════════════
    DONNÉES AÉROPORTS & CALCUL INTELLIGENT
 ══════════════════════════════════════ */
@@ -1239,13 +1281,59 @@ function goC(n){
 }
 
 function calcChk(){
-  const fn=document.getElementById('fn');
-  const fd=document.getElementById('fd');
-  const dep=document.getElementById('fdep');
-  const arr=document.getElementById('farr');
-  const ok=fn&&fn.value&&fd&&fd.value&&dep&&dep.value&&arr&&arr.value;
-  const btn=document.getElementById('cn1');if(btn)btn.disabled=!ok;
-  autoCalc();
+  const fn=(document.getElementById('fn')||{value:''}).value.trim().toUpperCase().replace(/\s/g,'');
+  const fd=(document.getElementById('fd')||{value:''}).value;
+  const dep=(document.getElementById('fdep')||{value:''}).value;
+  const arr=(document.getElementById('farr')||{value:''}).value;
+  const comp=(document.getElementById('fcomp')||{value:''}).value;
+  const btn=document.getElementById('cn1');
+  clearCalcErrors();
+  let valid=true;
+
+  // ❌ Départ = Arrivée
+  if(dep&&arr&&dep===arr){
+    showCalcErr('errDep','⚠️ Départ et arrivée identiques — impossible ! Choisissez deux aéroports différents.');
+    showCalcErr('errArr','⚠️ Veuillez sélectionner un aéroport d'arrivée différent du départ.');
+    valid=false;
+  }
+
+  // ❌ Cohérence numéro de vol / compagnie
+  const IATA={AF:'AF',SS:'SS',TO:'TO',U2:'U2',FR:'FR',LH:'LH',EW:'EW',DE:'DE',
+    KL:'KL',SN:'SN',LX:'LX',OS:'OS',IB:'IB',TP:'TP',VY:'VY',
+    HF:'HF',HC:'HC',ET:'ET',KQ:'KQ',AT:'AT',TU:'TU',AH:'AH',
+    EK:'EK',QR:'QR',TK:'TK',DL:'DL',AA:'AA',AC:'AC'};
+  const NAMES={AF:'Air France',SS:'Corsair',TO:'Transavia France',U2:'easyJet',FR:'Ryanair',
+    LH:'Lufthansa',EW:'Eurowings',DE:'Condor',KL:'KLM',SN:'Brussels Airlines',
+    LX:'Swiss',OS:'Austrian Airlines',IB:'Iberia',TP:'TAP Air Portugal',VY:'Vueling',
+    HF:"Air Côte d'Ivoire",HC:'Air Sénégal',ET:'Ethiopian Airlines',KQ:'Kenya Airways',
+    AT:'Royal Air Maroc',TU:'Tunisair',AH:'Air Algérie',EK:'Emirates',
+    QR:'Qatar Airways',TK:'Turkish Airlines',DL:'Delta Air Lines',AA:'American Airlines',AC:'Air Canada'};
+
+  if(fn.length>=2&&comp){
+    const prefix=fn.substring(0,2).replace(/[0-9]/g,'');
+    const compCode=comp.split(';')[0];
+    const expectedCode=IATA[prefix];
+    if(prefix.length===2&&expectedCode&&expectedCode!==compCode){
+      const volCompany=NAMES[prefix]||prefix;
+      const selName=(document.getElementById('fcomp')||{}).options?.[(document.getElementById('fcomp')||{}).selectedIndex]?.text?.split('—')[0]?.trim()||compCode;
+      showCalcErr('errComp',`⚠️ Le vol ${fn} est opéré par ${volCompany}, pas par ${selName}. Corrigez le numéro de vol ou la compagnie.`);
+      valid=false;
+    }
+  }
+
+  if(btn) btn.disabled=!(fn&&fd&&dep&&arr&&valid);
+  if(dep&&arr&&dep!==arr) autoCalc();
+}
+
+function showCalcErr(id,msg){
+  const el=document.getElementById(id);
+  if(el){el.innerHTML='<i class="fa-solid fa-triangle-exclamation"></i> '+msg;el.style.display='block';}
+}
+function clearCalcErrors(){
+  ['errDep','errArr','errComp'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.innerHTML='';el.style.display='none';}
+  });
 }
 
 function autoCalc(){
@@ -1319,7 +1407,7 @@ function showResAuto(){
         <strong>Pourquoi ?</strong><br>${why}
       </div>
       <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-        <button class="green-btn" style="margin:0" onclick="showPage('contact')"><i class="fa-solid fa-phone"></i> Analyse gratuite</button>
+        <button class="green-btn" style="margin:0" onclick="nav('contact')"><i class="fa-solid fa-phone"></i> Analyse gratuite</button>
         <a href="https://wa.me/491773431460" target="_blank" style="display:flex;align-items:center;gap:7px;background:#25D366;color:#fff;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
       </div>
     </div>`;
@@ -1345,7 +1433,7 @@ function showResAuto(){
       <strong>Pourquoi êtes-vous éligible ?</strong><br>${why}
     </div>
     <div class="inote"><i class="fa-solid fa-circle-info" style="flex-shrink:0"></i><span>Vous disposez de <strong>5 ans</strong> pour réclamer · Sans succès = zéro frais</span></div>
-    <button class="ctabtn" onclick="showPage('reclamer')"><i class="fa-solid fa-paper-plane"></i> Déposer ma réclamation — Gratuit</button>`;
+    <button class="ctabtn" onclick="nav('reclamer')"><i class="fa-solid fa-paper-plane"></i> Déposer ma réclamation — Gratuit</button>`;
 }
 
 function resetC(){
@@ -1390,7 +1478,7 @@ function openPost(i){
   document.getElementById('blogGrid').style.display='none';
   const bf=document.getElementById('blogFull');
   bf.style.display='block';
-  document.getElementById('blogContent').innerHTML=`<div class="blog-cat">${p.cat}</div><h2>${p.title}</h2><div class="bmeta">${p.date} · SOS PASSAGER</div><div class="bcontent">${p.content}</div><br><button class="green-btn" onclick="showPage('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer mon indemnisation</button>`;
+  document.getElementById('blogContent').innerHTML=`<div class="blog-cat">${p.cat}</div><h2>${p.title}</h2><div class="bmeta">${p.date} · SOS PASSAGER</div><div class="bcontent">${p.content}</div><br><button class="green-btn" onclick="nav('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer mon indemnisation</button>`;
 }
 function closeBlog(){
   document.getElementById('blogGrid').style.display='grid';
@@ -1708,7 +1796,7 @@ window.addEventListener('load',()=>{
     <p style="font-size:11px;color:#aaa;padding:8px 16px">* Réduction de 50% possible si réacheminement avec retard limité à la destination finale.</p>
    </div>
    <div style="text-align:center">
-    <button class="btnp" onclick="showPage('reclamer')"><i class="fa-solid fa-paper-plane"></i> Calculer mon indemnisation maintenant</button>
+    <button class="btnp" onclick="nav('reclamer')"><i class="fa-solid fa-paper-plane"></i> Calculer mon indemnisation maintenant</button>
    </div>
   </div>
  </section>
