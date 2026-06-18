@@ -299,22 +299,33 @@ footer ul li a:hover{color:var(--acc)}
 .sticky-cta{display:none;position:fixed;top:72px;left:0;right:0;z-index:490;background:var(--acc);padding:10px 1.5rem;text-align:center}
 .sticky-cta button{background:var(--gd);color:#fff;border:none;border-radius:6px;padding:8px 20px;font-size:13px;font-weight:700;cursor:pointer}
 /* MOBILE bottom nav */
-.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:600;background:#fff;border-top:1px solid var(--bdr);padding:8px 0}
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:600;background:#fff;border-top:2px solid var(--bdr);padding:6px 0;box-shadow:0 -2px 12px rgba(0,0,0,.1)}
 .mobile-nav-inner{display:flex;justify-content:space-around}
-.mnav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-size:10px;color:var(--gt);padding:4px 8px}
-.mnav-btn i{font-size:20px;color:var(--green)}
+.mnav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;font-size:10px;color:var(--gt);padding:4px 10px;transition:color .15s;min-width:52px}
+.mnav-btn i{font-size:22px;color:var(--green)}
+.mnav-btn span{font-size:10px}
 .mnav-btn.active{color:var(--green)}
+.mnav-btn.active i{color:var(--gd)}
+.mobile-nav-inner{display:flex;justify-content:space-around;align-items:center;padding:0 4px}
 
 @media(max-width:768px){
   .sg,.rc.active,.tg,.cg,.fg4,.ubin,.blog-grid,.fr2,.fr3{grid-template-columns:1fr}
   .hc h1{font-size:24px}
   .iband{grid-template-columns:1fr;height:180px}
   .iband img:not(:first-child){display:none}
-  .stats{gap:18px}
+  .stats{gap:16px}
   .nl{display:none}
   .cta-band{display:none}
-  .mobile-nav{display:block}
-  body{padding-bottom:60px}
+  .mobile-nav{display:block !important}
+  body{padding-bottom:70px}
+  .cc{padding:18px}
+  .ctabs{gap:3px}
+  .ctab{font-size:10px;padding:5px 2px}
+  .hc h1{font-size:22px}
+  .hero{min-height:380px;padding:40px 1rem 100px}
+  nav{height:56px}
+  .lc{width:32px;height:32px;font-size:14px}
+  .lt{font-size:13px}
 }
 
 /* ── POP-UP NON ÉLIGIBLE ── */
@@ -455,7 +466,7 @@ footer ul li a:hover{color:var(--acc)}
    <p>SOS PASSAGER défend vos droits en Europe (CE 261/2004) et en Afrique de l'Ouest (UEMOA).<br>Vérification en temps réel · Sans avance de frais</p>
    <div class="hbtns">
     <button class="btnp" onclick="nav('reclamer')"><i class="fa-solid fa-calculator"></i> Vérifier mon indemnisation</button>
-    <button class="btns" onclick="scrollTo(0,700)"><i class="fa-solid fa-circle-play"></i> Comment ça marche</button>
+    <button class="btns" onclick="document.getElementById('section-comment').scrollIntoView({behavior:'smooth'})"><i class="fa-solid fa-circle-play"></i> Comment ça marche</button>
    </div>
   </div>
  </div>
@@ -1176,7 +1187,7 @@ footer ul li a:hover{color:var(--acc)}
   </ul></div>
  </div>
  <div class="fbot">
-  <div style="margin-bottom:10px">© 2025 SOS PASSAGER — Ivoire Consulting / AICDI · Freiburg 🇩🇪 · Abidjan 🇨🇮</div>
+  <div style="margin-bottom:10px">© 2025 SOS PASSAGER — Ivoire Consulting · Freiburg 🇩🇪 · Abidjan 🇨🇮</div>
   <div style="margin:12px 0;padding:12px 0;border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12)">
    <span style="color:rgba(255,255,255,.4);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;display:block;margin-bottom:10px">LÉGAL</span>
    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px">
@@ -1669,10 +1680,22 @@ function startCounters() {
   animateCounter('cnt4',150); animateCounter('cnt5',300); animateCounter('cnt6',500);
 }
 
+/* ── MOBILE NAV ── */
+function mobileNav(id) {
+  nav(id);
+  // Mettre a jour l etat actif
+  document.querySelectorAll('.mnav-btn').forEach(function(b){ b.classList.remove('active'); });
+  var btn = document.getElementById('mb-' + id);
+  if(btn) btn.classList.add('active');
+}
+
 /* ── INIT ── */
 window.addEventListener('load', function(){
   initSig();
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeBlog(); });
+  // Activer home par defaut sur mobile
+  var mbHome = document.getElementById('mb-home');
+  if(mbHome) mbHome.classList.add('active');
 });
 </script>
 
@@ -1920,13 +1943,24 @@ window.addEventListener('load', function(){
 </div>
 
 <!-- MOBILE BOTTOM NAV -->
-<div class="mobile-nav">
+<div class="mobile-nav" id="mobileNav">
  <div class="mobile-nav-inner">
-  <button class="mnav-btn" onclick="nav('home')"><i class="fa-solid fa-house"></i>Accueil</button>
-  <button class="mnav-btn" onclick="nav('reclamer')"><i class="fa-solid fa-paper-plane" style="color:var(--acc)"></i><span style="color:var(--acc);font-weight:700">Reclamer</span></button>
-  <button class="mnav-btn" onclick="nav('droits')"><i class="fa-solid fa-scale-balanced"></i>Droits</button>
-  <button class="mnav-btn" onclick="nav('client')"><i class="fa-solid fa-user-circle"></i>Mon dossier</button>
-  <button class="mnav-btn" onclick="nav('contact')"><i class="fa-solid fa-phone"></i>Contact</button>
+  <button class="mnav-btn" id="mb-home" onclick="mobileNav('home')">
+   <i class="fa-solid fa-house"></i><span>Accueil</span>
+  </button>
+  <button class="mnav-btn" id="mb-droits" onclick="mobileNav('droits')">
+   <i class="fa-solid fa-scale-balanced"></i><span>Droits</span>
+  </button>
+  <button class="mnav-btn" id="mb-reclamer" onclick="mobileNav('reclamer')" style="background:var(--acc);border-radius:12px;padding:6px 10px">
+   <i class="fa-solid fa-paper-plane" style="color:#3a2500;font-size:22px"></i>
+   <span style="color:#3a2500;font-weight:700">Reclamer</span>
+  </button>
+  <button class="mnav-btn" id="mb-client" onclick="mobileNav('client')">
+   <i class="fa-solid fa-user-circle"></i><span>Dossier</span>
+  </button>
+  <button class="mnav-btn" id="mb-contact" onclick="mobileNav('contact')">
+   <i class="fa-solid fa-phone"></i><span>Contact</span>
+  </button>
  </div>
 </div>
 
