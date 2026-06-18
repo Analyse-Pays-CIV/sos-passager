@@ -2164,10 +2164,10 @@ nav{background:#0D5C2E}
    Pour activer sur GitHub :
    1. Allez sur rapidapi.com, cherchez AeroDataBox, abonnez-vous (gratuit)
    2. Ouvrez index.html sur GitHub (crayon Edit)
-   3. Cherchez VOTRE_CLE_RAPIDAPI et remplacez par votre clé
+   3. Cherchez 262cc06f79mshea64815cecec763p1b68bdjsn89de9c34cf7d et remplacez par votre clé
 ═══════════════════════════════════════════════════════ */
 
-const RAPIDAPI_KEY  = "VOTRE_CLE_RAPIDAPI";
+const RAPIDAPI_KEY  = "262cc06f79mshea64815cecec763p1b68bdjsn89de9c34cf7d";
 const RAPIDAPI_HOST = "aerodatabox.p.rapidapi.com";
 
 const IATA_TO_SELECT = {
@@ -2186,7 +2186,7 @@ async function lookupFlight() {
   var flightNum = fnEl.value.trim().toUpperCase().replace(/[ ]/g,'');
   var flightDate = fdEl.value;
   if (!flightNum || flightNum.length < 4 || !flightDate) return;
-  if (RAPIDAPI_KEY === 'VOTRE_CLE_RAPIDAPI') { return; }
+  if (RAPIDAPI_KEY === '262cc06f79mshea64815cecec763p1b68bdjsn89de9c34cf7d') { return; }
   showFlightStatus('loading','Recherche du vol en cours...');
   try {
     var url = 'https://aerodatabox.p.rapidapi.com/flights/number/'+flightNum+'/'+flightDate;
