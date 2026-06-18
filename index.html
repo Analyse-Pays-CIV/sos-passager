@@ -1882,7 +1882,7 @@ function showResAuto(){
   html+='</div><div class="dets"><div class="det"><span>Incident</span>'+(incLabels[inc]||inc)+'</div><div class="det"><span>Distance</span>'+(dist?dist.toLocaleString('fr-FR')+' km':'Estimée')+'</div><div class="det"><span>Vol</span>'+(fn||'—')+' — '+dateStr+'</div><div class="det"><span>Trajet</span>'+dep+' → '+arr+'</div><div class="det"><span>Règlement</span>'+res.reg+'</div><div class="det"><span>Catégorie</span>'+m.cat+'</div></div>';
   html+='<div style="background:var(--gl);border-left:4px solid var(--green);border-radius:0 8px 8px 0;padding:11px 14px;font-size:12px;color:var(--gd);margin:10px 0;line-height:1.6"><strong>Pourquoi éligible ?</strong><br>'+res.why+'</div>';
   html+='<div class="inote"><i class="fa-solid fa-circle-info" style="flex-shrink:0"></i><span>Sans succès = zéro frais — Commission 20–30% + TVA uniquement si indemnisation obtenue</span></div>';
-  html+='<button class="ctabtn" onclick="showPage(\'reclamer\')"><i class="fa-solid fa-paper-plane"></i> Déposer ma réclamation — Gratuit</button>';
+  html+='<button class="ctabtn" onclick="transferToForm()"><i class="fa-solid fa-paper-plane"></i> Déposer ma réclamation — Formulaire pré-rempli ✅</button>';
   z.innerHTML=html;
 }
 function resetC(){
