@@ -837,13 +837,521 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
     }
+
+    /* ════════════════════════════════════════════════════
+       BARRE UTILISATEUR (topbar connecté)
+    ════════════════════════════════════════════════════ */
+    .user-topbar {
+      display: none;
+      background: var(--blue-light);
+      border-bottom: 1.5px solid var(--blue);
+      padding: 8px 20px;
+      font-size: 0.82rem;
+      color: var(--blue-dark);
+      font-weight: 600;
+    }
+    .user-topbar.visible { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .user-topbar-left { display: flex; align-items: center; gap: 8px; }
+    .user-topbar-avatar {
+      width: 30px; height: 30px; background: var(--blue);
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 0.8rem; font-weight: 800;
+    }
+    .btn-logout {
+      background: none; border: 1.5px solid var(--blue); color: var(--blue);
+      border-radius: 8px; padding: 4px 12px; font-size: 0.76rem;
+      font-weight: 700; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-logout:hover { background: var(--blue); color: #fff; }
+
+    /* ════════════════════════════════════════════════════
+       VERROU CONNEXION sur les boutons de réservation
+    ════════════════════════════════════════════════════ */
+    .lock-overlay {
+      position: absolute; inset: 0; z-index: 10;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(2px);
+      border-radius: 14px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .lock-overlay:hover { background: rgba(232,240,251,0.88); }
+    .lock-overlay-icon { font-size: 2rem; }
+    .lock-overlay-text {
+      font-size: 0.78rem; font-weight: 700;
+      color: var(--blue-dark); text-align: center; padding: 0 10px;
+    }
+    .hotel-card, .transport-card { position: relative; }
+
+    /* Masquer verrou si connecté */
+    body.authenticated .lock-overlay { display: none !important; }
+
+    /* ════════════════════════════════════════════════════
+       MODAL GÉNÉRIQUE
+    ════════════════════════════════════════════════════ */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(10,20,40,0.62);
+      backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.22s;
+    }
+    .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+    .modal-box {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 24px 80px rgba(0,60,150,0.22);
+      width: 100%; max-width: 460px;
+      max-height: 92vh; overflow-y: auto;
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .modal-backdrop.open .modal-box { transform: translateY(0) scale(1); }
+    .modal-head {
+      padding: 28px 28px 0;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 12px;
+    }
+    .modal-head-text h2 { font-size: 1.25rem; font-weight: 800; color: var(--blue-dark); margin-bottom: 4px; }
+    .modal-head-text p { font-size: 0.82rem; color: var(--gray-text); }
+    .modal-close {
+      background: var(--gray-2); border: none; border-radius: 50%;
+      width: 34px; height: 34px; font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--dark); transition: background 0.15s;
+    }
+    .modal-close:hover { background: var(--gray-3); }
+    .modal-body { padding: 20px 28px 28px; }
+    .modal-tabs {
+      display: flex; gap: 0; border-bottom: 2px solid var(--gray-2);
+      margin-bottom: 22px;
+    }
+    .modal-tab {
+      flex: 1; text-align: center; padding: 10px 8px;
+      font-size: 0.88rem; font-weight: 700; color: var(--gray-text);
+      cursor: pointer; border-bottom: 3px solid transparent;
+      margin-bottom: -2px; transition: all 0.15s;
+    }
+    .modal-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+    .modal-panel { display: none; }
+    .modal-panel.active { display: block; }
+
+    /* Champs du modal */
+    .mfield { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .mfield label { font-size: 0.78rem; font-weight: 700; color: var(--dark); text-transform: uppercase; letter-spacing: 0.04em; }
+    .mfield input {
+      border: 1.5px solid var(--gray-3); border-radius: 10px;
+      padding: 11px 14px; font-size: 0.9rem; outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s; width: 100%;
+      background: var(--white); color: var(--dark);
+    }
+    .mfield input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,87,184,0.12); }
+    .mfield-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .btn-modal-submit {
+      width: 100%; background: var(--blue); color: #fff;
+      border: none; border-radius: 12px; padding: 14px;
+      font-size: 0.95rem; font-weight: 800; cursor: pointer;
+      margin-top: 6px; transition: background 0.18s, transform 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-modal-submit:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .modal-divider { text-align: center; font-size: 0.78rem; color: var(--gray-text); margin: 14px 0; }
+    .modal-error {
+      background: #FFF0F0; border: 1.5px solid #FFBCBC;
+      border-radius: 9px; padding: 10px 14px;
+      font-size: 0.8rem; color: #C0392B; font-weight: 600;
+      margin-bottom: 12px; display: none;
+    }
+    .modal-success-msg {
+      text-align: center; padding: 10px 0 4px;
+    }
+    .modal-success-msg .big-check { font-size: 2.8rem; display: block; margin-bottom: 8px; }
+    .modal-success-msg h3 { font-size: 1.1rem; font-weight: 800; color: var(--blue-dark); margin-bottom: 4px; }
+    .modal-success-msg p { font-size: 0.83rem; color: var(--gray-text); }
+    .switch-link {
+      color: var(--blue); font-weight: 700; cursor: pointer;
+      text-decoration: underline; font-size: 0.82rem;
+    }
+    .pwd-wrap { position: relative; }
+    .pwd-toggle {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; font-size: 1rem;
+      color: var(--gray-text); padding: 4px;
+    }
+
+    /* ════════════════════════════════════════════════════
+       PANIER DYNAMIQUE — RÉCAP AMÉLIORÉ
+    ════════════════════════════════════════════════════ */
+    .recap-box {
+      /* override existant */
+    }
+    .recap-total-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 14px; padding-top: 14px;
+      border-top: 2px solid var(--blue);
+      flex-wrap: wrap; gap: 8px;
+    }
+    .recap-total-label {
+      font-size: 0.88rem; font-weight: 700; color: var(--blue-dark);
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .recap-total-amount {
+      font-size: 1.6rem; font-weight: 900; color: var(--blue-dark);
+      line-height: 1;
+    }
+    .recap-total-amount .total-eur {
+      font-size: 0.8rem; font-weight: 500;
+      color: var(--gray-text); display: block; text-align: right; margin-top: 2px;
+    }
+    .recap-nuits-row {
+      font-size: 0.78rem; color: var(--gray-text);
+      margin-top: 6px; padding-top: 6px;
+      border-top: 1px solid var(--gray-2);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* Bouton paiement */
+    .btn-pay {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      width: 100%; max-width: 520px; margin: 0 auto;
+      background: var(--blue); color: #fff;
+      border: none; border-radius: 14px;
+      padding: 18px 28px; font-size: 1.05rem; font-weight: 800;
+      cursor: pointer; transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+      box-shadow: 0 6px 24px rgba(0,87,184,0.3);
+      text-decoration: none;
+    }
+    .btn-pay:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,87,184,0.38); }
+    .btn-pay:disabled { background: var(--gray-3); box-shadow: none; cursor: not-allowed; transform: none; }
+    .btn-pay-icon { font-size: 1.4rem; }
+    .btn-pay-text { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
+    .btn-pay-text strong { font-size: 1rem; line-height: 1.2; }
+    .btn-pay-text small { font-size: 0.72rem; font-weight: 500; opacity: 0.85; }
+
+    .wa-confirm-wrap { display: none; } /* masqué — remplacé par le bouton paiement */
+
+    /* ════════════════════════════════════════════════════
+       MODAL PAIEMENT
+    ════════════════════════════════════════════════════ */
+    .pay-modal-box { max-width: 500px; }
+
+    .pay-amount-display {
+      background: var(--blue-light); border-radius: 12px;
+      padding: 16px 20px; text-align: center; margin-bottom: 20px;
+    }
+    .pay-amount-display .pay-lbl { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue-dark); margin-bottom: 4px; }
+    .pay-amount-display .pay-big { font-size: 2rem; font-weight: 900; color: var(--blue-dark); }
+    .pay-amount-display .pay-sub { font-size: 0.78rem; color: var(--gray-text); margin-top: 2px; }
+
+    .pay-method-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-text); margin-bottom: 12px; }
+
+    .pay-methods-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+
+    .pay-method-card {
+      border: 2px solid var(--gray-3); border-radius: 12px;
+      padding: 14px 12px; cursor: pointer; transition: all 0.18s;
+      display: flex; flex-direction: column; align-items: center; gap: 7px;
+      text-align: center; background: var(--white);
+    }
+    .pay-method-card:hover { border-color: var(--blue-mid); background: var(--blue-light); }
+    .pay-method-card.selected { border-color: var(--blue); background: var(--blue-light); box-shadow: 0 0 0 3px rgba(0,87,184,0.15); }
+    .pay-method-card input { display: none; }
+    .pay-method-icon { font-size: 1.8rem; line-height: 1; }
+    .pay-method-name { font-size: 0.8rem; font-weight: 700; color: var(--dark); }
+    .pay-method-sub { font-size: 0.7rem; color: var(--gray-text); }
+
+    /* Détail Mobile Money */
+    .pay-mm-detail {
+      display: none; background: var(--gray-1); border-radius: 10px;
+      padding: 14px; margin-bottom: 16px;
+    }
+    .pay-mm-detail.visible { display: block; }
+    .pay-mm-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .pay-mm-btn {
+      border: 1.5px solid var(--gray-3); background: var(--white);
+      border-radius: 8px; padding: 8px 14px; font-size: 0.78rem;
+      font-weight: 700; cursor: pointer; transition: all 0.15s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .pay-mm-btn:hover, .pay-mm-btn.active { border-color: var(--blue); background: var(--blue-light); color: var(--blue-dark); }
+
+    /* Détail Carte */
+    .pay-card-detail {
+      display: none; background: var(--gray-1); border-radius: 10px;
+      padding: 14px; margin-bottom: 16px;
+    }
+    .pay-card-detail.visible { display: block; }
+    .card-input-fake {
+      border: 1.5px solid var(--gray-3); border-radius: 9px;
+      padding: 11px 14px; font-size: 0.88rem; background: var(--white);
+      color: var(--dark); width: 100%; margin-bottom: 10px;
+      outline: none; transition: border-color 0.18s;
+    }
+    .card-input-fake:focus { border-color: var(--blue); }
+    .card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .btn-pay-now {
+      width: 100%; background: var(--blue); color: #fff;
+      border: none; border-radius: 12px; padding: 15px;
+      font-size: 0.95rem; font-weight: 800; cursor: pointer;
+      transition: background 0.18s, transform 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-pay-now:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .pay-security-note { text-align: center; font-size: 0.72rem; color: var(--gray-text); margin-top: 10px; }
+
+    /* ── Écran de succès paiement ── */
+    .pay-success-screen {
+      display: none; text-align: center; padding: 10px 0 16px;
+    }
+    .pay-success-screen .success-anim { font-size: 4rem; display: block; margin-bottom: 14px; animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes popIn { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .pay-success-screen h3 { font-size: 1.2rem; font-weight: 800; color: var(--blue-dark); margin-bottom: 8px; }
+    .pay-success-screen p { font-size: 0.85rem; color: var(--gray-text); line-height: 1.6; margin-bottom: 14px; }
+    .pay-success-details {
+      background: var(--blue-light); border-radius: 12px;
+      padding: 14px 18px; text-align: left; margin-bottom: 16px;
+    }
+    .pay-success-details .sdt { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--blue-dark); margin-bottom: 10px; }
+    .pay-success-detail-row { font-size: 0.82rem; color: var(--dark); margin-bottom: 6px; display: flex; gap: 8px; }
+    .pay-success-detail-row span:first-child { font-weight: 700; flex-shrink: 0; }
+    .pay-ref { font-size: 0.72rem; color: var(--gray-text); }
+    .btn-close-success {
+      background: var(--blue); color: #fff; border: none;
+      border-radius: 10px; padding: 12px 28px; font-size: 0.9rem;
+      font-weight: 700; cursor: pointer; transition: background 0.15s;
+    }
+    .btn-close-success:hover { background: var(--blue-dark); }
+
+    /* ── Processing spinner ── */
+    .pay-processing { display: none; text-align: center; padding: 30px 0; }
+    .pay-processing .spin {
+      width: 48px; height: 48px; border: 4px solid var(--gray-2);
+      border-top-color: var(--blue); border-radius: 50%;
+      animation: spin 0.7s linear infinite; margin: 0 auto 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .pay-processing p { font-size: 0.9rem; font-weight: 600; color: var(--blue-dark); }
+
+    /* Responsive modals */
+    @media (max-width: 500px) {
+      .modal-body { padding: 16px 18px 22px; }
+      .modal-head { padding: 20px 18px 0; }
+      .mfield-row { grid-template-columns: 1fr; }
+      .pay-methods-grid { grid-template-columns: 1fr 1fr; }
+    }
   </style>
 </head>
 <body>
 
 <!-- ══════════════════════════════════════════════════════════════════
-     NAVIGATION
+     BARRE UTILISATEUR CONNECTÉ
 ══════════════════════════════════════════════════════════════════ -->
+<div class="user-topbar" id="userTopbar">
+  <div class="user-topbar-left">
+    <div class="user-topbar-avatar" id="userAvatar">?</div>
+    <span id="userGreeting">Bienvenue</span>
+  </div>
+  <button class="btn-logout" id="btnLogout">Se déconnecter</button>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MODAL INSCRIPTION / CONNEXION
+══════════════════════════════════════════════════════════════════ -->
+<div class="modal-backdrop" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-text">
+        <h2 id="authModalTitle">Accès Escale Réseau</h2>
+        <p>Connectez-vous ou créez votre compte gratuit pour réserver</p>
+      </div>
+      <button class="modal-close" id="authModalClose" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Tabs -->
+      <div class="modal-tabs" role="tablist">
+        <div class="modal-tab active" id="tabLogin" role="tab" aria-selected="true" aria-controls="panelLogin" tabindex="0">Se connecter</div>
+        <div class="modal-tab" id="tabRegister" role="tab" aria-selected="false" aria-controls="panelRegister" tabindex="0">Créer un compte</div>
+      </div>
+
+      <!-- Panel CONNEXION -->
+      <div class="modal-panel active" id="panelLogin" role="tabpanel">
+        <div class="modal-error" id="loginError"></div>
+        <div class="mfield">
+          <label for="loginEmail">Adresse e-mail</label>
+          <input type="email" id="loginEmail" placeholder="votre@email.com" autocomplete="email" />
+        </div>
+        <div class="mfield">
+          <label for="loginPwd">Mot de passe</label>
+          <div class="pwd-wrap">
+            <input type="password" id="loginPwd" placeholder="••••••••" autocomplete="current-password" />
+            <button type="button" class="pwd-toggle" data-target="loginPwd" aria-label="Afficher le mot de passe">👁</button>
+          </div>
+        </div>
+        <button class="btn-modal-submit" id="btnLogin">
+          <span>🔓</span> Se connecter
+        </button>
+        <p class="modal-divider">Pas encore de compte ? <span class="switch-link" data-tab="tabRegister">Créer un compte →</span></p>
+      </div>
+
+      <!-- Panel INSCRIPTION -->
+      <div class="modal-panel" id="panelRegister" role="tabpanel">
+        <div class="modal-error" id="registerError"></div>
+        <div id="registerForm">
+          <div class="mfield-row">
+            <div class="mfield">
+              <label for="regPrenom">Prénom</label>
+              <input type="text" id="regPrenom" placeholder="Jean-Paul" autocomplete="given-name" />
+            </div>
+            <div class="mfield">
+              <label for="regNom">Nom</label>
+              <input type="text" id="regNom" placeholder="Dupont" autocomplete="family-name" />
+            </div>
+          </div>
+          <div class="mfield">
+            <label for="regEmail">Adresse e-mail</label>
+            <input type="email" id="regEmail" placeholder="votre@email.com" autocomplete="email" />
+          </div>
+          <div class="mfield">
+            <label for="regWa">Numéro WhatsApp</label>
+            <input type="tel" id="regWa" placeholder="+225 05 03 60 57 25" autocomplete="tel" />
+          </div>
+          <div class="mfield">
+            <label for="regPwd">Mot de passe</label>
+            <div class="pwd-wrap">
+              <input type="password" id="regPwd" placeholder="Minimum 6 caractères" autocomplete="new-password" />
+              <button type="button" class="pwd-toggle" data-target="regPwd" aria-label="Afficher le mot de passe">👁</button>
+            </div>
+          </div>
+          <button class="btn-modal-submit" id="btnRegister">
+            <span>✈️</span> Créer mon compte &amp; Réserver
+          </button>
+          <p class="modal-divider">Déjà un compte ? <span class="switch-link" data-tab="tabLogin">Se connecter →</span></p>
+        </div>
+        <!-- Succès inscription -->
+        <div class="modal-success-msg" id="registerSuccess" style="display:none">
+          <span class="big-check">🎉</span>
+          <h3>Compte créé avec succès !</h3>
+          <p>Bienvenue dans SOS Passager Escale Réseau.<br>Vous pouvez maintenant sélectionner votre hébergement et votre transport.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MODAL PAIEMENT
+══════════════════════════════════════════════════════════════════ -->
+<div class="modal-backdrop" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payModalTitle">
+  <div class="modal-box pay-modal-box">
+    <div class="modal-head">
+      <div class="modal-head-text">
+        <h2 id="payModalTitle">💳 Paiement sécurisé</h2>
+        <p>Votre réservation sera confirmée immédiatement</p>
+      </div>
+      <button class="modal-close" id="payModalClose" aria-label="Fermer">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Écran principal paiement -->
+      <div id="payScreen">
+        <!-- Montant -->
+        <div class="pay-amount-display">
+          <div class="pay-lbl">Total à régler</div>
+          <div class="pay-big" id="payTotalDisplay">—</div>
+          <div class="pay-sub" id="paySubDisplay">Hébergement + Transport</div>
+        </div>
+
+        <!-- Choix méthode -->
+        <div class="pay-method-title">Choisissez votre mode de paiement</div>
+        <div class="pay-methods-grid">
+          <label class="pay-method-card" id="pmMobile">
+            <input type="radio" name="payMethod" value="mobile" />
+            <span class="pay-method-icon">📱</span>
+            <span class="pay-method-name">Mobile Money</span>
+            <span class="pay-method-sub">Wave · Orange · MTN · Moov</span>
+          </label>
+          <label class="pay-method-card" id="pmCard">
+            <input type="radio" name="payMethod" value="card" />
+            <span class="pay-method-icon">💳</span>
+            <span class="pay-method-name">Carte bancaire</span>
+            <span class="pay-method-sub">Visa · Mastercard</span>
+          </label>
+        </div>
+
+        <!-- Détail Mobile Money -->
+        <div class="pay-mm-detail" id="payMmDetail">
+          <div class="pay-method-title" style="margin-bottom:8px">Sélectionnez votre opérateur</div>
+          <div class="pay-mm-options">
+            <button type="button" class="pay-mm-btn" data-op="Wave">🔵 Wave</button>
+            <button type="button" class="pay-mm-btn" data-op="Orange Money">🟠 Orange Money</button>
+            <button type="button" class="pay-mm-btn" data-op="MTN MoMo">🟡 MTN MoMo</button>
+            <button type="button" class="pay-mm-btn" data-op="Moov Money">🟢 Moov Money</button>
+          </div>
+          <div class="mfield" style="margin-top:12px;margin-bottom:0">
+            <label for="mmNumber">Numéro Mobile Money</label>
+            <input type="tel" id="mmNumber" class="card-input-fake" placeholder="+225 05 XX XX XX XX" />
+          </div>
+        </div>
+
+        <!-- Détail Carte -->
+        <div class="pay-card-detail" id="payCardDetail">
+          <div class="mfield" style="margin-bottom:10px">
+            <label style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--dark)">Numéro de carte</label>
+            <input type="text" class="card-input-fake" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" />
+          </div>
+          <div class="card-row">
+            <div class="mfield" style="margin-bottom:0">
+              <label style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--dark)">Expiration</label>
+              <input type="text" class="card-input-fake" placeholder="MM/AA" maxlength="5" />
+            </div>
+            <div class="mfield" style="margin-bottom:0">
+              <label style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--dark)">CVV</label>
+              <input type="text" class="card-input-fake" placeholder="123" maxlength="3" />
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-pay-now" id="btnPayNow" disabled>
+          🔒 Valider le paiement
+        </button>
+        <p class="pay-security-note">🔒 Paiement crypté SSL · Données sécurisées · Aucun frais caché</p>
+      </div>
+
+      <!-- Écran processing -->
+      <div class="pay-processing" id="payProcessing">
+        <div class="spin"></div>
+        <p>Validation du paiement en cours…</p>
+      </div>
+
+      <!-- Écran succès -->
+      <div class="pay-success-screen" id="paySuccess">
+        <span class="success-anim">✅</span>
+        <h3>Réservation confirmée !</h3>
+        <p>Vos détails ont été envoyés au chauffeur et à l'hébergeur.<br>Vous recevrez une confirmation sur WhatsApp sous quelques minutes.</p>
+        <div class="pay-success-details">
+          <div class="sdt">📋 Récapitulatif de votre réservation</div>
+          <div class="pay-success-detail-row"><span>🏨 Hébergement</span><span id="successHotel">—</span></div>
+          <div class="pay-success-detail-row"><span>🚗 Transport</span><span id="successTransport">—</span></div>
+          <div class="pay-success-detail-row"><span>💰 Montant payé</span><span id="successAmount">—</span></div>
+          <div class="pay-success-detail-row"><span>👤 Client</span><span id="successClient">—</span></div>
+        </div>
+        <p class="pay-ref" id="payRef"></p>
+        <button class="btn-close-success" id="btnCloseSuccess">Retour à l'accueil ✈️</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 <header class="navbar">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo" aria-label="SOS Passager — Accueil">
@@ -1160,7 +1668,12 @@
         <label class="hotel-card" for="h1" id="hcard1">
           <input type="radio" name="hebergement" id="h1"
                  value="Studio Confort Privé — Abidjan Port-Bouët (5 min FHB)"
-                 data-prix="25 000 FCFA / nuit" />
+                 data-prix="25 000 FCFA / nuit"
+                 data-fcfa="25000" data-eur="38" />
+          <div class="lock-overlay" data-lock="hotel" role="button" tabindex="0" aria-label="Connexion requise pour sélectionner">
+            <span class="lock-overlay-icon">🔒</span>
+            <span class="lock-overlay-text">Connectez-vous pour réserver</span>
+          </div>
           <div class="hotel-img" role="img" aria-label="Photo chambre Studio Confort Privé Abidjan">
             <span class="hotel-img-icon" aria-hidden="true">🏨</span>
             <span class="hotel-img-badge">⭐ 4,8 / 5</span>
@@ -1192,7 +1705,12 @@
         <label class="hotel-card" for="h2" id="hcard2">
           <input type="radio" name="hebergement" id="h2"
                  value="Appartement Premium — Paris, proche CDG"
-                 data-prix="89 € / nuit" />
+                 data-prix="89 € / nuit"
+                 data-fcfa="58500" data-eur="89" />
+          <div class="lock-overlay" data-lock="hotel" role="button" tabindex="0" aria-label="Connexion requise">
+            <span class="lock-overlay-icon">🔒</span>
+            <span class="lock-overlay-text">Connectez-vous pour réserver</span>
+          </div>
           <div class="hotel-img hotel-img--blue" role="img" aria-label="Photo Appartement Premium Paris CDG">
             <span class="hotel-img-icon" aria-hidden="true">🏙️</span>
             <span class="hotel-img-badge">⭐ 4,9 / 5</span>
@@ -1224,7 +1742,12 @@
         <label class="hotel-card" for="h3" id="hcard3">
           <input type="radio" name="hebergement" id="h3"
                  value="Suite Familiale — Dakar, proche Blaise Diagne"
-                 data-prix="45 000 FCFA / nuit" />
+                 data-prix="45 000 FCFA / nuit"
+                 data-fcfa="45000" data-eur="69" />
+          <div class="lock-overlay" data-lock="hotel" role="button" tabindex="0" aria-label="Connexion requise">
+            <span class="lock-overlay-icon">🔒</span>
+            <span class="lock-overlay-text">Connectez-vous pour réserver</span>
+          </div>
           <div class="hotel-img hotel-img--teal" role="img" aria-label="Photo Suite Familiale Dakar">
             <span class="hotel-img-icon" aria-hidden="true">🌴</span>
             <span class="hotel-img-badge">⭐ 4,7 / 5</span>
@@ -1274,7 +1797,12 @@
         <label class="transport-card" for="t1" id="tcard1">
           <input type="radio" name="transport" id="t1"
                  value="Berline Standard (1-2 passagers)"
-                 data-prix="Inclus dans le pack" />
+                 data-prix="Inclus dans le pack"
+                 data-fcfa="0" data-eur="0" />
+          <div class="lock-overlay" data-lock="transport" role="button" tabindex="0" aria-label="Connexion requise">
+            <span class="lock-overlay-icon">🔒</span>
+            <span class="lock-overlay-text">Connectez-vous</span>
+          </div>
           <div class="transport-icon" aria-hidden="true">🚖</div>
           <div class="transport-name">Berline Standard</div>
           <div class="transport-desc">Idéal 1 à 2 passagers · Bagages cabine classiques · Confort assuré</div>
@@ -1296,7 +1824,12 @@
         <label class="transport-card" for="t2" id="tcard2">
           <input type="radio" name="transport" id="t2"
                  value="SUV Confort (3-4 passagers, grand coffre)"
-                 data-prix="+5 000 FCFA / +8 €" />
+                 data-prix="+5 000 FCFA / +8 €"
+                 data-fcfa="5000" data-eur="8" />
+          <div class="lock-overlay" data-lock="transport" role="button" tabindex="0" aria-label="Connexion requise">
+            <span class="lock-overlay-icon">🔒</span>
+            <span class="lock-overlay-text">Connectez-vous</span>
+          </div>
           <div class="transport-badge-popular">⭐ Populaire</div>
           <div class="transport-icon" aria-hidden="true">🚘</div>
           <div class="transport-name">SUV Confort</div>
@@ -1319,7 +1852,12 @@
         <label class="transport-card" for="t3" id="tcard3">
           <input type="radio" name="transport" id="t3"
                  value="Van / Navette Groupe (famille ou +4 valises)"
-                 data-prix="+10 000 FCFA / +15 €" />
+                 data-prix="+10 000 FCFA / +15 €"
+                 data-fcfa="10000" data-eur="15" />
+          <div class="lock-overlay" data-lock="transport" role="button" tabindex="0" aria-label="Connexion requise">
+            <span class="lock-overlay-icon">🔒</span>
+            <span class="lock-overlay-text">Connectez-vous</span>
+          </div>
           <div class="transport-icon" aria-hidden="true">🚐</div>
           <div class="transport-name">Van / Navette Groupe</div>
           <div class="transport-desc">Idéal familles · Voyageurs chargés · Plus de 4 grosses valises</div>
@@ -1341,7 +1879,7 @@
     </div><!-- /choix-block transport -->
 
     <!-- ════════════════════════════════
-         RÉCAPITULATIF SÉLECTION
+         PANIER DYNAMIQUE
     ════════════════════════════════ -->
     <div class="recap-box" id="recapBox" aria-live="polite" aria-label="Récapitulatif de votre sélection">
       <div class="recap-title">📋 Votre sélection</div>
@@ -1355,38 +1893,39 @@
           <span class="recap-val" id="recapTransport">Aucun sélectionné</span>
         </div>
       </div>
+      <!-- Ligne total dynamique -->
+      <div class="recap-total-row" id="recapTotalRow" style="display:none">
+        <span class="recap-total-label">💰 Total estimé</span>
+        <div>
+          <div class="recap-total-amount" id="recapTotalFcfa">—</div>
+          <span class="total-eur" id="recapTotalEur"></span>
+        </div>
+      </div>
+      <div class="recap-nuits-row" id="recapNuitsRow" style="display:none">
+        <span>Calcul basé sur <strong id="recapNuitsVal">1</strong> nuit(s)</span>
+        <span id="recapDetail" style="font-style:italic"></span>
+      </div>
     </div>
 
     <!-- ════════════════════════════════
-         BOUTON WHATSAPP FINAL
+         BOUTON PAIEMENT
     ════════════════════════════════ -->
-    <div class="wa-confirm-wrap">
-      <p class="wa-confirm-intro">Votre sélection sera envoyée automatiquement à notre équipe 👇</p>
-
-      <div class="wa-confirm-btns">
-        <a href="#" id="btnWaAfrique" class="btn-wa-confirm btn-wa-confirm--pulse" target="_blank" rel="noopener" aria-label="Confirmer votre choix via WhatsApp Afrique">
-          <span class="btn-wa-confirm-icon" aria-hidden="true">💬</span>
-          <span class="btn-wa-confirm-text">
-            <strong>Confirmer Logement + Transport</strong>
-            <small>via WhatsApp · Afrique&nbsp;&nbsp;+225 05 03 60 57 25</small>
-          </span>
-        </a>
-        <a href="#" id="btnWaEurope" class="btn-wa-confirm" target="_blank" rel="noopener" aria-label="Confirmer votre choix via WhatsApp Europe">
-          <span class="btn-wa-confirm-icon" aria-hidden="true">💬</span>
-          <span class="btn-wa-confirm-text">
-            <strong>Confirmer Logement + Transport</strong>
-            <small>via WhatsApp · Europe&nbsp;&nbsp;+49 177 343 14 60</small>
-          </span>
-        </a>
-      </div>
-
-      <p class="wa-confirm-hint">
-        ⚡ Réponse garantie sous 15 minutes · Prise en charge immédiate à la sortie du terminal
+    <div class="wa-confirm-wrap" style="display:block !important; margin-top:28px; text-align:center;">
+      <button class="btn-pay" id="btnPay" disabled>
+        <span class="btn-pay-icon">🔒</span>
+        <span class="btn-pay-text">
+          <strong>Connectez-vous pour réserver</strong>
+          <small>Sélectionnez un hébergement et un transport</small>
+        </span>
+      </button>
+      <p class="wa-confirm-hint" style="margin-top:12px">
+        ⚡ Confirmation immédiate · Prise en charge à la sortie du terminal
       </p>
     </div>
 
   </div><!-- /container -->
 </section>
+
 
 
 <!-- ══════════════════════════════════════════════════════════════════
@@ -2460,69 +2999,665 @@
 
 
 <!-- ══════════════════════════════════════════════════════════════════
-     SCRIPT MINIMAL
+     SCRIPT COMPLET — AUTH · PANIER · PAIEMENT
 ══════════════════════════════════════════════════════════════════ -->
 <script>
-  /* ── Hamburger menu ── */
-  var btn = document.getElementById('menuBtn');
-  var menu = document.getElementById('mobileMenu');
-  btn.addEventListener('click', function () {
-    var isOpen = menu.classList.toggle('open');
-    btn.setAttribute('aria-expanded', isOpen.toString());
-  });
+(function () {
+  'use strict';
 
-  /* ── Radio button visual selection ── */
+  /* ══════════════════════════════════════════════════════
+     0. HAMBURGER MENU
+  ══════════════════════════════════════════════════════ */
+  var menuBtn  = document.getElementById('menuBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', function () {
+      var isOpen = mobileMenu.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', isOpen.toString());
+    });
+  }
+
+  /* ── Radio button visuel (section prestataire) ── */
   document.querySelectorAll('.radio-btns label').forEach(function (lbl) {
-    lbl.querySelector('input').addEventListener('change', function () {
+    var inp = lbl.querySelector('input');
+    if (inp) inp.addEventListener('change', function () {
       document.querySelectorAll('.radio-btns label').forEach(function (l) { l.classList.remove('selected'); });
       lbl.classList.add('selected');
     });
   });
 
-  /* ── Form submit handler (AJAX to Formspree) ── */
+  /* ── Formspree forms ── */
   function setupForm(formId, successId) {
     var form = document.getElementById(formId);
     var success = document.getElementById(successId);
     if (!form) return;
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var submitBtn = form.querySelector('.btn-submit');
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Envoi en cours…';
+      var btn = form.querySelector('.btn-submit');
+      btn.disabled = true; btn.textContent = 'Envoi en cours…';
+      fetch(form.action, { method:'POST', body: new FormData(form), headers:{'Accept':'application/json'} })
+        .then(function (res) {
+          if (res.ok) { if(success) success.style.display='block'; form.reset(); btn.textContent='✅ Envoyé'; }
+          else { btn.disabled=false; btn.textContent='Réessayer'; }
+        })
+        .catch(function () { btn.disabled=false; btn.textContent='Réessayer'; });
+    });
+  }
+  setupForm('formVoyageur', 'successVoyageur');
+  setupForm('formPrestataire', 'successPrestataire');
 
-      var data = new FormData(form);
-      fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      })
-      .then(function (res) {
-        if (res.ok) {
-          success.style.display = 'block';
-          form.reset();
-          document.querySelectorAll('.radio-btns label').forEach(function (l) { l.classList.remove('selected'); });
-          submitBtn.textContent = '✅ Envoyé';
-        } else {
-          submitBtn.disabled = false;
-          submitBtn.textContent = form.id === 'formVoyageur'
-            ? 'Activer mon Pack via SOS Passager Escale Réseau 🚀'
-            : 'Intégrer SOS Passager Escale Réseau 🤝';
-          alert('Une erreur est survenue. Veuillez réessayer ou nous contacter directement sur WhatsApp.');
-        }
-      })
-      .catch(function () {
-        submitBtn.disabled = false;
-        submitBtn.textContent = form.id === 'formVoyageur'
-          ? 'Activer mon Pack via SOS Passager Escale Réseau 🚀'
-          : 'Intégrer SOS Passager Escale Réseau 🤝';
-        alert('Erreur réseau. Contactez-nous directement sur WhatsApp.');
+  /* ══════════════════════════════════════════════════════
+     1. GESTION UTILISATEUR (localStorage simulation)
+  ══════════════════════════════════════════════════════ */
+  var STORAGE_KEY = 'sosp_user';
+
+  function saveUser(user) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(user)); } catch(e) {}
+  }
+
+  function getUser() {
+    try { var u = localStorage.getItem(STORAGE_KEY); return u ? JSON.parse(u) : null; } catch(e) { return null; }
+  }
+
+  function removeUser() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  }
+
+  /* ══════════════════════════════════════════════════════
+     2. ÉTAT GLOBAL
+  ══════════════════════════════════════════════════════ */
+  var state = {
+    user:       getUser(),   // objet user ou null
+    hotel:      null,        // { label, fcfa, eur }
+    transport:  null,        // { label, fcfa, eur }
+    nuits:      1,
+    payMethod:  null,        // 'mobile' | 'card'
+    mmOp:       null         // opérateur Mobile Money sélectionné
+  };
+
+  /* ══════════════════════════════════════════════════════
+     3. UI — TOPBAR + VERROUS
+  ══════════════════════════════════════════════════════ */
+  var userTopbar    = document.getElementById('userTopbar');
+  var userAvatar    = document.getElementById('userAvatar');
+  var userGreeting  = document.getElementById('userGreeting');
+  var btnLogout     = document.getElementById('btnLogout');
+
+  function applyAuthUI() {
+    if (state.user) {
+      /* Connecté */
+      document.body.classList.add('authenticated');
+      if (userTopbar) userTopbar.classList.add('visible');
+      var initiales = ((state.user.prenom||'?')[0] + (state.user.nom||'?')[0]).toUpperCase();
+      if (userAvatar)   userAvatar.textContent  = initiales;
+      if (userGreeting) userGreeting.textContent = 'Bonjour ' + state.user.prenom + ' · Compte actif ✅';
+      updatePayBtn();
+    } else {
+      /* Déconnecté */
+      document.body.classList.remove('authenticated');
+      if (userTopbar) userTopbar.classList.remove('visible');
+      updatePayBtn();
+    }
+  }
+
+  if (btnLogout) {
+    btnLogout.addEventListener('click', function () {
+      state.user = null;
+      removeUser();
+      applyAuthUI();
+      /* Reset sélections */
+      state.hotel = null; state.transport = null;
+      resetCardsUI();
+      updateRecap();
+    });
+  }
+
+  /* Clics sur les verrous → ouvrir modal auth */
+  document.querySelectorAll('.lock-overlay').forEach(function (ov) {
+    ov.addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      openModal('authModal');
+    });
+    ov.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal('authModal'); }
+    });
+  });
+
+  /* ══════════════════════════════════════════════════════
+     4. MODALS — OUVERTURE / FERMETURE
+  ══════════════════════════════════════════════════════ */
+  function openModal(id) {
+    var m = document.getElementById(id);
+    if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  }
+
+  function closeModal(id) {
+    var m = document.getElementById(id);
+    if (m) { m.classList.remove('open'); document.body.style.overflow = ''; }
+  }
+
+  /* Fermeture via boutons × */
+  var authModalClose = document.getElementById('authModalClose');
+  var payModalClose  = document.getElementById('payModalClose');
+  if (authModalClose) authModalClose.addEventListener('click', function () { closeModal('authModal'); });
+  if (payModalClose)  payModalClose.addEventListener('click',  function () { closeModal('payModal'); });
+
+  /* Fermeture en cliquant sur le backdrop */
+  ['authModal','payModal'].forEach(function (id) {
+    var m = document.getElementById(id);
+    if (m) m.addEventListener('click', function (e) {
+      if (e.target === m) closeModal(id);
+    });
+  });
+
+  /* Fermeture clavier Escape */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeModal('authModal'); closeModal('payModal'); }
+  });
+
+  /* ══════════════════════════════════════════════════════
+     5. TABS DU MODAL AUTH
+  ══════════════════════════════════════════════════════ */
+  var tabLogin    = document.getElementById('tabLogin');
+  var tabRegister = document.getElementById('tabRegister');
+
+  function switchTab(activeTabId) {
+    var tabs   = [tabLogin, tabRegister];
+    var panels = [document.getElementById('panelLogin'), document.getElementById('panelRegister')];
+    tabs.forEach(function (t, i) {
+      var isActive = (t && t.id === activeTabId);
+      if (t) { t.classList.toggle('active', isActive); t.setAttribute('aria-selected', isActive.toString()); }
+      if (panels[i]) panels[i].classList.toggle('active', isActive);
+    });
+  }
+
+  if (tabLogin)    tabLogin.addEventListener('click',    function () { switchTab('tabLogin'); });
+  if (tabRegister) tabRegister.addEventListener('click', function () { switchTab('tabRegister'); });
+
+  /* Liens "switch" dans les panels */
+  document.querySelectorAll('.switch-link').forEach(function (lnk) {
+    lnk.addEventListener('click', function () {
+      switchTab(lnk.getAttribute('data-tab'));
+    });
+  });
+
+  /* ══════════════════════════════════════════════════════
+     6. AFFICHER / MASQUER MOT DE PASSE
+  ══════════════════════════════════════════════════════ */
+  document.querySelectorAll('.pwd-toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var inp = document.getElementById(btn.getAttribute('data-target'));
+      if (!inp) return;
+      var isText = inp.type === 'text';
+      inp.type = isText ? 'password' : 'text';
+      btn.textContent = isText ? '👁' : '🙈';
+    });
+  });
+
+  /* ══════════════════════════════════════════════════════
+     7. CONNEXION
+  ══════════════════════════════════════════════════════ */
+  var btnLogin    = document.getElementById('btnLogin');
+  var loginError  = document.getElementById('loginError');
+
+  if (btnLogin) {
+    btnLogin.addEventListener('click', function () {
+      var email = (document.getElementById('loginEmail')||{}).value.trim();
+      var pwd   = (document.getElementById('loginPwd')||{}).value;
+      if (loginError) loginError.style.display = 'none';
+
+      if (!email || !pwd) {
+        showError(loginError, 'Veuillez remplir tous les champs.'); return;
+      }
+      if (!isValidEmail(email)) {
+        showError(loginError, 'Adresse e-mail invalide.'); return;
+      }
+
+      /* Chercher dans localStorage */
+      var stored = findStoredUser(email);
+      if (!stored) {
+        showError(loginError, 'Aucun compte trouvé pour cet e-mail. Créez un compte.'); return;
+      }
+      if (stored.pwd !== pwd) {
+        showError(loginError, 'Mot de passe incorrect.'); return;
+      }
+
+      /* Connexion OK */
+      state.user = stored;
+      saveUser(state.user);
+      applyAuthUI();
+      closeModal('authModal');
+      showToast('Bienvenue ' + state.user.prenom + ' ! 👋');
+    });
+  }
+
+  /* ══════════════════════════════════════════════════════
+     8. INSCRIPTION
+  ══════════════════════════════════════════════════════ */
+  var btnRegister   = document.getElementById('btnRegister');
+  var registerError = document.getElementById('registerError');
+
+  if (btnRegister) {
+    btnRegister.addEventListener('click', function () {
+      var prenom = (document.getElementById('regPrenom')||{}).value.trim();
+      var nom    = (document.getElementById('regNom')||{}).value.trim();
+      var email  = (document.getElementById('regEmail')||{}).value.trim();
+      var wa     = (document.getElementById('regWa')||{}).value.trim();
+      var pwd    = (document.getElementById('regPwd')||{}).value;
+      if (registerError) registerError.style.display = 'none';
+
+      if (!prenom || !nom || !email || !wa || !pwd) {
+        showError(registerError, 'Veuillez remplir tous les champs.'); return;
+      }
+      if (!isValidEmail(email)) {
+        showError(registerError, 'Adresse e-mail invalide.'); return;
+      }
+      if (pwd.length < 6) {
+        showError(registerError, 'Le mot de passe doit contenir au moins 6 caractères.'); return;
+      }
+      if (findStoredUser(email)) {
+        showError(registerError, 'Un compte existe déjà avec cet e-mail. Connectez-vous.'); return;
+      }
+
+      /* Créer le compte */
+      var newUser = { prenom: prenom, nom: nom, email: email, wa: wa, pwd: pwd };
+      storeNewUser(newUser);
+      state.user = newUser;
+      saveUser(newUser);
+
+      /* Afficher succès */
+      var form    = document.getElementById('registerForm');
+      var success = document.getElementById('registerSuccess');
+      if (form)    form.style.display    = 'none';
+      if (success) success.style.display = 'block';
+
+      applyAuthUI();
+      setTimeout(function () {
+        closeModal('authModal');
+        if (form)    form.style.display    = '';
+        if (success) success.style.display = 'none';
+        showToast('Compte créé ! Bienvenue ' + prenom + ' 🎉');
+      }, 2200);
+    });
+  }
+
+  /* ── Stockage multi-utilisateurs ── */
+  function getAllUsers() {
+    try { return JSON.parse(localStorage.getItem('sosp_users') || '[]'); } catch(e) { return []; }
+  }
+  function storeNewUser(u) {
+    var users = getAllUsers(); users.push(u);
+    try { localStorage.setItem('sosp_users', JSON.stringify(users)); } catch(e) {}
+  }
+  function findStoredUser(email) {
+    return getAllUsers().find(function (u) { return u.email === email; }) || null;
+  }
+
+  /* ══════════════════════════════════════════════════════
+     9. SÉLECTION HÔTEL / TRANSPORT — PANIER DYNAMIQUE
+  ══════════════════════════════════════════════════════ */
+  function setupHotelCards() {
+    var cards = document.querySelectorAll('.hotel-card');
+    cards.forEach(function (card) {
+      var radio = card.querySelector('input[type="radio"]');
+      if (!radio) return;
+      card.addEventListener('click', function (e) {
+        if (!state.user) { e.preventDefault(); openModal('authModal'); return; }
+        cards.forEach(function (c) { c.classList.remove('is-selected'); });
+        card.classList.add('is-selected');
+        radio.checked = true;
+        state.hotel = {
+          label: radio.value,
+          fcfa:  parseInt(radio.getAttribute('data-fcfa') || '0', 10),
+          eur:   parseInt(radio.getAttribute('data-eur')  || '0', 10)
+        };
+        updateRecap();
       });
     });
   }
 
-  setupForm('formVoyageur', 'successVoyageur');
-  setupForm('formPrestataire', 'successPrestataire');
+  function setupTransportCards() {
+    var cards = document.querySelectorAll('.transport-card');
+    cards.forEach(function (card) {
+      var radio = card.querySelector('input[type="radio"]');
+      if (!radio) return;
+      card.addEventListener('click', function (e) {
+        if (!state.user) { e.preventDefault(); openModal('authModal'); return; }
+        cards.forEach(function (c) { c.classList.remove('is-selected'); });
+        card.classList.add('is-selected');
+        radio.checked = true;
+        state.transport = {
+          label: radio.value,
+          fcfa:  parseInt(radio.getAttribute('data-fcfa') || '0', 10),
+          eur:   parseInt(radio.getAttribute('data-eur')  || '0', 10)
+        };
+        updateRecap();
+      });
+    });
+  }
+
+  function resetCardsUI() {
+    document.querySelectorAll('.hotel-card, .transport-card').forEach(function (c) {
+      c.classList.remove('is-selected');
+      var r = c.querySelector('input[type="radio"]');
+      if (r) r.checked = false;
+    });
+  }
+
+  /* ── Lire nb nuits depuis le formulaire voyageur ── */
+  function getNuits() {
+    var inp = document.getElementById('v-nuits');
+    var n   = inp ? parseInt(inp.value, 10) : 1;
+    return (isNaN(n) || n < 1) ? 1 : n;
+  }
+
+  var vNuitsInput = document.getElementById('v-nuits');
+  if (vNuitsInput) {
+    vNuitsInput.addEventListener('input', function () {
+      state.nuits = getNuits();
+      updateRecap();
+    });
+  }
+
+  /* ── Mise à jour récapitulatif ── */
+  function updateRecap() {
+    state.nuits = getNuits();
+
+    var recapHotel     = document.getElementById('recapHotel');
+    var recapTransport = document.getElementById('recapTransport');
+    var recapTotalRow  = document.getElementById('recapTotalRow');
+    var recapTotalFcfa = document.getElementById('recapTotalFcfa');
+    var recapTotalEur  = document.getElementById('recapTotalEur');
+    var recapNuitsRow  = document.getElementById('recapNuitsRow');
+    var recapNuitsVal  = document.getElementById('recapNuitsVal');
+    var recapDetail    = document.getElementById('recapDetail');
+
+    /* Hébergement */
+    if (recapHotel) {
+      if (state.hotel) {
+        recapHotel.textContent = state.hotel.label;
+        recapHotel.classList.add('filled');
+      } else {
+        recapHotel.textContent = 'Aucun sélectionné';
+        recapHotel.classList.remove('filled');
+      }
+    }
+
+    /* Transport */
+    if (recapTransport) {
+      if (state.transport) {
+        recapTransport.textContent = state.transport.label;
+        recapTransport.classList.add('filled');
+      } else {
+        recapTransport.textContent = 'Aucun sélectionné';
+        recapTransport.classList.remove('filled');
+      }
+    }
+
+    /* Total */
+    if (state.hotel && state.transport) {
+      var totalFcfa = (state.hotel.fcfa * state.nuits) + state.transport.fcfa;
+      var totalEur  = (state.hotel.eur  * state.nuits) + state.transport.eur;
+      if (recapTotalRow)  recapTotalRow.style.display  = 'flex';
+      if (recapNuitsRow)  recapNuitsRow.style.display  = 'flex';
+      if (recapTotalFcfa) recapTotalFcfa.textContent   = formatFcfa(totalFcfa);
+      if (recapTotalEur && totalEur > 0)  recapTotalEur.textContent = '≈ ' + totalEur + ' €';
+      if (recapNuitsVal)  recapNuitsVal.textContent = state.nuits;
+      if (recapDetail)    recapDetail.textContent   =
+        formatFcfa(state.hotel.fcfa) + ' × ' + state.nuits + ' nuit(s) + ' + formatFcfa(state.transport.fcfa);
+    } else {
+      if (recapTotalRow) recapTotalRow.style.display = 'none';
+      if (recapNuitsRow) recapNuitsRow.style.display = 'none';
+    }
+
+    updatePayBtn();
+  }
+
+  /* ── Bouton paiement ── */
+  var btnPay = document.getElementById('btnPay');
+
+  function updatePayBtn() {
+    if (!btnPay) return;
+    var ready = state.user && state.hotel && state.transport;
+    btnPay.disabled = !ready;
+
+    var strong = btnPay.querySelector('strong');
+    var small  = btnPay.querySelector('small');
+    var icon   = btnPay.querySelector('.btn-pay-icon');
+
+    if (!state.user) {
+      if (icon)   icon.textContent   = '🔒';
+      if (strong) strong.textContent = 'Connectez-vous pour réserver';
+      if (small)  small.textContent  = 'Créez un compte gratuit en 30 secondes';
+    } else if (!state.hotel || !state.transport) {
+      if (icon)   icon.textContent   = '🛒';
+      if (strong) strong.textContent = 'Complétez votre sélection';
+      if (small)  small.textContent  = 'Choisissez un hébergement et un transport';
+    } else {
+      var nuits = getNuits();
+      var totalFcfa = (state.hotel.fcfa * nuits) + state.transport.fcfa;
+      var totalEur  = (state.hotel.eur  * nuits) + state.transport.eur;
+      if (icon)   icon.textContent   = '💳';
+      if (strong) strong.textContent = 'Procéder au paiement — ' + formatFcfa(totalFcfa);
+      if (small)  small.textContent  = (totalEur > 0 ? '≈ ' + totalEur + ' €  · ' : '') + 'Paiement sécurisé SSL';
+    }
+  }
+
+  /* Clic bouton paiement */
+  if (btnPay) {
+    btnPay.addEventListener('click', function () {
+      if (!state.user)  { openModal('authModal'); return; }
+      if (!state.hotel || !state.transport) return;
+      openPayModal();
+    });
+  }
+
+  /* Clic bouton paiement si non connecté */
+  if (btnPay) {
+    btnPay.addEventListener('click', function () {
+      if (!state.user) openModal('authModal');
+    }, true);
+  }
+
+  /* ══════════════════════════════════════════════════════
+     10. MODAL PAIEMENT
+  ══════════════════════════════════════════════════════ */
+  function openPayModal() {
+    /* Réinitialiser l'écran */
+    showPayScreen('main');
+    state.payMethod = null;
+    state.mmOp      = null;
+
+    /* Remplir montant */
+    var nuits     = getNuits();
+    var totalFcfa = (state.hotel.fcfa * nuits) + state.transport.fcfa;
+    var totalEur  = (state.hotel.eur  * nuits) + state.transport.eur;
+    var payBig    = document.getElementById('payTotalDisplay');
+    var paySub    = document.getElementById('paySubDisplay');
+    if (payBig) payBig.textContent = formatFcfa(totalFcfa) + (totalEur > 0 ? '  /  ' + totalEur + ' €' : '');
+    if (paySub) paySub.textContent = state.hotel.label.split('—')[0].trim() + ' · ' + state.transport.label.split('(')[0].trim();
+
+    /* Réinitialiser choix méthode */
+    document.querySelectorAll('.pay-method-card').forEach(function (c) { c.classList.remove('selected'); });
+    var mmDetail   = document.getElementById('payMmDetail');
+    var cardDetail = document.getElementById('payCardDetail');
+    if (mmDetail)   mmDetail.classList.remove('visible');
+    if (cardDetail) cardDetail.classList.remove('visible');
+    document.querySelectorAll('.pay-mm-btn').forEach(function (b) { b.classList.remove('active'); });
+    var btnPayNow = document.getElementById('btnPayNow');
+    if (btnPayNow) btnPayNow.disabled = true;
+
+    openModal('payModal');
+  }
+
+  function showPayScreen(which) {
+    var screens = { main: 'payScreen', processing: 'payProcessing', success: 'paySuccess' };
+    Object.keys(screens).forEach(function (k) {
+      var el = document.getElementById(screens[k]);
+      if (el) el.style.display = (k === which) ? 'block' : 'none';
+    });
+  }
+
+  /* ── Sélection méthode de paiement ── */
+  var pmMobile = document.getElementById('pmMobile');
+  var pmCard   = document.getElementById('pmCard');
+
+  function onMethodSelect(method) {
+    state.payMethod = method;
+    var mmDetail   = document.getElementById('payMmDetail');
+    var cardDetail = document.getElementById('payCardDetail');
+
+    [pmMobile, pmCard].forEach(function (c) { if (c) c.classList.remove('selected'); });
+
+    if (method === 'mobile') {
+      if (pmMobile)   pmMobile.classList.add('selected');
+      if (mmDetail)   mmDetail.classList.add('visible');
+      if (cardDetail) cardDetail.classList.remove('visible');
+      checkPayNowReady();
+    } else {
+      if (pmCard)     pmCard.classList.add('selected');
+      if (cardDetail) cardDetail.classList.add('visible');
+      if (mmDetail)   mmDetail.classList.remove('visible');
+      checkPayNowReady();
+    }
+  }
+
+  if (pmMobile) pmMobile.addEventListener('click', function () { onMethodSelect('mobile'); });
+  if (pmCard)   pmCard.addEventListener('click',   function () { onMethodSelect('card'); });
+
+  /* ── Opérateur Mobile Money ── */
+  document.querySelectorAll('.pay-mm-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.pay-mm-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      state.mmOp = btn.getAttribute('data-op');
+      checkPayNowReady();
+    });
+  });
+
+  /* ── Numéro carte (formatage automatique) ── */
+  var cardNumber = document.getElementById('cardNumber');
+  if (cardNumber) {
+    cardNumber.addEventListener('input', function () {
+      var v = this.value.replace(/\D/g,'').substring(0,16);
+      this.value = v.replace(/(.{4})/g, '$1 ').trim();
+      checkPayNowReady();
+    });
+  }
+
+  function checkPayNowReady() {
+    var btnPayNow = document.getElementById('btnPayNow');
+    if (!btnPayNow) return;
+    var ready = false;
+    if (state.payMethod === 'mobile') {
+      var mm = (document.getElementById('mmNumber')||{}).value;
+      ready = !!(state.mmOp && mm && mm.trim().length > 6);
+    } else if (state.payMethod === 'card') {
+      var cn = (document.getElementById('cardNumber')||{}).value.replace(/\s/g,'');
+      ready = cn.length >= 16;
+    }
+    btnPayNow.disabled = !ready;
+  }
+
+  var mmNumberInp = document.getElementById('mmNumber');
+  if (mmNumberInp) mmNumberInp.addEventListener('input', checkPayNowReady);
+
+  /* ── Valider le paiement ── */
+  var btnPayNow = document.getElementById('btnPayNow');
+  if (btnPayNow) {
+    btnPayNow.addEventListener('click', function () {
+      showPayScreen('processing');
+      setTimeout(function () {
+        showPaySuccess();
+      }, 2200);
+    });
+  }
+
+  function showPaySuccess() {
+    /* Remplir les détails de confirmation */
+    var nuits     = getNuits();
+    var totalFcfa = (state.hotel.fcfa * nuits) + state.transport.fcfa;
+    var totalEur  = (state.hotel.eur  * nuits) + state.transport.eur;
+    var ref       = 'SOS-' + Date.now().toString(36).toUpperCase();
+
+    var el = function(id) { return document.getElementById(id); };
+    if (el('successHotel'))     el('successHotel').textContent     = state.hotel.label.split('—')[0].trim();
+    if (el('successTransport')) el('successTransport').textContent = state.transport.label.split('(')[0].trim();
+    if (el('successAmount'))    el('successAmount').textContent    = formatFcfa(totalFcfa) + (totalEur > 0 ? ' / ' + totalEur + ' €' : '');
+    if (el('successClient'))    el('successClient').textContent    = state.user.prenom + ' ' + state.user.nom;
+    if (el('payRef'))           el('payRef').textContent           = 'Référence de réservation : ' + ref;
+
+    showPayScreen('success');
+  }
+
+  /* ── Fermer écran succès ── */
+  var btnCloseSuccess = document.getElementById('btnCloseSuccess');
+  if (btnCloseSuccess) {
+    btnCloseSuccess.addEventListener('click', function () {
+      closeModal('payModal');
+      /* Reset panier */
+      state.hotel = null; state.transport = null;
+      resetCardsUI(); updateRecap();
+      showToast('Réservation confirmée ! ✅ Notre équipe vous contacte sur WhatsApp.');
+      setTimeout(function () {
+        document.getElementById('choix-pack').scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    });
+  }
+
+  /* ══════════════════════════════════════════════════════
+     11. UTILITAIRES
+  ══════════════════════════════════════════════════════ */
+  function formatFcfa(n) {
+    if (n === 0) return 'Inclus';
+    return n.toLocaleString('fr-FR') + ' FCFA';
+  }
+
+  function isValidEmail(e) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+  }
+
+  function showError(el, msg) {
+    if (!el) return;
+    el.textContent = msg; el.style.display = 'block';
+  }
+
+  function showToast(msg) {
+    var t = document.createElement('div');
+    t.style.cssText = [
+      'position:fixed', 'bottom:24px', 'left:50%', 'transform:translateX(-50%) translateY(80px)',
+      'background:#1A2538', 'color:#fff', 'padding:13px 22px', 'border-radius:12px',
+      'font-size:0.88rem', 'font-weight:700', 'z-index:99999', 'max-width:90vw',
+      'text-align:center', 'box-shadow:0 8px 32px rgba(0,0,0,0.25)',
+      'transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1)'
+    ].join(';');
+    t.textContent = msg;
+    document.body.appendChild(t);
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { t.style.transform = 'translateX(-50%) translateY(0)'; });
+    });
+    setTimeout(function () {
+      t.style.transform = 'translateX(-50%) translateY(80px)';
+      setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 400);
+    }, 3500);
+  }
+
+  /* ══════════════════════════════════════════════════════
+     12. INIT
+  ══════════════════════════════════════════════════════ */
+  setupHotelCards();
+  setupTransportCards();
+  applyAuthUI();
+  updateRecap();
+
+  /* Ouvrir modal auth si non connecté et clic sur btnPay */
+  if (btnPay && !state.user) {
+    btnPay.addEventListener('click', function () { openModal('authModal'); });
+  }
+
+})();
 </script>
 
 </body>
 </html>
+
