@@ -1522,10 +1522,7 @@ nav{background:#0D5C2E}
    </div>
 
    <!-- NOTE FORMSPREE -->
-   <div style="max-width:700px;margin:16px auto 0;background:#EAF3DE;border-radius:8px;padding:12px 16px;font-size:12px;color:#1B7A3E;display:flex;gap:8px">
-    <i class="fa-solid fa-circle-info" style="flex-shrink:0;margin-top:2px"></i>
-    <span><strong>Configuration requise :</strong> Pour activer l'envoi réel des réclamations, inscrivez-vous gratuitement sur <a href="https://formspree.io" target="_blank" style="color:#145C2F;font-weight:700">formspree.io</a> → créez un formulaire → remplacez <code>YOUR_FORM_ID</code> dans le code HTML par votre identifiant.</span>
-   </div>
+   
   </div>
  </section>
 </div>
@@ -1561,7 +1558,24 @@ nav{background:#0D5C2E}
  </div>
 </footer>
 
-<script>const FLIGHT_TO_AIRLINE={
+<script>
+/* ══ CONSTANTES ══════════════════════════════════════════ */
+const GSHEETS_URL='https://script.google.com/macros/s/AKfycbwc3czBJr-zapofnq31Ukirg4xloGPJHIgabqLsg8muNjrkff7dVzmIBHYTdMKL5usvzw/exec';
+
+const EU_AIRPORTS=new Set(['CDG','ORY','NCE','LYS','MRS','TLS','BOD','NTE',
+  'FRA','MUC','DUS','BER','HAM','STR','BSL','CGN','BRU','AMS',
+  'LHR','LGW','STN','MAN','EDI','ZRH','GVA','VIE','PRG','WAW',
+  'MAD','BCN','VLC','AGP','FCO','MXP','LIN','VCE','LIS','OPO',
+  'ATH','HEL','ARN','OSL','CPH','DUB','RIX','VNO','TLL','BTS','BUD','OTP','SOF','ZAG']);
+
+const EU_COMPANIES=new Set(['AF','SS','TO','U2','LH','EW','DE','KL','SN','LX',
+  'OS','IB','TP','FR','VY','AZ','SK','AY','BA','BE','BT','EI','HV','LO',
+  'OK','OV','PC','PS','RO','VU','W6','WZ','FB']);
+
+const UEMOA_AIRPORTS=new Set(['ABJ','DSS','BKO','OUA','LFW','COO','OXB','NIM','CKY']);
+
+/* Mapping vol → compagnie (préfixe IATA 2 lettres) */
+const FLIGHT_TO_AIRLINE={
   'AF':'AF;EU','KL':'KL;EU','SN':'SN;EU','LH':'LH;EU','EW':'EW;EU',
   'SS':'SS;EU','TO':'TO;EU','U2':'U2;EU','FR':'FR;EU','LX':'LX;EU',
   'OS':'OS;EU','IB':'IB;EU','TP':'TP;EU','VY':'VY;EU','DE':'DE;EU',
@@ -1574,12 +1588,102 @@ const AIRLINE_NAMES={
   'EW':'Eurowings','SS':'Corsair','TO':'Transavia France','U2':'easyJet',
   'FR':'Ryanair','LX':'Swiss','OS':'Austrian Airlines','IB':'Iberia',
   'TP':'TAP Portugal','VY':'Vueling','DE':'Condor',
-  'HF':'Air Cote Ivoire','HC':'Air Senegal','ET':'Ethiopian Airlines',
-  'KQ':'Kenya Airways','AT':'Royal Air Maroc','TU':'Tunisair','AH':'Air Algerie',
+  'HF':"Air Côte d'Ivoire",'HC':'Air Sénégal','ET':'Ethiopian Airlines',
+  'KQ':'Kenya Airways','AT':'Royal Air Maroc','TU':'Tunisair','AH':'Air Algérie',
   'EK':'Emirates','QR':'Qatar Airways','TK':'Turkish Airlines',
   'DL':'Delta','AA':'American Airlines','AC':'Air Canada'
 };
 
+/* ══ COORDONNÉES GPS (pour calcul distance) ══════════════ */
+const COORDS={
+  CDG:[49.009,2.547],ORY:[48.723,2.379],NCE:[43.665,7.215],LYS:[45.726,5.090],
+  MRS:[43.439,5.221],TLS:[43.629,1.363],BOD:[44.828,-0.715],
+  FRA:[50.033,8.570],MUC:[48.354,11.786],DUS:[51.289,6.767],BER:[52.367,13.503],
+  STR:[48.690,9.222],BSL:[47.590,7.529],BRU:[50.901,4.484],AMS:[52.308,4.764],
+  LHR:[51.477,-0.461],LGW:[51.157,-0.182],STN:[51.885,0.235],
+  ZRH:[47.458,8.548],GVA:[46.238,6.109],VIE:[48.110,16.570],
+  MAD:[40.472,-3.561],BCN:[41.297,2.078],LIS:[38.774,-9.134],
+  FCO:[41.804,12.251],MXP:[45.630,8.728],
+  CMN:[33.368,-7.590],ALG:[36.691,3.215],TUN:[36.851,10.227],
+  ABJ:[5.261,-3.926],DSS:[14.670,-17.073],BKO:[12.534,-7.950],
+  OUA:[12.353,-1.512],LFW:[6.165,1.254],COO:[6.357,2.384],
+  CKY:[9.577,-13.612],NIM:[13.482,2.184],OXB:[11.895,-15.654],
+  DLA:[4.006,9.719],LBV:[0.458,9.412],BZV:[-4.251,15.253],
+  ADD:[8.977,38.799],NBO:[-1.319,36.925],JNB:[-26.133,28.242],
+  DXB:[25.253,55.365],DOH:[25.261,51.565],IST:[40.976,28.815],
+  JFK:[40.640,-73.779],LAX:[33.943,-118.408],YUL:[45.470,-73.741],
+  GRU:[-23.432,-46.469],PEK:[40.080,116.585],TYO:[35.765,140.386],SIN:[1.359,103.989]
+};
+
+/* ══ ÉTAT CALCULATEUR ════════════════════════════════════ */
+var S={inc:null};
+
+/* ══ detectReglement — LOGIQUE CORRECTE ════════════════ */
+function detectReglement(dep,arr,compCode){
+  var isEUdep=EU_AIRPORTS.has(dep);
+  var isEUarr=EU_AIRPORTS.has(arr);
+  var isEUcomp=EU_COMPANIES.has(compCode);
+  var isUEMOAdep=UEMOA_AIRPORTS.has(dep);
+  var isUEMOAarr=UEMOA_AIRPORTS.has(arr);
+
+  /* ORDRE CRITIQUE :
+     1. Compagnie EU + arrivée UE = CE 261 (ex: AF ABJ→CDG)
+     2. Départ UE = CE 261 (toute compagnie, ex: HF CDG→ABJ)
+     3. Compagnie EU sans départ UE = CE 261 (ex: AF ABJ→DSS)
+     4. Les 2 aéroports UEMOA = UEMOA
+     5. Sinon non éligible */
+
+  if(isEUcomp&&isEUarr)
+    return {reg:'CE 261/2004',why:'Compagnie européenne ('+compCode+') à destination de l\'UE ('+arr+') — CE 261/2004 applicable.'};
+  if(isEUdep)
+    return {reg:'CE 261/2004',why:'Départ depuis '+dep+' (aéroport UE/EEE) — CE 261/2004 applicable à toutes les compagnies.'};
+  if(isEUcomp)
+    return {reg:'CE 261/2004',why:'Compagnie européenne ('+compCode+') — CE 261/2004 applicable même hors UE.'};
+  if(isUEMOAdep&&isUEMOAarr)
+    return {reg:'UEMOA N°03/2003',why:'Vol intra-UEMOA ('+dep+'→'+arr+') — Règlement N°03/2003/CM/UEMOA applicable.'};
+  return {reg:'NON_ELIGIBLE',why:'Départ hors UE ('+dep+'), compagnie non-européenne ('+compCode+'), vol hors zone UEMOA. Aucun des deux règlements n\'est applicable.'};
+}
+
+/* ══ getMontant ══════════════════════════════════════════ */
+function getMontant(dist,reg,inc,duree){
+  if(reg==='NON_ELIGIBLE') return {montant:0,label:'0 €',cat:'Non éligible'};
+  if(reg.includes('UEMOA')){
+    if(duree&&duree.includes('Moins de 3')) return {montant:0,label:'0 €',cat:'Retard < 3h — non indemnisable (UEMOA)'};
+    if(!dist||dist<=1500) return {montant:200,label:'200 €',cat:'Court-courrier UEMOA (≤ 1 500 km)'};
+    if(dist<=3500) return {montant:400,label:'400 €',cat:'Moyen-courrier UEMOA (1 500–3 500 km)'};
+    return {montant:1219,label:'1 219 €',cat:'Long-courrier UEMOA (> 3 500 km)'};
+  }
+  if(duree&&duree.includes('Moins de 3')) return {montant:0,label:'0 €',cat:'Retard < 3h — non indemnisable (CE 261/2004)'};
+  if(!dist||dist<=1500) return {montant:250,label:'250 €',cat:'Court-courrier < 1 500 km'};
+  if(dist<=3500) return {montant:400,label:'400 €',cat:'Moyen-courrier 1 500–3 500 km'};
+  if(duree&&duree.includes('3h et 4')&&(inc==='retard'||inc==='corr'))
+    return {montant:300,label:'300 € *',cat:'Long-courrier > 3 500 km (réduit 50% si réacheminement)'};
+  return {montant:600,label:'600 €',cat:'Long-courrier > 3 500 km'};
+}
+
+/* ══ haversine ═══════════════════════════════════════════ */
+function haversine(dep,arr){
+  var c1=COORDS[dep],c2=COORDS[arr];
+  if(!c1||!c2) return null;
+  var R=6371,dLat=(c2[0]-c1[0])*Math.PI/180,dLon=(c2[1]-c1[1])*Math.PI/180;
+  var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(c1[0]*Math.PI/180)*Math.cos(c2[0]*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);
+  return Math.round(2*R*Math.asin(Math.sqrt(a)));
+}
+
+/* ══ showCalcErr ════════════════════════════════════════ */
+function showCalcErr(id,msg){
+  var el=document.getElementById(id);
+  if(el){el.innerHTML='<i class="fa-solid fa-triangle-exclamation"></i> '+msg;el.style.display='block';}
+}
+
+function clearCalcErrs(){
+  ['errDep','errArr','errComp','errDate'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el){el.innerHTML='';el.style.display='none';}
+  });
+}
+
+/* ══ forceAirline ════════════════════════════════════════ */
 function forceAirline(prefix){
   var sel=FLIGHT_TO_AIRLINE[prefix];
   if(sel){
@@ -1591,168 +1695,7 @@ function forceAirline(prefix){
   }
 }
 
-function transferToForm(){
-  var fn=(document.getElementById('fn')||{value:''}).value.trim();
-  var fd=(document.getElementById('fd')||{value:''}).value;
-  var dep=(document.getElementById('fdep')||{value:''}).value;
-  var arr=(document.getElementById('farr')||{value:''}).value;
-  var comp=(document.getElementById('fcomp')||{value:''}).value;
-  var duree=(document.getElementById('fduree')||{value:''}).value;
-  var inc=S.inc||'retard';
-  var incMap={
-    retard:'Vol retarde (>= 3h)',annul:'Vol annule',
-    surb:'Surbooking / refus d embarquement',corr:'Correspondance manquee'
-  };
-  var compSel=document.getElementById('fcomp');
-  var compName=compSel&&compSel.selectedIndex>0?compSel.options[compSel.selectedIndex].text:comp;
-  var depSel=document.getElementById('fdep');
-  var depName=depSel&&depSel.selectedIndex>0?depSel.options[depSel.selectedIndex].text:dep;
-  var arrSel=document.getElementById('farr');
-  var arrName=arrSel&&arrSel.selectedIndex>0?arrSel.options[arrSel.selectedIndex].text:arr;
-  showPage('reclamer');
-  setTimeout(function(){
-    var fields={'vol_numero':fn,'vol_date':fd,'depart':depName,'arrivee':arrName,'compagnie':compName};
-    Object.keys(fields).forEach(function(name){
-      var el=document.querySelector('input[name="'+name+'"]');
-      if(el&&fields[name]) el.value=fields[name];
-    });
-    var incSel=document.querySelector('select[name="incident"]');
-    if(incSel&&inc){
-      var incVal=incMap[inc]||inc;
-      for(var i=0;i<incSel.options.length;i++){
-        if(incSel.options[i].text.indexOf(incVal)>=0){incSel.selectedIndex=i;break;}
-      }
-    }
-    var dureeSel=document.querySelector('select[name="duree_retard"]');
-    if(dureeSel&&duree){
-      for(var i=0;i<dureeSel.options.length;i++){
-        if(dureeSel.options[i].value===duree){dureeSel.selectedIndex=i;break;}
-      }
-    }
-    if(!document.getElementById('prefilledBanner')){
-      var banner=document.createElement('div');
-      banner.id='prefilledBanner';
-      banner.style.cssText='background:#E8F5EE;border:1.5px solid #0D5C2E;border-radius:9px;padding:12px 16px;font-size:13px;color:#0A4522;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px';
-      banner.innerHTML='<i class="fa-solid fa-check-circle"></i> Formulaire pre-rempli. Verifiez et ajoutez vos coordonnees.';
-      var rf=document.querySelector('.rf');
-      if(rf) rf.insertBefore(banner,rf.firstChild);
-    }
-    window.scrollTo({top:0,behavior:'smooth'});
-  },300);
-}
-
-
-/* ─── NAVIGATION PAGES ─── */
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  const pg=document.getElementById('page-'+id);
-  if(pg){pg.classList.add('active');window.scrollTo(0,0)}
-  if(id==='montants')setTimeout(startCounters,300);
-}
-
-/* ─── DROITS TABS ─── */
-function setTab(id){
-  document.querySelectorAll('.rc').forEach(r=>r.classList.remove('active'));
-  document.querySelectorAll('.rtab').forEach(t=>t.classList.remove('active'));
-  const el=document.getElementById(id);
-  if(el)el.classList.add('active');
-  const tab=document.getElementById('rtab-'+id);
-  if(tab)tab.classList.add('active');
-}
-
-/* ─── CALCULATEUR ─── */
-/* ══════════════════════════════════════
-   DONNÉES AÉROPORTS & CALCUL INTELLIGENT
-══════════════════════════════════════ */
-const EU_AIRPORTS = new Set(['CDG','ORY','NCE','LYS','MRS','TLS','BOD','NTE',
-  'FRA','MUC','DUS','BER','HAM','STR','BSL','CGN','NUE',
-  'BRU','AMS','LHR','LGW','STN','MAN','EDI','ZRH','GVA','VIE','PRG','WAW',
-  'MAD','BCN','VLC','AGP','FCO','MXP','LIN','VCE','LIS','OPO','ATH','HEL',
-  'ARN','OSL','CPH','DUB','RIX','VNO','TLL','BTS','BUD','OTP','SOF','ZAG']);
-
-const EU_COMPANIES = new Set(['AF','SS','TO','U2','LH','EW','DE','KL','SN','LX',
-  'OS','IB','TP','FR','VY','AZ','SK','AY','BA','BE','BT','EI','HV','LO',
-  'OK','OV','PC','PS','RO','VU','W6','WZ','FB']);
-
-const UEMOA_AIRPORTS = new Set(['ABJ','DSS','BKO','OUA','LFW','COO','OXB','NIM','CKY']);
-
-const COORDS = {
-  CDG:[49.009,2.547],ORY:[48.723,2.379],NCE:[43.665,7.215],LYS:[45.726,5.090],
-  MRS:[43.439,5.221],TLS:[43.629,1.363],BOD:[44.828,-0.715],NTE:[47.153,-1.611],
-  FRA:[50.033,8.570],MUC:[48.354,11.786],DUS:[51.289,6.767],BER:[52.367,13.503],
-  STR:[48.690,9.222],BSL:[47.590,7.529],BRU:[50.901,4.484],AMS:[52.308,4.764],
-  LHR:[51.477,-0.461],LGW:[51.157,-0.182],STN:[51.885,0.235],
-  ZRH:[47.458,8.548],GVA:[46.238,6.109],VIE:[48.110,16.570],
-  MAD:[40.472,-3.561],BCN:[41.297,2.078],LIS:[38.774,-9.134],
-  FCO:[41.804,12.251],MXP:[45.630,8.728],
-  CMN:[33.368,-7.590],RAK:[31.607,-8.036],ALG:[36.691,3.215],TUN:[36.851,10.227],
-  ABJ:[5.261,-3.926],DSS:[14.670,-17.073],BKO:[12.534,-7.950],
-  OUA:[12.353,-1.512],LFW:[6.165,1.254],COO:[6.357,2.384],CKY:[9.577,-13.612],
-  DLA:[4.006,9.719],LBV:[0.458,9.412],BZV:[-4.251,15.253],FIH:[-4.385,15.445],
-  ADD:[8.977,38.799],NBO:[-1.319,36.925],JNB:[-26.133,28.242],
-  DXB:[25.253,55.365],DOH:[25.261,51.565],IST:[40.976,28.815],
-  JFK:[40.640,-73.779],LAX:[33.943,-118.408],YUL:[45.470,-73.741],
-  GRU:[-23.432,-46.469],PEK:[40.080,116.585],TYO:[35.765,140.386],SIN:[1.359,103.989]
-};
-
-function haversine(dep,arr){
-  const c1=COORDS[dep],c2=COORDS[arr];
-  if(!c1||!c2) return null;
-  const R=6371,dLat=(c2[0]-c1[0])*Math.PI/180,dLon=(c2[1]-c1[1])*Math.PI/180;
-  const a=Math.sin(dLat/2)**2+Math.cos(c1[0]*Math.PI/180)*Math.cos(c2[0]*Math.PI/180)*Math.sin(dLon/2)**2;
-  return Math.round(2*R*Math.asin(Math.sqrt(a)));
-}
-
-function detectReglement(dep,arr,compCode){
-  const isEUdep=EU_AIRPORTS.has(dep);
-  const isEUcomp=EU_COMPANIES.has(compCode);
-  const isUEMOAdep=UEMOA_AIRPORTS.has(dep);
-  const isUEMOAarr=UEMOA_AIRPORTS.has(arr);
-  const isUEMOA=isUEMOAdep&&isUEMOAarr;
-  if(isEUdep) return {reg:'CE 261/2004',why:"Départ depuis "+dep+" (aéroport UE/EEE) — CE 261/2004 applicable à toutes les compagnies."};
-  if(isEUcomp&&!isUEMOAdep) return {reg:'CE 261/2004',why:"Compagnie européenne ("+compCode+") opérant depuis "+dep+" — CE 261/2004 applicable."};
-  if(isUEMOA) return {reg:'UEMOA N°03/2003',why:"Vol intérieur UEMOA ("+dep+" et "+arr+" sont tous deux en zone UEMOA) — Règlement N°03/2003/CM/UEMOA applicable."};
-  if(isUEMOAdep&&!isUEMOAarr) return {reg:'NON_ELIGIBLE',why:dep+" est en zone UEMOA mais "+arr+" ne l'est pas. Le règlement UEMOA N°03/2003 couvre uniquement les vols dont les DEUX aéroports sont en zone UEMOA."};
-  return {reg:'NON_ELIGIBLE',why:"Départ hors UE ("+dep+"), compagnie non-européenne ("+compCode+"), et vol hors zone UEMOA — aucun règlement applicable."};
-}
-
-function getMontant(dist,reg,inc,duree){
-  if(reg==='NON_ELIGIBLE') return {montant:0,label:'0 €',cat:'Non éligible'};
-  if(reg.includes('UEMOA')){
-    if(duree&&duree.includes('Moins de 3')) return {montant:0,label:'0 €',cat:'Retard < 3h — non indemnisable (UEMOA N°03/2003)'};
-    if(!dist||dist<=1500) return {montant:200,label:'200 €',cat:'Court-courrier UEMOA (≤ 1 500 km)'};
-    if(dist<=3500) return {montant:400,label:'400 €',cat:'Moyen-courrier UEMOA (1 500–3 500 km)'};
-    return {montant:1219,label:'1 219 €',cat:'Long-courrier UEMOA (> 3 500 km) — maximum UEMOA'};
-  }
-  if(duree&&duree.includes('Moins de 3')) return {montant:0,label:'0 €',cat:'Retard < 3h — non indemnisable (CE 261/2004)'};
-  if(!dist||dist<=1500) return {montant:250,label:'250 €',cat:'Court-courrier < 1 500 km'};
-  if(dist<=3500) return {montant:400,label:'400 €',cat:'Moyen-courrier 1 500–3 500 km'};
-  if(duree&&duree.includes('3h et 4')&&(inc==='retard'||inc==='corr')) return {montant:300,label:'300 € *',cat:'Long-courrier > 3 500 km (réduit 50% si réacheminement accepté)'};
-  return {montant:600,label:'600 €',cat:'Long-courrier > 3 500 km'};
-}
-
-/* ══════════════════════════════════════
-   CALCULATEUR 3 ÉTAPES
-══════════════════════════════════════ */
-const S={inc:null};
-
-function pick(b,f,v){
-  const grid=b.closest('.opts');
-  if(grid) grid.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
-  b.classList.add('sel');
-  S[f]=v;
-  if(f==='inc'){const btn=document.getElementById('cn0');if(btn)btn.disabled=false;}
-}
-
-function goC(n){
-  document.querySelectorAll('[id^=cp]').forEach(p=>{if(/^cp\d$/.test(p.id))p.classList.remove('active')});
-  const panel=document.getElementById('cp'+n);if(panel)panel.classList.add('active');
-  ['ct0','ct1','ct2'].forEach((id,i)=>{
-    const t=document.getElementById(id);
-    if(t)t.className='ctab'+(i<n?' done':i===n?' active':'');
-  });
-}
-
+/* ══ calcChk — VALIDATION COMPLÈTE ══════════════════════ */
 function calcChk(){
   var fn=(document.getElementById('fn')||{value:''}).value.trim().toUpperCase().replace(/ /g,'');
   var fd=(document.getElementById('fd')||{value:''}).value;
@@ -1760,20 +1703,26 @@ function calcChk(){
   var arr=(document.getElementById('farr')||{value:''}).value;
   var comp=(document.getElementById('fcomp')||{value:''}).value;
   var btn=document.getElementById('cn1');
-  ['errDep','errArr','errComp','errDate'].forEach(function(id){
-    var el=document.getElementById(id);
-    if(el){el.innerHTML='';el.style.display='none';}
-  });
+  clearCalcErrs();
   var valid=true;
+
+  /* R1 : Départ ≠ Arrivée */
   if(dep&&arr&&dep===arr){
-    showCalcErr('errDep',"Aeroport depart = arrivee. Impossible.");
-    showCalcErr('errArr',"Selectionnez un aeroport different.");
+    showCalcErr('errDep',"L'aéroport de départ et d'arrivée sont identiques — impossible.");
+    showCalcErr('errArr',"Sélectionnez un aéroport d'arrivée différent.");
     valid=false;
   }
+
+  /* R2 : Date pas dans le futur */
   if(fd){
     var vd=new Date(fd);var t=new Date();t.setHours(0,0,0,0);
-    if(vd>t){showCalcErr('errDate',"Date dans le futur. Reclamez apres le vol.");valid=false;}
+    if(vd>t){
+      showCalcErr('errDate',"La date est dans le futur. Vous ne pouvez réclamer qu'après avoir effectué le vol.");
+      valid=false;
+    }
   }
+
+  /* R3 : Cohérence vol/compagnie — STRICTE */
   if(fn.length>=3&&comp){
     var prefix=fn.replace(/[0-9]/g,'').substring(0,2);
     var compCode=comp.split(';')[0];
@@ -1785,49 +1734,42 @@ function calcChk(){
       var selName=selComp&&selComp.selectedIndex>0?selComp.options[selComp.selectedIndex].text:compCode;
       var errEl=document.getElementById('errComp');
       if(errEl){
-        errEl.innerHTML='<i class="fa-solid fa-triangle-exclamation"></i> Vol '+fn+' = '+expName+', pas '+selName+
-          '. <button onclick="forceAirline(\''+prefix+'\')" style="background:#0D5C2E;color:#fff;border:none;border-radius:5px;padding:3px 9px;font-size:11px;cursor:pointer;margin-left:4px">Corriger auto</button>';
+        errEl.innerHTML='<i class="fa-solid fa-triangle-exclamation"></i> Le vol <strong>'+fn+'</strong> appartient à <strong>'+expName+'</strong>, pas à '+selName+
+          '. <button onclick="forceAirline(\''+prefix+'\')" style="background:#0D5C2E;color:#fff;border:none;border-radius:5px;padding:3px 9px;font-size:11px;cursor:pointer;margin-left:4px;vertical-align:middle">✅ Corriger</button>';
         errEl.style.display='block';
       }
       valid=false;
     }
   }
+
   if(btn) btn.disabled=!(fn&&fd&&dep&&arr&&comp&&valid);
   if(dep&&arr&&dep!==arr) autoCalc();
 }
 
-function showCalcErr(id,msg){
-  var el=document.getElementById(id);
-  if(el){el.innerHTML='<i class="fa-solid fa-triangle-exclamation"></i> '+msg;el.style.display='block';}
-}
-
-
-function showCalcErr(id,msg){
-  var el=document.getElementById(id);
-  if(el){el.innerHTML='<i class="fa-solid fa-triangle-exclamation"></i> '+msg;el.style.display='block';}
-}
+/* ══ autoCalc ════════════════════════════════════════════ */
 function autoCalc(){
-  const dep=(document.getElementById('fdep')||{value:''}).value;
-  const arr=(document.getElementById('farr')||{value:''}).value;
-  const compVal=(document.getElementById('fcomp')||{value:''}).value;
-  const compCode=compVal.split(';')[0]||'';
-  const duree=(document.getElementById('fduree')||{value:''}).value;
-  if(!dep||!arr)return;
-  const dist=haversine(dep,arr);
-  const {reg}=detectReglement(dep,arr,compCode);
-  const {label,cat}=getMontant(dist,reg,S.inc||'retard',duree);
-  const prev=document.getElementById('autoPreview');
+  var dep=(document.getElementById('fdep')||{value:''}).value;
+  var arr=(document.getElementById('farr')||{value:''}).value;
+  var comp=(document.getElementById('fcomp')||{value:''}).value;
+  var duree=(document.getElementById('fduree')||{value:''}).value;
+  var compCode=comp.split(';')[0]||'';
+  if(!dep||!arr||dep===arr) return;
+  var dist=haversine(dep,arr);
+  var res=detectReglement(dep,arr,compCode);
+  var m=getMontant(dist,res.reg,S.inc||'retard',duree);
+  var prev=document.getElementById('autoPreview');
   if(prev){
     prev.style.display='block';
-    const pd=document.getElementById('prevDist');
-    const pr=document.getElementById('prevReg');
-    const pc=document.getElementById('prevCat');
-    if(pd)pd.textContent=dist?dist.toLocaleString('fr-FR')+' km':'Distance inconnue';
-    if(pr)pr.textContent=reg;
-    if(pc)pc.textContent=cat+(label&&label!=='0 €'?' → '+label:'');
+    var pd=document.getElementById('prevDist');
+    var pr=document.getElementById('prevReg');
+    var pc=document.getElementById('prevCat');
+    if(pd) pd.textContent=dist?dist.toLocaleString('fr-FR')+' km':'Distance inconnue';
+    if(pr) pr.textContent=res.reg;
+    if(pc) pc.textContent=m.cat+(m.montant>0?' — '+m.label:'');
   }
 }
 
+/* ══ showResAuto — avec re-validation ═══════════════════ */
 function showResAuto(){
   var dep=(document.getElementById('fdep')||{value:''}).value;
   var arr=(document.getElementById('farr')||{value:''}).value;
@@ -1839,267 +1781,320 @@ function showResAuto(){
   var duree=(document.getElementById('fduree')||{value:''}).value;
   var inc=S.inc||'retard';
   var incLabels={retard:'Vol retardé',annul:'Vol annulé',surb:'Surbooking',corr:'Correspondance manquée'};
-  var dist=haversine(dep,arr);
-  var res=detectReglement(dep,arr,compCode);
-  var isUEMOA=res.reg.includes('UEMOA');
 
-  // Retard < 3h (CE 261 et UEMOA)
-  if(inc==='retard'&&duree&&duree.includes('Moins de 3')){
-    document.getElementById('popupTitle').textContent='Retard insuffisant';
-    document.getElementById('popupMsg').textContent='Votre vol a moins de 3 heures de retard. Les deux règlements (CE 261/2004 et UEMOA N°03/2003) exigent au minimum 3 heures de retard à l\'arrivée.';
-    document.getElementById('popupRule').innerHTML='<strong>Règle CE 261/2004 & UEMOA N°03/2003 :</strong> Indemnisation uniquement à partir de <strong>3 heures de retard</strong> à l\'arrivée.';
-    showPopup();return;
+  /* RE-VALIDATION avant affichage résultat */
+  if(fd){
+    var vd=new Date(fd);var t=new Date();t.setHours(0,0,0,0);
+    if(vd>t){
+      showPopupMsg('Date de vol future','Vous avez saisi une date dans le futur. Vous ne pouvez réclamer qu\'après avoir effectué le vol.','Règle CE 261/2004 & UEMOA : La réclamation n\'est possible qu\'après le vol effectué.');
+      return;
+    }
   }
-  // Annulation : délai différent CE 261 (14j) vs UEMOA (7j)
+  if(inc==='retard'&&duree&&duree.includes('Moins de 3')){
+    showPopupMsg('Retard insuffisant','Votre vol a moins de 3 heures de retard. Les deux règlements exigent au minimum 3 heures de retard à l\'arrivée.','Règle CE 261/2004 & UEMOA N°03/2003 : indemnisation à partir de 3h de retard.');
+    return;
+  }
   if(inc==='annul'&&fd){
     var volDate=new Date(fd);
     var today=new Date();
     var diffJ=Math.round((volDate-today)/(1000*60*60*24));
+    var isUEMOA=detectReglement(dep,arr,compCode).reg.includes('UEMOA');
     if(!isUEMOA&&diffJ>14){
-      document.getElementById('popupTitle').textContent='Annulation trop anticipée (CE 261/2004)';
-      document.getElementById('popupMsg').textContent='Vous avez été prévenu plus de 14 jours avant le départ. Le règlement CE 261/2004 ne prévoit pas d\'indemnisation dans ce cas.';
-      document.getElementById('popupRule').innerHTML='<strong>Règle CE 261/2004 :</strong> Annulation communiquée <strong>plus de 14 jours avant</strong> le départ = pas d\'indemnisation financière.';
-      showPopup();return;
+      showPopupMsg('Annulation trop anticipée (CE 261/2004)','Vous avez été prévenu plus de 14 jours avant. CE 261/2004 ne prévoit pas d\'indemnisation.','Règle CE 261/2004 : annulation > 14 jours avant = pas d\'indemnisation.');
+      return;
     }
     if(isUEMOA&&diffJ>7){
-      document.getElementById('popupTitle').textContent='Annulation trop anticipée (UEMOA)';
-      document.getElementById('popupMsg').textContent='Vous avez été prévenu plus de 7 jours avant le départ. Le règlement UEMOA N°03/2003 ne prévoit pas d\'indemnisation dans ce cas.';
-      document.getElementById('popupRule').innerHTML='<strong>Règle UEMOA N°03/2003 :</strong> Annulation communiquée <strong>plus de 7 jours avant</strong> le départ = pas d\'indemnisation.';
-      showPopup();return;
+      showPopupMsg('Annulation trop anticipée (UEMOA)','Vous avez été prévenu plus de 7 jours avant. UEMOA N°03/2003 ne prévoit pas d\'indemnisation.','Règle UEMOA N°03/2003 : annulation > 7 jours avant = pas d\'indemnisation.');
+      return;
     }
   }
+
+  var dist=haversine(dep,arr);
+  var res=detectReglement(dep,arr,compCode);
   var m=getMontant(dist,res.reg,inc,duree);
   var total=m.montant*pax;
   var dateStr=fd?new Date(fd).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):'';
   var z=document.getElementById('rz');
-  if(!z)return;
+  if(!z) return;
+
   if(m.montant===0){
-    z.innerHTML='<div class="rno" style="padding:24px;text-align:center"><i class="fa-solid fa-circle-xmark" style="font-size:40px;color:#C62828;display:block;margin-bottom:12px"></i><strong style="font-size:16px;color:#C62828">Non éligible à une indemnisation</strong><div style="background:#FFF3F3;border-left:4px solid #E57373;border-radius:0 8px 8px 0;padding:12px 14px;font-size:13px;color:#B71C1C;text-align:left;margin:14px 0;line-height:1.6"><strong>Raison :</strong><br>'+res.why+'</div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="green-btn" style="margin:0" onclick="showPage(\'contact\')"><i class="fa-solid fa-phone"></i> Analyse gratuite</button><a href="https://wa.me/491773431460" target="_blank" style="display:flex;align-items:center;gap:7px;background:#25D366;color:#fff;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a></div></div>';
+    var btnHTML='<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">'+
+      '<button class="green-btn" style="margin:0" onclick="showPage(\'contact\')"><i class="fa-solid fa-phone"></i> Analyse gratuite</button>'+
+      '<a href="https://wa.me/491773431460" target="_blank" style="display:flex;align-items:center;gap:7px;background:#25D366;color:#fff;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;text-decoration:none"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>'+
+      '</div>';
+    z.innerHTML='<div class="rno" style="padding:24px;text-align:center">'+
+      '<i class="fa-solid fa-circle-xmark" style="font-size:40px;color:#C62828;display:block;margin-bottom:12px"></i>'+
+      '<strong style="font-size:16px;color:#C62828">Non éligible à une indemnisation</strong>'+
+      '<div style="background:#FFF3F3;border-left:4px solid #E57373;border-radius:0 8px 8px 0;padding:12px 14px;font-size:13px;color:#B71C1C;text-align:left;margin:14px 0;line-height:1.6">'+
+      '<strong>Raison :</strong><br>'+res.why+'</div>'+btnHTML+'</div>';
     return;
   }
-  var html='<div class="rok"><div style="font-size:12px;font-weight:700;color:var(--gd);margin-bottom:8px">✅ Vous êtes éligible !</div><div class="big">'+m.label+'</div><div class="per">par passager — '+res.reg+'</div>';
-  if(pax>1) html+='<div style="font-size:18px;font-weight:700;color:var(--gd);margin-top:8px">Total : <strong>'+total.toLocaleString('fr-FR')+' €</strong> pour '+pax+' passagers</div>';
-  html+='</div><div class="dets"><div class="det"><span>Incident</span>'+(incLabels[inc]||inc)+'</div><div class="det"><span>Distance</span>'+(dist?dist.toLocaleString('fr-FR')+' km':'Estimée')+'</div><div class="det"><span>Vol</span>'+(fn||'—')+' — '+dateStr+'</div><div class="det"><span>Trajet</span>'+dep+' → '+arr+'</div><div class="det"><span>Règlement</span>'+res.reg+'</div><div class="det"><span>Catégorie</span>'+m.cat+'</div></div>';
-  html+='<div style="background:var(--gl);border-left:4px solid var(--green);border-radius:0 8px 8px 0;padding:11px 14px;font-size:12px;color:var(--gd);margin:10px 0;line-height:1.6"><strong>Pourquoi éligible ?</strong><br>'+res.why+'</div>';
-  html+='<div class="inote"><i class="fa-solid fa-circle-info" style="flex-shrink:0"></i><span>Sans succès = zéro frais — Commission 20–30% + TVA uniquement si indemnisation obtenue</span></div>';
-  html+='<button class="ctabtn" onclick="transferToForm()"><i class="fa-solid fa-paper-plane"></i> Déposer ma réclamation — Formulaire pré-rempli ✅</button>';
-  z.innerHTML=html;
+
+  var h='<div class="rok">'+
+    '<div style="font-size:12px;font-weight:700;color:var(--gd);margin-bottom:8px">✅ Vous êtes éligible !</div>'+
+    '<div class="big">'+m.label+'</div>'+
+    '<div class="per">par passager — '+res.reg+'</div>';
+  if(pax>1) h+='<div style="font-size:18px;font-weight:700;color:var(--gd);margin-top:8px">Total : <strong>'+total.toLocaleString('fr-FR')+' €</strong> pour '+pax+' passagers</div>';
+  h+='</div>';
+  h+='<div class="dets">'+
+    '<div class="det"><span>Incident</span>'+(incLabels[inc]||inc)+'</div>'+
+    '<div class="det"><span>Distance</span>'+(dist?dist.toLocaleString('fr-FR')+' km':'Estimée')+'</div>'+
+    '<div class="det"><span>Vol</span>'+(fn||'—')+' — '+dateStr+'</div>'+
+    '<div class="det"><span>Trajet</span>'+dep+' → '+arr+'</div>'+
+    '<div class="det"><span>Règlement</span>'+res.reg+'</div>'+
+    '<div class="det"><span>Catégorie</span>'+m.cat+'</div>'+
+    '</div>';
+  h+='<div style="background:var(--gl,#E8F5EE);border-left:4px solid var(--green,#0D5C2E);border-radius:0 8px 8px 0;padding:11px 14px;font-size:12px;color:var(--gd,#0A4522);margin:10px 0;line-height:1.6">'+
+    '<strong>Pourquoi éligible ?</strong><br>'+res.why+'</div>';
+  h+='<div class="inote"><i class="fa-solid fa-circle-info" style="flex-shrink:0"></i><span>Sans succès = zéro frais — Commission 20–30% + TVA uniquement si indemnisation obtenue</span></div>';
+
+  /* Bouton qui transfère vers formulaire */
+  var btn=document.createElement('button');
+  btn.className='ctabtn';
+  btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Déposer ma réclamation — Formulaire pré-rempli ✅';
+  btn.onclick=function(){transferToForm();};
+
+  z.innerHTML=h;
+  z.appendChild(btn);
 }
+
+function showPopupMsg(title,msg,rule){
+  document.getElementById('popupTitle').textContent=title;
+  document.getElementById('popupMsg').textContent=msg;
+  document.getElementById('popupRule').innerHTML='<strong>'+rule+'</strong>';
+  showPopup();
+}
+
+/* ══ transferToForm — TRANSFERT CALCULATEUR → FORMULAIRE ═ */
+function transferToForm(){
+  var fn=(document.getElementById('fn')||{value:''}).value.trim();
+  var fd=(document.getElementById('fd')||{value:''}).value;
+  var dep=(document.getElementById('fdep')||{value:''}).value;
+  var arr=(document.getElementById('farr')||{value:''}).value;
+  var comp=(document.getElementById('fcomp')||{value:''}).value;
+  var duree=(document.getElementById('fduree')||{value:''}).value;
+  var inc=S.inc||'retard';
+
+  var incMap={
+    retard:'Vol retardé (≥ 3h)',annul:'Vol annulé',
+    surb:'Surbooking / refus d\'embarquement',corr:'Correspondance manquée'
+  };
+
+  var compSel=document.getElementById('fcomp');
+  var compName=compSel&&compSel.selectedIndex>0?compSel.options[compSel.selectedIndex].text:comp;
+  var depSel=document.getElementById('fdep');
+  var depName=depSel&&depSel.selectedIndex>0?depSel.options[depSel.selectedIndex].text:dep;
+  var arrSel=document.getElementById('farr');
+  var arrName=arrSel&&arrSel.selectedIndex>0?arrSel.options[arrSel.selectedIndex].text:arr;
+
+  showPage('reclamer');
+
+  setTimeout(function(){
+    /* Remplir chaque champ */
+    var map={
+      'vol_numero':fn,
+      'vol_date':fd,
+      'depart':depName,
+      'arrivee':arrName,
+      'compagnie':compName
+    };
+    Object.keys(map).forEach(function(name){
+      var el=document.querySelector('[name="'+name+'"]');
+      if(el&&map[name]) el.value=map[name];
+    });
+
+    /* Incident */
+    var incSel=document.querySelector('select[name="incident"]');
+    if(incSel&&inc){
+      var incVal=incMap[inc]||inc;
+      for(var i=0;i<incSel.options.length;i++){
+        if(incSel.options[i].value.indexOf(incVal)>=0||incSel.options[i].text.indexOf(incVal.substring(0,8))>=0){
+          incSel.selectedIndex=i;break;
+        }
+      }
+    }
+
+    /* Durée retard */
+    var dureeSel=document.querySelector('select[name="duree_retard"]');
+    if(dureeSel&&duree){
+      for(var i=0;i<dureeSel.options.length;i++){
+        if(dureeSel.options[i].value===duree){dureeSel.selectedIndex=i;break;}
+      }
+    }
+
+    /* Bannière confirmation */
+    if(!document.getElementById('prefilledBanner')){
+      var banner=document.createElement('div');
+      banner.id='prefilledBanner';
+      banner.style.cssText='background:#E8F5EE;border:1.5px solid #0D5C2E;border-radius:9px;padding:12px 16px;font-size:13px;color:#0A4522;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap';
+      banner.innerHTML='<i class="fa-solid fa-check-circle" style="color:#0D5C2E;font-size:16px"></i>'+
+        '<span>Formulaire pré-rempli depuis le calculateur — Vol <strong>'+fn+'</strong> · '+depName.split(' ')[0]+' → '+arrName.split(' ')[0]+'</span>'+
+        '<span style="font-size:11px;color:#666;display:block;width:100%;margin-top:2px">Complétez vos coordonnées personnelles et signez pour finaliser votre réclamation.</span>';
+      var rf=document.querySelector('.rf');
+      if(rf) rf.insertBefore(banner,rf.firstChild);
+    }
+
+    window.scrollTo({top:0,behavior:'smooth'});
+  },350);
+}
+
+/* ══ pick / goC / resetC ═════════════════════════════════ */
+function pick(btn,field,val){
+  var grid=btn.closest('.opts');
+  if(grid) grid.querySelectorAll('.opt').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  S[field]=val;
+  if(field==='inc'){var b=document.getElementById('cn0');if(b) b.disabled=false;}
+}
+
+function goC(n){
+  document.querySelectorAll('[id^=cp]').forEach(function(p){
+    if(/^cp\d$/.test(p.id)) p.classList.remove('active');
+  });
+  var panel=document.getElementById('cp'+n);
+  if(panel) panel.classList.add('active');
+  ['ct0','ct1','ct2'].forEach(function(id,i){
+    var t=document.getElementById(id);
+    if(t) t.className='ctab'+(i<n?' done':i===n?' active':'');
+  });
+}
+
 function resetC(){
   S.inc=null;
-  document.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
-  const btn=document.getElementById('cn0');if(btn)btn.disabled=true;
-  const prev=document.getElementById('autoPreview');if(prev)prev.style.display='none';
+  document.querySelectorAll('.opt').forEach(function(b){b.classList.remove('sel');});
+  var btn=document.getElementById('cn0');if(btn) btn.disabled=true;
+  var prev=document.getElementById('autoPreview');if(prev) prev.style.display='none';
+  if(document.getElementById('prefilledBanner')) document.getElementById('prefilledBanner').remove();
 }
 
-/* ─── ESPACE CLIENT ─── */
-function loginClient(){
-  document.getElementById('clientLogin').style.display='none';
-  document.getElementById('clientDash').style.display='block';
+/* ══ POPUP ═══════════════════════════════════════════════ */
+function showPopup(){document.getElementById('popupOverlay').style.display='flex';}
+function closePopup(){
+  document.getElementById('popupOverlay').style.display='none';
+  var c=document.getElementById('popupEmailConfirm');if(c) c.style.display='none';
 }
-function demoLogin(){loginClient()}
-function logoutClient(){
-  document.getElementById('clientDash').style.display='none';
-  document.getElementById('clientLogin').style.display='block';
+function savePopupEmail(){
+  var email=document.getElementById('popupEmail').value.trim();
+  if(!email||email.indexOf('@')<0){alert('Email invalide');return;}
+  fetch('https://formspree.io/f/mpqeekew',{method:'POST',body:JSON.stringify({email:email,type:'alerte_non_eligible'}),headers:{'Content-Type':'application/json','Accept':'application/json'}}).catch(function(){});
+  var c=document.getElementById('popupEmailConfirm');if(c) c.style.display='block';
+  showToast('Email enregistré !');
+  setTimeout(closePopup,3000);
+}
+document.addEventListener('click',function(e){if(e.target.id==='popupOverlay') closePopup();});
+
+/* ══ TOAST ═══════════════════════════════════════════════ */
+function showToast(msg){
+  var t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:20px;right:20px;background:var(--gd,#0A4522);color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(function(){t.remove();},3500);
 }
 
-/* ─── NOTIFICATIONS ─── */
-function saveNotif(){showNotifToast('✅ Préférences de notifications enregistrées')}
-function showNotifToast(msg){
-  const t=document.createElement('div');
-  t.style.cssText='position:fixed;bottom:20px;right:20px;background:var(--gd);color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;animation:fadeIn .3s';
-  t.textContent=msg;document.body.appendChild(t);
-  setTimeout(()=>t.remove(),3500);
+/* ══ FORMULAIRE ══════════════════════════════════════════ */
+function handleSubmit(e){
+  e.preventDefault();
+  var get=function(n){var el=document.querySelector('[name='+n+']');return el?el.value:'';};
+  var prenom=get('prenom'),nom=get('nom'),emailVal=get('email');
+  var vol=get('vol_numero'),volDate=get('vol_date');
+  var dep=get('depart'),arr=get('arrivee'),compagnie=get('compagnie');
+  var pax=parseInt(get('passagers'))||1;
+  var incident=get('incident'),duree=get('duree_retard'),reglement=get('reglement');
+  var description=get('description'),pourQui=get('pour_qui');
+  var cv=document.getElementById('sigCanvas');
+  var sigDataURL=cv?cv.toDataURL():'';
+  var sigEl=document.getElementById('sigData');if(sigEl) sigEl.value=sigDataURL;
+  var numDossier='SOS-'+new Date().getFullYear()+'-'+Math.floor(1000+Math.random()*9000);
+  var compCode=dep.split(';')[0]||'';
+  var dist=haversine(dep.split(' ')[0],arr.split(' ')[0]);
+  var res=detectReglement(dep.split(' ')[0],arr.split(' ')[0],compCode);
+  var incKey=incident.indexOf('retard')>=0?'retard':incident.indexOf('annul')>=0?'annul':incident.indexOf('surb')>=0?'surb':'corr';
+  var m=getMontant(dist,res.reg,incKey,duree);
+  var total=m.montant*pax;
+  var dateStr=volDate?new Date(volDate).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):'';
+  var formData=new FormData(document.getElementById('reclamForm'));
+  formData.append('_subject','Nouvelle réclamation SOS PASSAGER — '+numDossier);
+  fetch('https://formspree.io/f/mpqeekew',{method:'POST',body:formData,headers:{'Accept':'application/json'}}).catch(function(){});
+  fetch(GSHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({prenom:prenom,nom:nom,email:emailVal,whatsapp:get('whatsapp'),
+      vol_numero:vol,vol_date:volDate,depart:dep,arrivee:arr,compagnie:compagnie,
+      passagers:pax,incident:incident,duree_retard:duree,reglement:reglement,
+      montant_estime:m.label,description:description,pour_qui:pourQui,num_dossier:numDossier})
+  }).catch(function(){});
+  var confHTML='<div style="text-align:center;margin-bottom:20px">'+
+    '<i class="fa-solid fa-circle-check" style="font-size:50px;color:var(--green,#0D5C2E);display:block;margin-bottom:12px"></i>'+
+    '<h3 style="font-size:20px;font-weight:700;color:var(--gd,#0A4522);margin-bottom:4px">Réclamation reçue !</h3>'+
+    '<p style="font-size:13px;color:#666">Dossier <strong>'+numDossier+'</strong></p></div>'+
+    '<div style="background:var(--gl,#E8F5EE);border:2px solid var(--green,#0D5C2E);border-radius:12px;padding:20px;text-align:center;margin-bottom:16px">'+
+    '<div style="font-size:13px;font-weight:600;color:var(--gd,#0A4522);margin-bottom:8px">MONTANT ESTIMÉ DE VOTRE INDEMNISATION</div>'+
+    '<div style="font-size:52px;font-weight:800;color:var(--gd,#0A4522)">'+m.label+'</div>'+
+    '<div style="font-size:13px;color:#666">par passager — '+res.reg+'</div>'+
+    (pax>1?'<div style="font-size:18px;font-weight:700;color:var(--gd,#0A4522);margin-top:8px">Total : <strong>'+total.toLocaleString('fr-FR')+' €</strong> pour '+pax+' passagers</div>':'')+
+    '</div>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+    '<a href="https://wa.me/491773431460" target="_blank" style="flex:1;background:#25D366;color:#fff;border-radius:8px;padding:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:12px;text-decoration:none"><i class="fa-brands fa-whatsapp"></i> WhatsApp Europe</a>'+
+    '<a href="https://wa.me/2250503605725" target="_blank" style="flex:1;background:#25D366;color:#fff;border-radius:8px;padding:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:12px;text-decoration:none"><i class="fa-brands fa-whatsapp"></i> WhatsApp Afrique</a>'+
+    '</div>';
+  setTimeout(function(){
+    document.getElementById('formBody').style.display='none';
+    var conf=document.getElementById('formConf');
+    conf.style.display='block';conf.innerHTML=confHTML;
+    showToast('Dossier '+numDossier+' enregistré !');
+  },600);
 }
 
-/* ─── BLOG ─── */
-const posts=[
-  {cat:'Droits UE',title:'CE 261/2004 : tout ce que vous devez savoir en 2025',date:'15 juin 2025',content:`<p>Le règlement CE 261/2004 est le texte fondateur des droits des passagers aériens en Europe. Adopté en 2004, il protège les voyageurs en cas de <strong>retard de vol</strong>, d'<strong>annulation</strong> et de <strong>surbooking</strong>.</p><p><strong>Qui est couvert ?</strong><br>Tout vol décollant d'un aéroport de l'UE, quel que soit la compagnie. Également tout vol à destination de l'UE opéré par une compagnie européenne.</p><p><strong>Quels montants ?</strong><br>• 250€ pour les vols de moins de 1 500 km<br>• 400€ pour les vols entre 1 500 et 3 500 km<br>• 600€ pour les vols de plus de 3 500 km</p><p><strong>Quand réclamer ?</strong><br>Vous disposez de 5 ans en France. N'attendez pas !</p>`},
-  {cat:'Afrique de l\'Ouest',title:'UEMOA : vos droits sur les vols Abidjan-Dakar-Ouagadougou',date:'10 juin 2025',content:`<p>Le <strong>Règlement N°03/2003/CM/UEMOA</strong> protège les passagers sur les vols intérieurs et régionaux en Afrique de l'Ouest. Très peu connu, il est pourtant puissant.</p><p><strong>Pays couverts :</strong> Bénin, Burkina Faso, Côte d'Ivoire, Guinée-Bissau, Mali, Niger, Sénégal, Togo.</p><p><strong>Montants d'indemnisation :</strong><br>• Vols courts : jusqu'à 200€<br>• Vols moyens : jusqu'à 400€<br>• Maximum : 1 219€ par passager</p><p>SOS PASSAGER est le seul service maîtrisant à la fois le droit européen et le droit UEMOA.</p>`},
-  {cat:'Jurisprudence',title:'Ryanair condamné : comment les low-cost perdent en justice',date:'5 juin 2025',content:`<p>Ryanair, easyJet, Transavia : les compagnies low-cost multiplient les refus de payer les indemnisations CE 261. Mais la justice européenne leur donne systématiquement tort.</p><p><strong>Arrêt CJUE C-501/17 :</strong> la panne technique n'est pas une circonstance extraordinaire si elle résulte d'un défaut d'entretien normal.</p><p><strong>Notre conseil :</strong> Ne laissez pas la compagnie vous décourager avec des formulaires complexes ou des refus automatiques. SOS PASSAGER connaît toutes leurs tactiques et les contourne.</p>`},
-  {cat:'Conseils pratiques',title:'5 preuves à conserver en cas de vol retardé ou annulé',date:'1 juin 2025',content:`<p>La preuve est clé pour obtenir votre indemnisation. Voici les 5 documents à absolument conserver :</p><p><strong>1. Votre carte d'embarquement</strong> — physique ou électronique, elle prouve que vous étiez bien présent.</p><p><strong>2. La confirmation de réservation</strong> — indispensable pour prouver votre contrat avec la compagnie.</p><p><strong>3. Les SMS/emails de la compagnie</strong> — concernant le retard ou l'annulation.</p><p><strong>4. Vos reçus de repas et hébergement</strong> — si vous avez dû payer de votre poche.</p><p><strong>5. Les témoignages d'autres passagers</strong> — échangez vos coordonnées avec d'autres passagers à l'aéroport.</p>`},
-  {cat:'Voyage d\'affaires',title:'Voyageurs d\'affaires : vos droits même si c\'est votre employeur qui paye',date:'25 mai 2025',content:`<p>Contrairement à une idée reçue, <strong>l'indemnisation CE 261 vous revient personnellement</strong>, même si votre billet a été payé par votre entreprise.</p><p>Le règlement européen lie l'indemnisation au <strong>passager</strong>, pas à l'acheteur du billet. Votre employeur n'a aucun droit sur cette compensation.</p><p>De plus, si votre retard vous a causé des préjudices professionnels (réunion manquée, pénalités contractuelles), vous pouvez réclamer des dommages et intérêts supplémentaires devant les tribunaux.</p>`},
-  {cat:'Droits UE',title:'Circonstances extraordinaires : quand la compagnie peut refuser de payer',date:'18 mai 2025',content:`<p>Le règlement CE 261 prévoit une exception : les <strong>circonstances extraordinaires</strong>. Si la compagnie prouve que le retard ou l'annulation est dû à un événement qu'elle ne pouvait ni anticiper ni contrôler, elle peut refuser l'indemnisation.</p><p><strong>Exemples reconnus :</strong> météo extrême, instabilité politique, grève externe (contrôleurs aériens), collision avec un oiseau.</p><p><strong>Exemples NON reconnus :</strong> panne technique (sauf si elle résulte d'un choc externe rare), grève du personnel de la compagnie, problèmes informatiques internes.</p><p>Les compagnies abusent souvent de cette clause. SOS PASSAGER analyse chaque cas pour identifier si le refus est justifié.</p>`},
+/* ══ DROITS TABS ══════════════════════════════════════════ */
+function setTab(id){
+  document.querySelectorAll('.rc').forEach(function(r){r.classList.remove('active');});
+  document.querySelectorAll('.rtab').forEach(function(t){t.classList.remove('active');});
+  var el=document.getElementById(id);if(el) el.classList.add('active');
+  var tab=document.getElementById('rtab-'+id);if(tab) tab.classList.add('active');
+}
+
+/* ══ FAQ ══════════════════════════════════════════════════ */
+function tFaq(el){
+  var a=el.nextElementSibling;
+  el.classList.toggle('open');
+  a.classList.toggle('open');
+}
+
+/* ══ BLOG ══════════════════════════════════════════════════ */
+var posts=[
+  {cat:'Droits UE',title:'CE 261/2004 : tout ce que vous devez savoir en 2025',date:'15 juin 2025',content:'<p>Le règlement CE 261/2004 est le texte fondateur des droits des passagers aériens en Europe.</p><p><strong>Montants :</strong> 250€ &lt;1500km · 400€ 1500-3500km · 600€ &gt;3500km</p><p><strong>Délai :</strong> À titre d\'exemple, 5 ans en France — vérifiez votre situation avec SOS PASSAGER au cas par cas.</p>'},
+  {cat:'Afrique de l\'Ouest',title:'UEMOA : vos droits sur les vols Abidjan-Dakar-Ouagadougou',date:'10 juin 2025',content:'<p>Le <strong>Règlement N°03/2003/CM/UEMOA</strong> protège les passagers sur les vols intérieurs et régionaux en Afrique de l\'Ouest. Jusqu\'à 1 219€ par passager.</p>'},
+  {cat:'Jurisprudence',title:'Ryanair condamné : comment les low-cost perdent en justice',date:'5 juin 2025',content:'<p>Les compagnies low-cost multiplient les refus. Mais la justice européenne leur donne systématiquement tort.</p>'},
+  {cat:'Conseils pratiques',title:'5 preuves à conserver en cas de vol retardé ou annulé',date:'1 juin 2025',content:'<p>Carte d\'embarquement, confirmation réservation, SMS compagnie, reçus repas, témoignages passagers.</p>'},
+  {cat:'Voyage d\'affaires',title:'Voyageurs d\'affaires : vos droits même si c\'est votre employeur qui paye',date:'25 mai 2025',content:'<p>L\'indemnisation CE 261 vous revient personnellement, même si votre billet a été payé par votre entreprise.</p>'},
+  {cat:'Droits UE',title:'Circonstances extraordinaires : quand la compagnie peut refuser de payer',date:'18 mai 2025',content:'<p>Météo extrême, grève externe → exonération possible. Panne technique, grève interne → pas d\'exonération.</p>'}
 ];
-
 function openPost(i){
-  const p=posts[i];
+  var p=posts[i];
   document.getElementById('blogGrid').style.display='none';
-  const bf=document.getElementById('blogFull');
-  bf.style.display='block';
-  document.getElementById('blogContent').innerHTML=`<div class="blog-cat">${p.cat}</div><h2>${p.title}</h2><div class="bmeta">${p.date} · SOS PASSAGER</div><div class="bcontent">${p.content}</div><br><button class="green-btn" onclick="transferToForm()"><i class="fa-solid fa-paper-plane"></i> Déposer ma réclamation — Formulaire pré-rempli</button>`;
+  var bf=document.getElementById('blogFull');bf.style.display='block';
+  document.getElementById('blogContent').innerHTML='<div class="blog-cat">'+p.cat+'</div><h2>'+p.title+'</h2><div class="bmeta">'+p.date+'</div><div class="bcontent">'+p.content+'</div><br><button class="green-btn" onclick="showPage(\'reclamer\')"><i class="fa-solid fa-paper-plane"></i> Réclamer mon indemnisation</button>';
 }
 function closeBlog(){
   document.getElementById('blogGrid').style.display='grid';
   document.getElementById('blogFull').style.display='none';
 }
 
-/* ─── POUR QUI ─── */
-function togglePassager(radio){
-  const fields=document.getElementById('autrePassagerFields');
-  if(!fields)return;
-  fields.style.display = radio.value==='autre-personne' ? 'block' : 'none';
-}
-
-/* ─── FAQ ─── */
-function tFaq(el){const a=el.nextElementSibling;el.classList.toggle('open');a.classList.toggle('open')}
-
-/* ─── POP-UP NON ÉLIGIBLE ─── */
-function showPopup(){document.getElementById('popupOverlay').style.display='flex'}
-function closePopup(){
-  document.getElementById('popupOverlay').style.display='none';
-  document.getElementById('popupEmailConfirm').style.display='none';
-}
-function savePopupEmail(){
-  const email=document.getElementById('popupEmail').value.trim();
-  if(!email||!email.includes('@')){alert('Entrez une adresse email valide.');return;}
-  // Envoyer l'email à Formspree pour capture
-  fetch('https://formspree.io/f/mpqeekew',{
-    method:'POST',
-    body:JSON.stringify({email:email,type:'alerte_non_eligible',source:'popup_ineligibilite'}),
-    headers:{'Content-Type':'application/json','Accept':'application/json'}
-  }).catch(()=>{});
-  // Confirmer à l'utilisateur
-  document.getElementById('popupEmailConfirm').style.display='block';
-  showNotifToast('📧 Adresse enregistrée — nous vous contacterons !');
-  setTimeout(closePopup,3000);
-}
-// Fermer en cliquant à l'extérieur
-document.addEventListener('click',function(e){
-  if(e.target.id==='popupOverlay')closePopup();
-});
-
-/* ─── ANIMATION COMPTEURS ─── */
-function animateCounter(id, target, duration=1800){
-  const el=document.getElementById(id);
-  if(!el)return;
-  let start=0;
-  const step=Math.ceil(target/60);
-  const timer=setInterval(()=>{
+/* ══ COMPTEURS ════════════════════════════════════════════ */
+function animateCounter(id,target){
+  var el=document.getElementById(id);if(!el) return;
+  var start=0,step=Math.ceil(target/60);
+  var timer=setInterval(function(){
     start=Math.min(start+step,target);
     el.textContent=start.toLocaleString('fr-FR');
-    if(start>=target)clearInterval(timer);
-  },duration/60);
+    if(start>=target) clearInterval(timer);
+  },30);
 }
 function startCounters(){
-  animateCounter('cnt1',250);
-  animateCounter('cnt2',400);
-  animateCounter('cnt3',600);
-  animateCounter('cnt4',200);
-  animateCounter('cnt5',400);
-  animateCounter('cnt6',1219);
+  animateCounter('cnt1',250);animateCounter('cnt2',400);animateCounter('cnt3',600);
+  animateCounter('cnt4',150);animateCounter('cnt5',300);animateCounter('cnt6',500);
 }
 
-/* ─── GOOGLE SHEETS URL ─── */
-const GSHEETS_URL = 'https://script.google.com/macros/s/AKfycbwc3czBJr-zapofnq31Ukirg4xloGPJHIgabqLsg8muNjrkff7dVzmIBHYTdMKL5usvzw/exec';
-
-/* ─── FORMULAIRE RÉCLAMATION ─── */
-function handleSubmit(e){
-  e.preventDefault();
-
-  // Récupérer toutes les valeurs
-  const get = name => (document.querySelector(`[name=${name}]`)||{value:''}).value;
-  const prenom=get('prenom'), nom=get('nom'), emailVal=get('email');
-  const vol=get('vol_numero'), volDate=get('vol_date');
-  const dep=get('depart'), arr=get('arrivee'), compagnie=get('compagnie');
-  const pax=parseInt(get('passagers'))||1;
-  const incident=get('incident'), duree=get('duree_retard'), reglement=get('reglement');
-  const description=get('description'), pourQui=get('pour_qui');
-
-  // Capturer signature
-  const cv=document.getElementById('sigCanvas');
-  const sigDataURL=cv?cv.toDataURL():'';
-  const sigEl=document.getElementById('sigData');
-  if(sigEl)sigEl.value=sigDataURL;
-
-  // Calculer indemnisation
-  const compCode=(document.getElementById('fcomp')||{value:''}).value.split(';')[0]||'';
-  const dist=haversine(dep.split('—')[0].trim(), arr.split('—')[0].trim());
-  const {reg,why}=detectReglement(dep.split('—')[0].trim(), arr.split('—')[0].trim(), compCode);
-  const result=getMontant(dist,reg,incident.includes('retard')?'retard':incident.includes('annul')?'annul':incident.includes('surb')?'surb':'corr', duree);
-  const total=result.montant*pax;
-  const dateStr=volDate?new Date(volDate).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}):'';
-  const numDossier='SOS-'+new Date().getFullYear()+'-'+Math.floor(1000+Math.random()*9000);
-
-  // ── ENVOI 1 : Formspree → email franckvanie@yahoo.de
-  const formData=new FormData(document.getElementById('reclamForm'));
-  formData.append('_subject','🆕 Nouvelle réclamation SOS PASSAGER — '+numDossier);
-  fetch('https://formspree.io/f/mpqeekew',{method:'POST',body:formData,headers:{'Accept':'application/json'}}).catch(()=>{});
-
-  // ── ENVOI 2 : Google Sheets base de données
-  fetch(GSHEETS_URL,{
-    method:'POST', mode:'no-cors',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      prenom,nom,email:emailVal,whatsapp:get('whatsapp'),
-      vol_numero:vol,vol_date:volDate,depart:dep,arrivee:arr,
-      compagnie,passagers:pax,incident,duree_retard:duree,reglement,
-      montant_estime:result.label+' ('+result.cat+')',
-      description,pour_qui:pourQui,
-      num_dossier:numDossier,distance_km:dist||'',reglementation:reg
-    })
-  }).catch(()=>{});
-
-  // ── AFFICHER CONFIRMATION AVEC VERDICT
-  const incLabels={retard:'Vol retardé',annul:'Vol annulé',surb:'Surbooking',corr:'Correspondance manquée'};
-  const confHTML=`
-    <div style="text-align:center;margin-bottom:20px">
-      <i class="fa-solid fa-circle-check" style="font-size:50px;color:var(--green);display:block;margin-bottom:12px"></i>
-      <h3 style="font-size:20px;font-weight:700;color:var(--gd);margin-bottom:4px">Réclamation reçue !</h3>
-      <p style="font-size:13px;color:var(--gt)">Dossier <strong>${numDossier}</strong> · Transmis à franckvanie@yahoo.de + Google Sheets</p>
-    </div>
-    <div style="background:${result.montant>0?'#EAF3DE':'#FFF3F3'};border:2px solid ${result.montant>0?'var(--green)':'#ffcdd2'};border-radius:12px;padding:20px;margin-bottom:16px;text-align:center">
-      <div style="font-size:13px;font-weight:600;color:${result.montant>0?'var(--gd)':'#C62828'};margin-bottom:10px">
-        ${result.montant>0?'✅ AU VU DE VOTRE DOSSIER — VOUS AVEZ DROIT À UNE INDEMNISATION DE':'❌ Dossier à analyser'}
-      </div>
-      <div style="font-size:52px;font-weight:800;color:var(--gd);line-height:1">${result.label}</div>
-      <div style="font-size:13px;color:var(--gt);margin-top:6px">par passager · ${reg}</div>
-      ${pax>1?`<div style="font-size:18px;font-weight:700;color:var(--gd);margin-top:8px">Total estimé : <strong>${total.toLocaleString('fr-FR')} €</strong> pour ${pax} passagers</div>`:''}
-    </div>
-    <div style="background:var(--gb);border-radius:10px;padding:14px;margin-bottom:14px;font-size:13px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
-      <div><span style="color:var(--gt);font-size:11px">Vol</span><br><strong>${vol||'—'}</strong></div>
-      <div><span style="color:var(--gt);font-size:11px">Date</span><br><strong>${dateStr||'—'}</strong></div>
-      <div><span style="color:var(--gt);font-size:11px">Trajet</span><br><strong>${dep} → ${arr}</strong></div>
-      <div><span style="color:var(--gt);font-size:11px">Distance</span><br><strong>${dist?dist.toLocaleString('fr-FR')+' km':'—'}</strong></div>
-      <div><span style="color:var(--gt);font-size:11px">Incident</span><br><strong>${incident||'—'}</strong></div>
-      <div><span style="color:var(--gt);font-size:11px">Règlement</span><br><strong>${reg}</strong></div>
-    </div>
-    ${sigDataURL?`<div style="background:#fff;border:1px solid var(--bdr);border-radius:8px;padding:12px;margin-bottom:12px">
-      <div style="font-size:11px;font-weight:700;color:var(--gd);margin-bottom:6px"><i class="fa-solid fa-signature" style="color:var(--green);margin-right:5px"></i>Signature électronique</div>
-      <img src="${sigDataURL}" style="max-width:100%;border-radius:4px;background:#fafafa">
-      <p style="font-size:10px;color:#aaa;margin-top:4px">Signé le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</p>
-    </div>`:''}
-    <div style="background:var(--gl);border-left:4px solid var(--green);border-radius:0 8px 8px 0;padding:12px 14px;font-size:12px;color:var(--gd);margin-bottom:12px;line-height:1.6">
-      <strong>Prochaines étapes :</strong><br>
-      1️⃣ Analyse sous 48h · 2️⃣ Mise en demeure à ${compagnie||'la compagnie'} · 3️⃣ Négociation · 4️⃣ Virement de ${result.label}
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <a href="https://wa.me/491773431460" target="_blank" style="flex:1;background:#25D366;color:#fff;border-radius:8px;padding:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:12px">
-        <i class="fa-brands fa-whatsapp"></i> WhatsApp Europe
-      </a>
-      <a href="https://wa.me/2250503605725" target="_blank" style="flex:1;background:#25D366;color:#fff;border-radius:8px;padding:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:12px">
-        <i class="fa-brands fa-whatsapp"></i> WhatsApp Afrique
-      </a>
-    </div>`;
-
-  setTimeout(()=>{
-    document.getElementById('formBody').style.display='none';
-    const conf=document.getElementById('formConf');
-    conf.style.display='block';
-    conf.innerHTML=confHTML;
-    showNotifToast('✅ Dossier '+numDossier+' enregistré dans Google Sheets !');
-  },600);
-}
-
-/* ─── NOTIFICATIONS TOAST ─── */
-function showNotifToast(msg){
-  const t=document.createElement('div');
-  t.style.cssText='position:fixed;bottom:20px;right:20px;background:var(--gd);color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999';
-  t.textContent=msg;document.body.appendChild(t);
-  setTimeout(()=>t.remove(),3500);
-}
-
-/* ─── ESPACE CLIENT ─── */
+/* ══ ESPACE CLIENT ════════════════════════════════════════ */
 function loginClient(){
   document.getElementById('clientLogin').style.display='none';
   document.getElementById('clientDash').style.display='block';
@@ -2110,40 +2105,56 @@ function logoutClient(){
   document.getElementById('clientLogin').style.display='block';
 }
 
-/* ─── SIGNATURE ─── */
-let isDrawing=false,sigCtx,lastX=0,lastY=0;
+/* ══ NOTIFICATIONS ════════════════════════════════════════ */
+function saveNotif(){showToast('Préférences enregistrées !');}
+function togglePassager(radio){
+  var f=document.getElementById('autrePassagerFields');if(!f) return;
+  f.style.display=radio.value==='autre-personne'?'block':'none';
+}
+
+/* ══ NAVIGATION ═══════════════════════════════════════════ */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  var pg=document.getElementById('page-'+id);
+  if(pg){pg.classList.add('active');window.scrollTo(0,0);}
+  if(id==='montants'){setTimeout(startCounters,300);}
+}
+function nav(id){showPage(id);}
+function navDroits(tab){showPage('droits');setTimeout(function(){setTab(tab);},150);}
+
+/* ══ SIGNATURE ════════════════════════════════════════════ */
+var isDrawing=false,sigCtx,lastX=0,lastY=0;
 function initSig(){
-  const cv=document.getElementById('sigCanvas');if(!cv)return;
+  var cv=document.getElementById('sigCanvas');if(!cv) return;
   sigCtx=cv.getContext('2d');
-  sigCtx.strokeStyle='#1B7A3E';sigCtx.lineWidth=2;sigCtx.lineCap='round';
-  const pos=(e,c)=>{const r=c.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
-  const posT=(e,c)=>{const r=c.getBoundingClientRect(),t=e.touches[0];return[t.clientX-r.left,t.clientY-r.top]};
-  const draw=(x,y)=>{sigCtx.beginPath();sigCtx.moveTo(lastX,lastY);sigCtx.lineTo(x,y);sigCtx.stroke();[lastX,lastY]=[x,y]};
-  cv.addEventListener('mousedown',e=>{isDrawing=true;[lastX,lastY]=pos(e,cv)});
-  cv.addEventListener('mousemove',e=>{if(isDrawing)draw(...pos(e,cv))});
-  cv.addEventListener('mouseup',()=>{isDrawing=false});
-  cv.addEventListener('touchstart',e=>{e.preventDefault();isDrawing=true;[lastX,lastY]=posT(e,cv)},{passive:false});
-  cv.addEventListener('touchmove',e=>{e.preventDefault();if(isDrawing)draw(...posT(e,cv))},{passive:false});
-  cv.addEventListener('touchend',()=>{isDrawing=false});
+  sigCtx.strokeStyle='#0D5C2E';sigCtx.lineWidth=2;sigCtx.lineCap='round';
+  function pos(e){var r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];}
+  function posT(e){var r=cv.getBoundingClientRect(),t=e.touches[0];return [t.clientX-r.left,t.clientY-r.top];}
+  function draw(x,y){sigCtx.beginPath();sigCtx.moveTo(lastX,lastY);sigCtx.lineTo(x,y);sigCtx.stroke();lastX=x;lastY=y;}
+  cv.addEventListener('mousedown',function(e){isDrawing=true;var p=pos(e);lastX=p[0];lastY=p[1];});
+  cv.addEventListener('mousemove',function(e){if(isDrawing){var p=pos(e);draw(p[0],p[1]);}});
+  cv.addEventListener('mouseup',function(){isDrawing=false;});
+  cv.addEventListener('touchstart',function(e){e.preventDefault();isDrawing=true;var p=posT(e);lastX=p[0];lastY=p[1];},{passive:false});
+  cv.addEventListener('touchmove',function(e){e.preventDefault();if(isDrawing){var p=posT(e);draw(p[0],p[1]);}},{passive:false});
+  cv.addEventListener('touchend',function(){isDrawing=false;});
 }
-function clearSig(){const cv=document.getElementById('sigCanvas');if(sigCtx)sigCtx.clearRect(0,0,cv.width,cv.height);}
+function clearSig(){var cv=document.getElementById('sigCanvas');if(sigCtx) sigCtx.clearRect(0,0,cv.width,cv.height);}
 
-/* ─── NOTIFICATIONS PREFS ─── */
-function saveNotif(){showNotifToast('✅ Préférences enregistrées');}
-
-/* ─── INIT ─── */
-function setMobileActive(id) {
-  document.querySelectorAll('.mnav-btn').forEach(function(b){ b.classList.remove('active'); });
-  var btn = document.getElementById('mb-' + id);
-  if(btn) btn.classList.add('active');
+/* ══ MOBILE NAV ═══════════════════════════════════════════ */
+function mobileNav(id){
+  showPage(id);
+  document.querySelectorAll('.mnav-btn').forEach(function(b){b.classList.remove('active');});
+  var btn=document.getElementById('mb-'+id);if(btn) btn.classList.add('active');
 }
 
-window.addEventListener('load',()=>{
+/* ══ INIT ═════════════════════════════════════════════════ */
+window.addEventListener('load',function(){
   initSig();
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeBlog()});
+  showPage('home');
+  document.addEventListener('keydown',function(e){if(e.key==='Escape') closePopup();});
+  var mbHome=document.getElementById('mb-home');if(mbHome) mbHome.classList.add('active');
 });
-
-function mobileNav(id){showPage(id);document.querySelectorAll('.mnav-btn').forEach(function(b){b.classList.remove('active');});var btn=document.getElementById('mb-'+id);if(btn)btn.classList.add('active');}</script>
+</script>
 <div class="cta-band">
  <div class="cta-band-inner">
   <div><strong>Vol retardé, annulé ou surbooké ?</strong><span>Vérifiez votre éligibilité en 2 minutes — Gratuit &amp; Sans engagement</span></div>
