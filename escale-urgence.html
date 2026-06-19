@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SOS Passager Escale Réseau — Hébergement & Transport d'Urgence pour voyageurs bloqués en aéroport. Europe & Afrique. Pack clé en main immédiat." />
+  <meta name="theme-color" content="#0057B8" />
+  <title>SOS Passager Escale Réseau — Hébergement & Transport d'Urgence</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ════════════════════════════════════════════════════
+       RESET & BASE
+    ════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:        #0057B8;
+      --blue-dark:   #003E8A;
+      --blue-light:  #E8F0FB;
+      --blue-mid:    #2979D0;
+      --green-wa:    #25D366;
+      --green-wa-dk: #1EB857;
+      --gray-1:      #F7F9FC;
+      --gray-2:      #EEF2F8;
+      --gray-3:      #C8D5E8;
+      --gray-text:   #5A6A7E;
+      --dark:        #1A2538;
+      --white:       #FFFFFF;
+      --amber:       #F59E0B;
+      --radius:      12px;
+      --radius-lg:   18px;
+      --shadow-sm:   0 2px 8px rgba(0,87,184,0.08);
+      --shadow-md:   0 4px 20px rgba(0,87,184,0.13);
+      --shadow-lg:   0 8px 40px rgba(0,87,184,0.16);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--white);
+      color: var(--dark);
+      line-height: 1.65;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--blue); text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    input, select, textarea, button { font-family: inherit; }
+
+    /* ════════════════════════════════════════════════════
+       NAVIGATION
+    ════════════════════════════════════════════════════ */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--white);
+      border-bottom: 2px solid var(--blue-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      gap: 16px;
+    }
+
+    /* Logo */
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--blue);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.82rem;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      text-align: center;
+    }
+
+    .nav-logo-text {
+      line-height: 1.2;
+    }
+
+    .nav-logo-text .brand {
+      display: block;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .nav-logo-text .sub {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--gray-text);
+      letter-spacing: 0.04em;
+    }
+
+    /* Nav links */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      display: inline-block;
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--dark);
+      transition: background 0.18s, color 0.18s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: var(--blue-light);
+      color: var(--blue);
+    }
+
+    /* Hamburger */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--dark);
+      border-radius: 2px;
+      transition: transform 0.2s;
+    }
+
+    .nav-mobile {
+      display: none;
+      flex-direction: column;
+      background: var(--white);
+      border-top: 1px solid var(--blue-light);
+      padding: 12px 20px 16px;
+      gap: 4px;
+    }
+
+    .nav-mobile.open { display: flex; }
+
+    .nav-mobile a {
+      display: block;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--dark);
+      transition: background 0.18s;
+    }
+
+    .nav-mobile a:hover { background: var(--blue-light); color: var(--blue); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+
+    /* ════════════════════════════════════════════════════
+       LAYOUT HELPERS
+    ════════════════════════════════════════════════════ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      background: var(--blue-light);
+      color: var(--blue);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(1.45rem, 3.5vw, 2.1rem);
+      font-weight: 800;
+      color: var(--blue-dark);
+      margin-bottom: 10px;
+    }
+
+    .section-head p {
+      color: var(--gray-text);
+      font-size: 1rem;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    /* ════════════════════════════════════════════════════
+       SECTION 1 — HERO
+    ════════════════════════════════════════════════════ */
+    .hero {
+      background: linear-gradient(160deg, var(--blue-light) 0%, var(--white) 60%);
+      padding: 64px 0 56px;
+      border-bottom: 1px solid var(--gray-2);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+    }
+
+    .hero-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #FFF3CD;
+      border: 1px solid #FBBF24;
+      color: #92400E;
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+
+    .hero-live-dot {
+      width: 7px; height: 7px;
+      background: #F59E0B;
+      border-radius: 50%;
+      animation: blink 1.4s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-size: clamp(1.9rem, 4.5vw, 3rem);
+      font-weight: 900;
+      color: var(--blue-dark);
+      line-height: 1.12;
+      margin-bottom: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--blue);
+    }
+
+    .hero-lead {
+      font-size: 1.05rem;
+      color: var(--gray-text);
+      margin-bottom: 32px;
+      max-width: 540px;
+    }
+
+    /* Cas cards */
+    .cas-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 600px) { .cas-grid { grid-template-columns: 1fr; } }
+
+    .cas-card {
+      background: var(--white);
+      border: 1.5px solid var(--blue-mid);
+      border-radius: var(--radius);
+      padding: 20px 18px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .cas-card-num {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .cas-card-num.blue { background: var(--blue); color: #fff; }
+    .cas-card-num.amber { background: var(--amber); color: #fff; }
+
+    .cas-card h3 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--blue-dark);
+      margin-top: 2px;
+    }
+
+    .cas-card p {
+      font-size: 0.83rem;
+      color: var(--gray-text);
+      line-height: 1.55;
+    }
+
+    .cas-badge {
+      display: inline-block;
+      font-size: 0.71rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 5px;
+      margin-top: 4px;
+      align-self: flex-start;
+    }
+
+    .cas-badge.blue { background: var(--blue-light); color: var(--blue); }
+    .cas-badge.amber { background: #FEF3C7; color: #92400E; }
+
+    /* WhatsApp buttons */
+    .wa-btns { display: flex; flex-direction: column; gap: 14px; }
+
+    .btn-wa {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--green-wa);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 17px 22px;
+      font-size: 0.97rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.3);
+      transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+    }
+
+    .btn-wa:hover {
+      background: var(--green-wa-dk);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(37,211,102,0.35);
+      color: #fff;
+    }
+
+    .btn-wa-icon { font-size: 1.6rem; flex-shrink: 0; }
+
+    .btn-wa-text strong {
+      display: block;
+      font-size: 0.73rem;
+      font-weight: 700;
+      opacity: 0.85;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1px;
+    }
+
+    /* Right panel (urgence sidebar) */
+    .hero-panel {
+      background: var(--blue);
+      border-radius: var(--radius-lg);
+      padding: 30px 26px;
+      color: #fff;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-panel h2 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .hero-panel p {
+      font-size: 0.84rem;
+      opacity: 0.85;
+      margin-bottom: 24px;
+    }
+
+    .panel-steps { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+
+    .panel-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .panel-step-num {
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .panel-step-text {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      padding-top: 4px;
+    }
+
+    .panel-wa-cta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      color: var(--blue-dark);
+      font-size: 0.88rem;
+      font-weight: 800;
+      padding: 14px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: opacity 0.18s;
+    }
+
+    .panel-wa-cta:hover { opacity: 0.9; color: var(--blue-dark); }
+
+    /* ════════════════════════════════════════════════════
+       SECTION 2 — FORMULAIRE VOYAGEUR
+    ════════════════════════════════════════════════════ */
+    .form-section {
+      padding: 72px 0;
+      background: var(--gray-1);
+    }
+
+    .form-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-3);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 36px 32px;
+      max-width: 740px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 560px) { .form-card { padding: 24px 18px; } }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 580px) { .form-grid { grid-template-columns: 1fr; } }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+
+    .field label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--blue-dark);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .field input,
+    .field select {
+      background: var(--white);
+      border: 1.5px solid var(--gray-3);
+      color: var(--dark);
+      border-radius: 9px;
+      padding: 11px 14px;
+      width: 100%;
+      font-size: 0.93rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0,87,184,0.12);
+    }
+
+    .field input::placeholder { color: #AAB8CC; }
+
+    .field select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230057B8' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+
+    .phone-row { display: flex; gap: 8px; }
+    .phone-row .field-indicatif { width: 136px; flex-shrink: 0; }
+    .phone-row .field-number { flex: 1; }
+
+    /* Passagers row */
+    .pax-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 480px) { .pax-row { grid-template-columns: 1fr; } }
+
+    /* Submit button */
+    .btn-submit {
+      width: 100%;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 16px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 24px;
+      transition: background 0.18s, transform 0.15s, box-shadow 0.18s;
+      box-shadow: 0 4px 16px rgba(0,87,184,0.25);
+    }
+
+    .btn-submit:hover {
+      background: var(--blue-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0,87,184,0.3);
+    }
+
+    /* Success message */
+    .form-success {
+      display: none;
+      background: #E8F8EE;
+      border: 1.5px solid #4CAF50;
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      text-align: center;
+      color: #1B5E20;
+      font-weight: 700;
+      margin-top: 16px;
+      font-size: 0.95rem;
+    }
+
+    /* ════════════════════════════════════════════════════
+       SECTION 3 — PAIEMENTS
+    ════════════════════════════════════════════════════ */
+    .pay-section {
+      padding: 72px 0;
+      background: var(--white);
+      border-top: 1px solid var(--gray-2);
+      border-bottom: 1px solid var(--gray-2);
+    }
+
+    .pay-zones {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 640px) { .pay-zones { grid-template-columns: 1fr; } }
+
+    .pay-zone-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-3);
+      border-radius: var(--radius);
+      padding: 26px 22px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pay-zone-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--gray-2);
+    }
+
+    .pay-zone-head h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--blue-dark);
+    }
+
+    .pay-zone-flag { font-size: 1.4rem; }
+
+    .pay-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .pay-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--gray-1);
+      border: 1.5px solid var(--gray-2);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--dark);
+      white-space: nowrap;
+    }
+
+    .pay-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ════════════════════════════════════════════════════
+       SECTION 4 — PRESTATAIRES
+    ════════════════════════════════════════════════════ */
+    .presta-section {
+      padding: 72px 0;
+      background: var(--gray-1);
+    }
+
+    .presta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 768px) { .presta-grid { grid-template-columns: 1fr; } }
+
+    .presta-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-3);
+      border-radius: var(--radius);
+      padding: 28px 22px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+    }
+
+    .presta-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+      border-color: var(--blue);
+    }
+
+    .presta-icon {
+      font-size: 2.2rem;
+      margin-bottom: 4px;
+    }
+
+    .presta-card h3 {
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: var(--blue-dark);
+    }
+
+    .presta-card p {
+      font-size: 0.86rem;
+      color: var(--gray-text);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .presta-commission {
+      display: inline-block;
+      background: #E8F8EE;
+      color: #1B5E20;
+      border: 1px solid #A5D6A7;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .presta-charte {
+      font-size: 0.74rem;
+      color: var(--gray-text);
+      font-style: italic;
+      border-top: 1px solid var(--gray-2);
+      padding-top: 10px;
+      margin-top: 4px;
+    }
+
+    /* ════════════════════════════════════════════════════
+       SECTION 5 — FORMULAIRE PRESTATAIRE
+    ════════════════════════════════════════════════════ */
+    .presta-form-section {
+      padding: 72px 0 80px;
+      background: var(--white);
+    }
+
+    /* Radio activity buttons */
+    .radio-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .radio-btns label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 16px;
+      background: var(--white);
+      border: 1.5px solid var(--gray-3);
+      border-radius: 9px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--dark);
+      cursor: pointer;
+      text-transform: none;
+      letter-spacing: 0;
+      transition: border-color 0.18s, background 0.18s, color 0.18s;
+    }
+
+    .radio-btns input[type="radio"] { display: none; }
+
+    .radio-btns input[type="radio"]:checked + span {
+      /* handled via JS class toggle */
+    }
+
+    .radio-btns label.selected {
+      border-color: var(--blue);
+      background: var(--blue-light);
+      color: var(--blue-dark);
+    }
+
+    /* Checkbox */
+    .checkbox-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .checkbox-wrap input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      accent-color: var(--blue);
+      cursor: pointer;
+    }
+
+    .checkbox-wrap label {
+      font-size: 0.85rem;
+      color: var(--gray-text);
+      line-height: 1.55;
+      font-weight: 500;
+      cursor: pointer;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .checkbox-wrap label strong { color: var(--blue-dark); }
+
+    /* ════════════════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════════════════ */
+    footer {
+      background: var(--blue-dark);
+      color: rgba(255,255,255,0.7);
+      padding: 36px 20px;
+      text-align: center;
+    }
+
+    .footer-brand {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .footer-brand span { color: #7EC8F8; }
+
+    .footer-sub { font-size: 0.78rem; margin-bottom: 18px; }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-size: 0.78rem;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.6);
+      transition: color 0.18s;
+    }
+
+    .footer-links a:hover { color: #fff; }
+
+    /* ════════════════════════════════════════════════════
+       UTILITY
+    ════════════════════════════════════════════════════ */
+    .mt-20 { margin-top: 20px; }
+    .text-center { text-align: center; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════════════════════════════════ -->
+<header class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="SOS Passager — Accueil">
+      <div class="nav-logo-icon">SOS<br/>✈</div>
+      <div class="nav-logo-text">
+        <span class="brand">SOS Passager</span>
+        <span class="sub">Indemnisation &amp; Droits des passagers</span>
+      </div>
+    </a>
+
+    <ul class="nav-links" role="navigation" aria-label="Navigation principale">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="droits.html">Droits</a></li>
+      <li><a href="reclamer.html">Réclamer</a></li>
+      <li><a href="dossier.html">Dossier</a></li>
+      <li><a href="escale-urgence.html" class="active">Escale Réseau</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <button class="nav-hamburger" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="nav-mobile" id="mobileMenu" role="navigation" aria-label="Navigation mobile">
+    <a href="index.html">Accueil</a>
+    <a href="droits.html">Droits</a>
+    <a href="reclamer.html">Réclamer</a>
+    <a href="dossier.html">Dossier</a>
+    <a href="escale-urgence.html">Escale Réseau</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SECTION 1 — HERO & URGENCE
+══════════════════════════════════════════════════════════════════ -->
+<section class="hero" id="urgence" aria-labelledby="hero-title">
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- LEFT COLUMN -->
+      <div>
+        <div class="hero-live" aria-label="Service en ligne maintenant">
+          <span class="hero-live-dot" aria-hidden="true"></span>
+          RÉSEAU ACTIF — EUROPE &amp; AFRIQUE
+        </div>
+
+        <div class="section-tag">SOS Passager Escale Réseau · Hébergement &amp; Transport d'Urgence</div>
+
+        <h1 id="hero-title">
+          Vol annulé ou<br />correspondance manquée ?<br />
+          <em>Ne dormez pas à l'aéroport !</em>
+        </h1>
+
+        <p class="hero-lead">
+          <strong>SOS Passager Escale Réseau</strong> vous propose un Pack d'Urgence Clé en Main :
+          Logement de proximité sécurisé&nbsp;+ Chauffeur privé.
+          Disponible instantanément dans nos aéroports partenaires (Europe &amp; Afrique de l'Ouest).
+        </p>
+
+        <!-- 2 cas -->
+        <div class="cas-grid">
+          <div class="cas-card">
+            <div style="display:flex;align-items:flex-start;gap:10px;">
+              <div class="cas-card-num blue" aria-hidden="true">01</div>
+              <h3>Faute de la compagnie</h3>
+            </div>
+            <p>
+              Vol annulé, surbooking, retard &gt;&nbsp;3h ?
+              Vous avancez les frais — nous vous fournissons une <strong>facture certifiée aux normes</strong>
+              (CE&nbsp;261/2004 / UEMOA&nbsp;N°03/2003).
+              SOS Passager engage ensuite la procédure pour forcer la compagnie à rembourser votre séjour
+              <em>en plus</em> de votre indemnité.
+            </p>
+            <span class="cas-badge blue">Indemnité jusqu'à 600 € / 1&nbsp;219 €</span>
+          </div>
+
+          <div class="cas-card">
+            <div style="display:flex;align-items:flex-start;gap:10px;">
+              <div class="cas-card-num amber" aria-hidden="true">02</div>
+              <h3>Passager fautif / Retard personnel</h3>
+            </div>
+            <p>
+              Plus de prise en charge par la compagnie ?
+              Accédez à notre <strong>pool de logements partenaires</strong> négociés par SOS Passager Escale Réseau —
+              jusqu'à <strong>3 fois moins chers</strong> qu'un hôtel d'aéroport classique.
+            </p>
+            <span class="cas-badge amber">Tarifs préférentiels réseau</span>
+          </div>
+        </div>
+
+        <!-- WhatsApp buttons -->
+        <div class="wa-btns" role="group" aria-label="Boutons d'urgence WhatsApp">
+          <a href="https://wa.me/4917734314460" class="btn-wa" target="_blank" rel="noopener">
+            <span class="btn-wa-icon" aria-hidden="true">🟢</span>
+            <span class="btn-wa-text">
+              <strong>Urgence WhatsApp · Europe</strong>
+              +49 177 343 14 60
+            </span>
+          </a>
+          <a href="https://wa.me/22505036057255" class="btn-wa" target="_blank" rel="noopener">
+            <span class="btn-wa-icon" aria-hidden="true">🟢</span>
+            <span class="btn-wa-text">
+              <strong>Urgence WhatsApp · Afrique</strong>
+              +225 05 03 60 57 25
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="hero-panel" role="complementary" aria-label="Comment ça marche">
+        <h2>Comment ça marche ?</h2>
+        <p>Pack activé en moins de 20 minutes chrono</p>
+        <div class="panel-steps">
+          <div class="panel-step">
+            <div class="panel-step-num" aria-hidden="true">1</div>
+            <div class="panel-step-text">Contactez-nous sur WhatsApp ou remplissez le formulaire ci-dessous.</div>
+          </div>
+          <div class="panel-step">
+            <div class="panel-step-num" aria-hidden="true">2</div>
+            <div class="panel-step-text">Notre opérateur vous confirme un logement partenaire disponible &amp; sécurisé.</div>
+          </div>
+          <div class="panel-step">
+            <div class="panel-step-num" aria-hidden="true">3</div>
+            <div class="panel-step-text">Un chauffeur privé vous attend à la sortie de l'aéroport.</div>
+          </div>
+          <div class="panel-step">
+            <div class="panel-step-num" aria-hidden="true">4</div>
+            <div class="panel-step-text">Nous préparons votre facture certifiée pour le remboursement compagnie.</div>
+          </div>
+        </div>
+        <a href="https://wa.me/4917734314460" class="panel-wa-cta" target="_blank" rel="noopener">
+          <span style="font-size:1.4rem;">💬</span>
+          Activer mon Pack maintenant
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SECTION 2 — FORMULAIRE VOYAGEUR
+══════════════════════════════════════════════════════════════════ -->
+<section class="form-section" id="demande" aria-labelledby="form-voyageur-title">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Assistance immédiate</div>
+      <h2 id="form-voyageur-title">Formulaire de demande d'assistance voyageur</h2>
+      <p>Remplissez ce formulaire depuis votre smartphone — notre équipe vous contacte sous 15&nbsp;minutes.</p>
+    </div>
+
+    <div class="form-card">
+      <form
+        id="formVoyageur"
+        action="https://formspree.io/f/xpwdjrkb"
+        method="POST"
+        novalidate
+      >
+        <!-- Champ caché type formulaire -->
+        <input type="hidden" name="_subject" value="[SOS Passager Escale] Demande d'assistance voyageur" />
+        <input type="hidden" name="type_formulaire" value="voyageur" />
+
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="v-prenom">Prénom</label>
+            <input type="text" id="v-prenom" name="prenom" placeholder="Ex : Jean-Paul" required autocomplete="given-name" />
+          </div>
+
+          <div class="field">
+            <label for="v-nom">Nom</label>
+            <input type="text" id="v-nom" name="nom" placeholder="Ex : Dupont" required autocomplete="family-name" />
+          </div>
+
+          <div class="field full">
+            <label for="v-phone">Numéro WhatsApp</label>
+            <div class="phone-row">
+              <div class="field-indicatif">
+                <select id="v-indicatif" name="indicatif_pays" aria-label="Indicatif pays voyageur">
+                  <option value="+33">🇫🇷 +33 France</option>
+                  <option value="+32">🇧🇪 +32 Belgique</option>
+                  <option value="+41">🇨🇭 +41 Suisse</option>
+                  <option value="+49">🇩🇪 +49 Allemagne</option>
+                  <option value="+44">🇬🇧 +44 Royaume-Uni</option>
+                  <option value="+34">🇪🇸 +34 Espagne</option>
+                  <option value="+39">🇮🇹 +39 Italie</option>
+                  <option value="+351">🇵🇹 +351 Portugal</option>
+                  <option value="+1">🇺🇸 +1 USA/Canada</option>
+                  <option value="+225">🇨🇮 +225 Côte d'Ivoire</option>
+                  <option value="+221">🇸🇳 +221 Sénégal</option>
+                  <option value="+223">🇲🇱 +223 Mali</option>
+                  <option value="+229">🇧🇯 +229 Bénin</option>
+                  <option value="+226">🇧🇫 +226 Burkina Faso</option>
+                  <option value="+224">🇬🇳 +224 Guinée</option>
+                  <option value="+228">🇹🇬 +228 Togo</option>
+                  <option value="+227">🇳🇪 +227 Niger</option>
+                  <option value="+237">🇨🇲 +237 Cameroun</option>
+                  <option value="+242">🇨🇬 +242 Congo</option>
+                  <option value="+241">🇬🇦 +241 Gabon</option>
+                  <option value="+212">🇲🇦 +212 Maroc</option>
+                  <option value="+213">🇩🇿 +213 Algérie</option>
+                  <option value="+216">🇹🇳 +216 Tunisie</option>
+                  <option value="+234">🇳🇬 +234 Nigeria</option>
+                  <option value="+233">🇬🇭 +233 Ghana</option>
+                </select>
+              </div>
+              <div class="field-number">
+                <input type="tel" id="v-phone" name="whatsapp" placeholder="Numéro sans indicatif" required />
+              </div>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label for="v-aeroport">Aéroport actuel où vous êtes bloqué</label>
+            <input
+              type="text"
+              id="v-aeroport"
+              name="aeroport"
+              placeholder="Ex: Paris-CDG, Abidjan-FHB, Dakar-DSS, Bruxelles-BRU…"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="v-vol">Numéro de vol</label>
+            <input type="text" id="v-vol" name="num_vol" placeholder="Ex: AF 471" required />
+          </div>
+
+          <div class="field">
+            <label for="v-compagnie">Compagnie aérienne</label>
+            <input type="text" id="v-compagnie" name="compagnie" placeholder="Ex: Air France, Ethiopian…" required />
+          </div>
+
+          <div class="field full">
+            <label for="v-motif">Motif de l'interruption</label>
+            <select id="v-motif" name="motif" required>
+              <option value="" disabled selected>— Sélectionnez un motif —</option>
+              <option value="Vol annulé">✈️ Vol annulé</option>
+              <option value="Correspondance manquée">⏱️ Correspondance manquée</option>
+              <option value="Surbooking / Refus d'embarquement">🚫 Surbooking / Refus d'embarquement</option>
+              <option value="Erreur personnelle">🙋 Erreur personnelle</option>
+            </select>
+          </div>
+
+          <!-- Passagers & durée -->
+          <div class="field full">
+            <label>Passagers &amp; durée estimée</label>
+            <div class="pax-row">
+              <div class="field">
+                <label for="v-adultes" style="font-size:0.73rem;">Adultes</label>
+                <input type="number" id="v-adultes" name="nb_adultes" min="1" value="1" placeholder="1" />
+              </div>
+              <div class="field">
+                <label for="v-enfants" style="font-size:0.73rem;">Enfants</label>
+                <input type="number" id="v-enfants" name="nb_enfants" min="0" value="0" placeholder="0" />
+              </div>
+              <div class="field">
+                <label for="v-nuits" style="font-size:0.73rem;">Nombre de nuits</label>
+                <input type="number" id="v-nuits" name="nb_nuits" min="1" value="1" placeholder="1" />
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /form-grid -->
+
+        <button type="submit" class="btn-submit">
+          Activer mon Pack via SOS Passager Escale Réseau 🚀
+        </button>
+        <div class="form-success" id="successVoyageur" role="alert">
+          ✅ Demande envoyée ! Notre équipe vous contacte sur WhatsApp sous 15&nbsp;minutes.
+        </div>
+      </form>
+
+      <p style="text-align:center;font-size:0.78rem;color:var(--gray-text);margin-top:16px;">
+        📲 Ou contactez-nous directement sur WhatsApp pour une réponse encore plus rapide.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SECTION 3 — PAIEMENTS SÉCURISÉS
+══════════════════════════════════════════════════════════════════ -->
+<section class="pay-section" id="paiements" aria-labelledby="pay-title">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Paiements sécurisés multi-devises</div>
+      <h2 id="pay-title">Payez comme vous voulez, où que vous soyez</h2>
+      <p>SOS Passager Escale Réseau accepte toutes les solutions de paiement locales — en Europe comme en Afrique de l'Ouest.</p>
+    </div>
+
+    <div class="pay-zones">
+
+      <div class="pay-zone-card">
+        <div class="pay-zone-head">
+          <span class="pay-zone-flag" aria-hidden="true">🌍</span>
+          <h3>Zone Europe</h3>
+        </div>
+        <div class="pay-badges">
+          <span class="pay-badge">
+            <span class="pay-dot" style="background:#1A73E8;" aria-hidden="true"></span>
+            Visa
+          </span>
+          <span class="pay-badge">
+            <span class="pay-dot" style="background:#EB001B;" aria-hidden="true"></span>
+            <span class="pay-dot" style="background:#FF5F00;margin-left:-3px;" aria-hidden="true"></span>
+            Mastercard
+          </span>
+          <span class="pay-badge">🍎 Apple Pay</span>
+          <span class="pay-badge">
+            <span class="pay-dot" style="background:#003087;" aria-hidden="true"></span>
+            PayPal
+          </span>
+        </div>
+      </div>
+
+      <div class="pay-zone-card">
+        <div class="pay-zone-head">
+          <span class="pay-zone-flag" aria-hidden="true">🌍</span>
+          <h3>Zone Afrique / UEMOA</h3>
+        </div>
+        <div class="pay-badges">
+          <span class="pay-badge">
+            <span class="pay-dot" style="background:#0070E0;" aria-hidden="true"></span>
+            Wave
+          </span>
+          <span class="pay-badge">
+            <span class="pay-dot" style="background:#FF6900;" aria-hidden="true"></span>
+            Orange Money
+          </span>
+          <span class="pay-badge">
+            <span class="pay-dot" style="background:#FFD700;" aria-hidden="true"></span>
+            MTN MoMo
+          </span>
+          <span class="pay-badge">
+            <span class="pay-dot" style="background:#00B14F;" aria-hidden="true"></span>
+            Moov Money
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SECTION 4 — DEVENIR PRESTATAIRE
+══════════════════════════════════════════════════════════════════ -->
+<section class="presta-section" id="prestataires" aria-labelledby="presta-title">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Réseau partenaires B2B</div>
+      <h2 id="presta-title">Devenir prestataire SOS Passager Escale Réseau</h2>
+      <p>Rejoignez notre réseau mondial de partenaires de confiance. Développez votre activité grâce aux voyageurs bloqués en aéroport — 24h/24, 7j/7.</p>
+    </div>
+
+    <div class="presta-grid">
+
+      <article class="presta-card">
+        <div class="presta-icon" aria-hidden="true">🏨</div>
+        <h3>Hébergeurs &amp; Logeurs</h3>
+        <p>
+          Propriétaires de studios meublés ou hôtels indépendants proches d'un aéroport.
+          Optimisez votre taux d'occupation de dernière minute en accueillant nos voyageurs.
+        </p>
+        <span class="presta-commission">Commission 20 % — au succès uniquement</span>
+        <p class="presta-charte">
+          Soumis au respect strict de la Charte de Qualité, Ponctualité et Sécurité de SOS Passager Escale Réseau.
+        </p>
+      </article>
+
+      <article class="presta-card">
+        <div class="presta-icon" aria-hidden="true">🚖</div>
+        <h3>Chauffeurs &amp; Transporteurs</h3>
+        <p>
+          Devenez transporteur officiel SOS Passager Escale Réseau pour assurer les transferts sécurisés
+          des voyageurs de jour comme de nuit, entre l'aéroport et les logements partenaires.
+        </p>
+        <span class="presta-commission">Missions garanties — disponibilité flexible</span>
+        <p class="presta-charte">
+          Soumis au respect strict de la Charte de Qualité, Ponctualité et Sécurité de SOS Passager Escale Réseau.
+        </p>
+      </article>
+
+      <article class="presta-card">
+        <div class="presta-icon" aria-hidden="true">🍽️</div>
+        <h3>Restaurateurs &amp; Traiteurs</h3>
+        <p>
+          Proposez des formules repas ou livraisons de nuit pour nos voyageurs en transit.
+          Service soir, nuit et week-end inclus — marché captif et clientèle régulière.
+        </p>
+        <span class="presta-commission">Flux clients réguliers — facturation réseau</span>
+        <p class="presta-charte">
+          Soumis au respect strict de la Charte de Qualité, Ponctualité et Sécurité de SOS Passager Escale Réseau.
+        </p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SECTION 5 — FORMULAIRE PRESTATAIRE
+══════════════════════════════════════════════════════════════════ -->
+<section class="presta-form-section" id="inscription-prestataire" aria-labelledby="form-presta-title">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Inscription prestataire</div>
+      <h2 id="form-presta-title">Intégrer SOS Passager Escale Réseau</h2>
+      <p>Complétez ce formulaire pour rejoindre notre pool mondial. Notre équipe vous contacte sous 48h pour valider votre profil.</p>
+    </div>
+
+    <div class="form-card">
+      <form
+        id="formPrestataire"
+        action="https://formspree.io/f/xpwdjrkb"
+        method="POST"
+        novalidate
+      >
+        <input type="hidden" name="_subject" value="[SOS Passager Escale] Nouvelle inscription prestataire" />
+        <input type="hidden" name="type_formulaire" value="prestataire" />
+
+        <div class="form-grid">
+
+          <div class="field full">
+            <label for="p-nom">Nom complet de la structure ou du gestionnaire</label>
+            <input type="text" id="p-nom" name="nom_structure" placeholder="Ex: Hôtel Les Palmes / Jean Koffi" required />
+          </div>
+
+          <div class="field full">
+            <label for="p-phone">Contact Téléphone &amp; WhatsApp</label>
+            <div class="phone-row">
+              <div class="field-indicatif">
+                <select id="p-indicatif" name="p_indicatif_pays" aria-label="Indicatif pays prestataire">
+                  <option value="+33">🇫🇷 +33 France</option>
+                  <option value="+32">🇧🇪 +32 Belgique</option>
+                  <option value="+41">🇨🇭 +41 Suisse</option>
+                  <option value="+49">🇩🇪 +49 Allemagne</option>
+                  <option value="+44">🇬🇧 +44 Royaume-Uni</option>
+                  <option value="+34">🇪🇸 +34 Espagne</option>
+                  <option value="+39">🇮🇹 +39 Italie</option>
+                  <option value="+1">🇺🇸 +1 USA/Canada</option>
+                  <option value="+225" selected>🇨🇮 +225 Côte d'Ivoire</option>
+                  <option value="+221">🇸🇳 +221 Sénégal</option>
+                  <option value="+223">🇲🇱 +223 Mali</option>
+                  <option value="+229">🇧🇯 +229 Bénin</option>
+                  <option value="+226">🇧🇫 +226 Burkina Faso</option>
+                  <option value="+224">🇬🇳 +224 Guinée</option>
+                  <option value="+228">🇹🇬 +228 Togo</option>
+                  <option value="+227">🇳🇪 +227 Niger</option>
+                  <option value="+237">🇨🇲 +237 Cameroun</option>
+                  <option value="+212">🇲🇦 +212 Maroc</option>
+                  <option value="+213">🇩🇿 +213 Algérie</option>
+                  <option value="+216">🇹🇳 +216 Tunisie</option>
+                  <option value="+234">🇳🇬 +234 Nigeria</option>
+                  <option value="+233">🇬🇭 +233 Ghana</option>
+                </select>
+              </div>
+              <div class="field-number">
+                <input type="tel" id="p-phone" name="p_whatsapp" placeholder="WhatsApp / Téléphone" required />
+              </div>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Type d'activité</label>
+            <div class="radio-btns" id="radioActivity" role="group" aria-label="Type d'activité prestataire">
+              <label id="lbl-logement">
+                <input type="radio" name="type_activite" value="Logement / Hôtel" required />
+                🏨 Logement / Hôtel
+              </label>
+              <label id="lbl-chauffeur">
+                <input type="radio" name="type_activite" value="Chauffeur / Taxi" />
+                🚖 Chauffeur / Taxi
+              </label>
+              <label id="lbl-resto">
+                <input type="radio" name="type_activite" value="Restaurateur / Traiteur" />
+                🍽️ Restaurateur / Traiteur
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="p-pays">Pays</label>
+            <input type="text" id="p-pays" name="pays" placeholder="Ex: Côte d'Ivoire, France, Sénégal…" required />
+          </div>
+
+          <div class="field">
+            <label for="p-ville">Ville &amp; Aéroport desservi</label>
+            <input type="text" id="p-ville" name="ville_aeroport" placeholder="Ex: Abidjan FHB, Paris CDG, Dakar DSS…" required />
+          </div>
+
+          <div class="field full">
+            <div class="checkbox-wrap">
+              <input type="checkbox" id="p-charte" name="charte_acceptee" value="oui" required />
+              <label for="p-charte">
+                Je certifie être en règle avec la législation de mon pays et j'accepte de respecter
+                la <strong>Charte de Qualité, Ponctualité et Sécurité</strong> ainsi que les conditions
+                de commissionnement de <strong>SOS Passager Escale Réseau</strong>.
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <button type="submit" class="btn-submit">
+          Intégrer SOS Passager Escale Réseau 🤝
+        </button>
+        <div class="form-success" id="successPrestataire" role="alert">
+          ✅ Inscription reçue ! Notre équipe vous contacte sous 48h pour valider votre profil.
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════════════════ -->
+<footer role="contentinfo">
+  <p class="footer-brand">SOS Passager · <span>Escale Réseau</span></p>
+  <p class="footer-sub">
+    Hébergement &amp; Transport d'Urgence · Europe &amp; Afrique de l'Ouest<br />
+    © 2025–2026 SOS Passager — Tous droits réservés
+  </p>
+  <nav class="footer-links" aria-label="Liens de pied de page">
+    <a href="index.html">Accueil</a>
+    <a href="droits.html">Droits passagers</a>
+    <a href="mentions-legales.html">Mentions légales</a>
+    <a href="politique-confidentialite.html">Confidentialité</a>
+    <a href="mailto:franckvanie@yahoo.de">franckvanie@yahoo.de</a>
+  </nav>
+</footer>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SCRIPT MINIMAL
+══════════════════════════════════════════════════════════════════ -->
+<script>
+  /* ── Hamburger menu ── */
+  var btn = document.getElementById('menuBtn');
+  var menu = document.getElementById('mobileMenu');
+  btn.addEventListener('click', function () {
+    var isOpen = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen.toString());
+  });
+
+  /* ── Radio button visual selection ── */
+  document.querySelectorAll('.radio-btns label').forEach(function (lbl) {
+    lbl.querySelector('input').addEventListener('change', function () {
+      document.querySelectorAll('.radio-btns label').forEach(function (l) { l.classList.remove('selected'); });
+      lbl.classList.add('selected');
+    });
+  });
+
+  /* ── Form submit handler (AJAX to Formspree) ── */
+  function setupForm(formId, successId) {
+    var form = document.getElementById(formId);
+    var success = document.getElementById(successId);
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var submitBtn = form.querySelector('.btn-submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Envoi en cours…';
+
+      var data = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(function (res) {
+        if (res.ok) {
+          success.style.display = 'block';
+          form.reset();
+          document.querySelectorAll('.radio-btns label').forEach(function (l) { l.classList.remove('selected'); });
+          submitBtn.textContent = '✅ Envoyé';
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.textContent = form.id === 'formVoyageur'
+            ? 'Activer mon Pack via SOS Passager Escale Réseau 🚀'
+            : 'Intégrer SOS Passager Escale Réseau 🤝';
+          alert('Une erreur est survenue. Veuillez réessayer ou nous contacter directement sur WhatsApp.');
+        }
+      })
+      .catch(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = form.id === 'formVoyageur'
+          ? 'Activer mon Pack via SOS Passager Escale Réseau 🚀'
+          : 'Intégrer SOS Passager Escale Réseau 🤝';
+        alert('Erreur réseau. Contactez-nous directement sur WhatsApp.');
+      });
+    });
+  }
+
+  setupForm('formVoyageur', 'successVoyageur');
+  setupForm('formPrestataire', 'successPrestataire');
+</script>
+
+</body>
+</html>
