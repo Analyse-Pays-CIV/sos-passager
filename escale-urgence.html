@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
     :root {
       --blue:#0057B8; --blue-dark:#003E8A; --blue-light:#E8F0FB; --blue-mid:#2979D0;
       --green-wa:#25D366; --green-wa-dk:#1EB857;
@@ -21,13 +21,13 @@
       --shadow-md:0 4px 20px rgba(0,87,184,0.13);
       --shadow-lg:0 8px 40px rgba(0,87,184,0.16);
     }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior:smooth; }
     body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--white); color:var(--dark); line-height:1.65; font-size:16px; -webkit-font-smoothing:antialiased; }
     a { color:var(--blue); text-decoration:none; }
     img { max-width:100%; display:block; }
     input,select,textarea,button { font-family:inherit; }
 
-    /* NAV */
+    /* ── NAV ── */
     .navbar { position:sticky; top:0; z-index:200; background:var(--white); border-bottom:2px solid var(--blue-light); box-shadow:var(--shadow-sm); }
     .nav-inner { max-width:1100px; margin:0 auto; padding:0 20px; display:flex; align-items:center; justify-content:space-between; height:64px; gap:16px; }
     .nav-logo { display:flex; align-items:center; gap:10px; flex-shrink:0; text-decoration:none; }
@@ -46,14 +46,14 @@
     .nav-mobile a:hover { background:var(--blue-light); color:var(--blue); }
     @media(max-width:768px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
 
-    /* LAYOUT */
+    /* ── LAYOUT ── */
     .container { max-width:1100px; margin:0 auto; padding:0 20px; }
     .section-tag { display:inline-block; background:var(--blue-light); color:var(--blue); font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:5px 12px; border-radius:20px; margin-bottom:14px; }
     .section-head { text-align:center; margin-bottom:44px; }
     .section-head h2 { font-size:clamp(1.45rem,3.5vw,2.1rem); font-weight:800; color:var(--blue-dark); margin-bottom:10px; }
-    .section-head p { color:var(--gray-text); font-size:1rem; max-width:580px; margin:0 auto; }
+    .section-head p { color:var(--gray-text); font-size:1rem; max-width:600px; margin:0 auto; }
 
-    /* HERO */
+    /* ── HERO ── */
     .hero { background:linear-gradient(160deg,var(--blue-light) 0%,var(--white) 60%); padding:64px 0 56px; border-bottom:1px solid var(--gray-2); }
     .hero-grid { display:grid; grid-template-columns:1fr 420px; gap:48px; align-items:start; }
     @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:36px;}}
@@ -87,8 +87,114 @@
     .panel-wa-cta { display:flex; align-items:center; gap:10px; background:#fff; color:var(--blue-dark); font-size:0.88rem; font-weight:800; padding:14px 18px; border-radius:10px; text-decoration:none; transition:opacity 0.18s; }
     .panel-wa-cta:hover { opacity:0.9; color:var(--blue-dark); }
 
-    /* FORMULAIRE */
-    .form-section { padding:72px 0; background:var(--gray-1); }
+    /* ── SMOOTH SCROLL BANNER ── */
+    .scroll-cta-banner {
+      background:var(--blue-dark); color:#fff; text-align:center;
+      padding:14px 20px; font-size:0.88rem; font-weight:700;
+      border-bottom:2px solid var(--blue);
+    }
+    .scroll-cta-banner a { color:#7EC8F8; text-decoration:underline; cursor:pointer; }
+
+    /* ── SECTION CATALOGUE (hébergement + transport) ── */
+    .choix-section { background:var(--white); padding:64px 0 72px; border-top:2px solid var(--blue-light); }
+    .choix-block { margin-bottom:52px; }
+    .choix-block--transport { margin-bottom:36px; }
+    .choix-block-title { display:flex; align-items:flex-start; gap:16px; margin-bottom:28px; }
+    .choix-num { flex-shrink:0; width:42px; height:42px; background:var(--blue); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.15rem; font-weight:800; margin-top:2px; }
+    .choix-block-title h3 { font-size:1.2rem; font-weight:800; color:var(--blue-dark); margin-bottom:3px; line-height:1.3; }
+    .choix-block-sub { font-size:0.86rem; color:var(--gray-text); margin:0; }
+
+    /* Grille hôtel */
+    .hotel-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    @media(max-width:900px){.hotel-grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:600px){.hotel-grid{grid-template-columns:1fr;}}
+    .hotel-card { position:relative; background:var(--white); border:1.5px solid var(--gray-3); border-radius:16px; overflow:hidden; cursor:pointer; transition:border-color 0.2s,box-shadow 0.2s,transform 0.18s; display:flex; flex-direction:column; box-shadow:var(--shadow-sm); }
+    .hotel-card:hover { border-color:var(--blue-mid); box-shadow:var(--shadow-md); transform:translateY(-3px); }
+    .hotel-card input[type="radio"] { position:absolute; opacity:0; width:0; height:0; pointer-events:none; }
+    .hotel-card.is-selected { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,87,184,0.18),0 6px 28px rgba(0,87,184,0.16); }
+    .hotel-card.is-selected .hotel-select-btn { background:var(--blue); color:#fff; }
+    .hotel-card.is-selected .hotel-name { color:var(--blue); }
+    .hotel-card.is-selected .hcheck svg circle { fill:var(--blue); stroke:var(--blue); }
+    .hotel-card.is-selected .hcheck .ck { stroke:#fff; }
+    .hotel-img-wrap { position:relative; width:100%; height:180px; overflow:hidden; border-radius:8px 8px 0 0; flex-shrink:0; }
+    .hotel-img-wrap img { width:100%; height:180px; object-fit:cover; border-radius:8px 8px 0 0; display:block; transition:transform 0.4s ease; }
+    .hotel-card:hover .hotel-img-wrap img { transform:scale(1.04); }
+    .hotel-img-badge { position:absolute; top:10px; right:10px; background:rgba(255,255,255,0.94); color:var(--dark); font-size:0.72rem; font-weight:700; padding:3px 9px; border-radius:20px; backdrop-filter:blur(4px); }
+    .hotel-img-tag { position:absolute; top:10px; left:10px; background:var(--blue); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 9px; border-radius:20px; text-transform:uppercase; letter-spacing:0.06em; }
+    .hcheck { position:absolute; top:10px; left:10px; width:24px; height:24px; background:rgba(255,255,255,0.95); border-radius:50%; padding:2px; box-shadow:0 1px 4px rgba(0,0,0,0.15); z-index:2; }
+    .hcheck svg { width:100%; height:100%; }
+    .hotel-body { padding:16px 16px 14px; flex:1; display:flex; flex-direction:column; gap:10px; }
+    .hotel-name { font-size:0.95rem; font-weight:800; color:var(--dark); line-height:1.25; transition:color 0.18s; }
+    .hotel-specs { display:flex; flex-direction:column; gap:4px; }
+    .hotel-spec-item { font-size:0.75rem; color:var(--gray-text); line-height:1.4; }
+    .hotel-badges { display:flex; flex-wrap:wrap; gap:5px; }
+    .eq-badge { display:inline-flex; align-items:center; gap:3px; background:var(--blue-light); color:var(--blue-dark); font-size:0.68rem; font-weight:600; padding:3px 8px; border-radius:20px; white-space:nowrap; }
+    .hotel-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:auto; padding-top:10px; border-top:1px solid var(--gray-2); flex-wrap:wrap; }
+    .hotel-prix { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px; }
+    .hotel-prix-amount { font-size:1.05rem; font-weight:800; color:var(--blue-dark); }
+    .hotel-prix-unit { font-size:0.75rem; color:var(--gray-text); font-weight:500; }
+    .hotel-prix-eur { font-size:0.7rem; color:var(--gray-text); padding:1px 7px; background:var(--gray-2); border-radius:10px; font-weight:500; }
+    .hotel-select-btn { font-size:0.75rem; font-weight:700; color:var(--blue); border:1.5px solid var(--blue); border-radius:8px; padding:5px 13px; transition:background 0.18s,color 0.18s; white-space:nowrap; flex-shrink:0; }
+    .choix-note { font-size:0.78rem; color:var(--gray-text); background:var(--gray-1); border-left:3px solid var(--blue); border-radius:0 8px 8px 0; padding:10px 14px; margin-top:16px; line-height:1.55; }
+
+    /* Grille transport */
+    .transport-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; align-items:stretch; }
+    @media(max-width:900px){.transport-grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:600px){.transport-grid{grid-template-columns:1fr;}}
+    .transport-card { position:relative; background:var(--white); border:1.5px solid var(--gray-3); border-radius:16px; overflow:hidden; cursor:pointer; transition:border-color 0.2s,box-shadow 0.2s,transform 0.18s; display:flex; flex-direction:column; box-shadow:var(--shadow-sm); }
+    .transport-card:hover { border-color:var(--blue-mid); box-shadow:var(--shadow-md); transform:translateY(-3px); }
+    .transport-card input[type="radio"] { position:absolute; opacity:0; width:0; height:0; pointer-events:none; }
+    .transport-card.is-selected { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,87,184,0.18); }
+    .transport-card.is-selected .transport-name { color:var(--blue); }
+    .transport-card.is-selected .tcheck svg circle { fill:var(--blue); stroke:var(--blue); }
+    .transport-card.is-selected .tcheck .ck { stroke:#fff; }
+    .transport-img-wrap { position:relative; width:100%; height:160px; overflow:hidden; border-radius:8px 8px 0 0; flex-shrink:0; }
+    .transport-img-wrap img { width:100%; height:160px; object-fit:cover; border-radius:8px 8px 0 0; display:block; transition:transform 0.4s ease; }
+    .transport-card:hover .transport-img-wrap img { transform:scale(1.04); }
+    .t-badge-pop { position:absolute; top:10px; left:50%; transform:translateX(-50%); background:var(--amber); color:#7a4500; font-size:0.68rem; font-weight:700; padding:3px 12px; border-radius:20px; white-space:nowrap; z-index:5; }
+    .tcheck { position:absolute; top:10px; right:10px; width:24px; height:24px; background:rgba(255,255,255,0.95); border-radius:50%; padding:2px; box-shadow:0 1px 4px rgba(0,0,0,0.12); z-index:5; }
+    .tcheck svg { width:100%; height:100%; }
+    .transport-body { padding:14px 16px; flex:1; display:flex; flex-direction:column; gap:9px; }
+    .transport-name { font-size:0.95rem; font-weight:800; color:var(--dark); transition:color 0.18s; }
+    .transport-specs { list-style:none; padding:9px 12px; margin:0; background:var(--gray-1); border-radius:9px; display:flex; flex-direction:column; gap:4px; }
+    .transport-specs li { font-size:0.76rem; color:var(--dark); display:flex; align-items:center; gap:5px; }
+    .transport-prix { margin-top:auto; padding:9px 13px; border-radius:10px; display:flex; flex-direction:column; gap:2px; text-align:center; }
+    .transport-prix.inc { background:#E6F8EF; }
+    .transport-prix.ext { background:var(--blue-light); }
+    .transport-prix-lbl { font-size:0.67rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--gray-text); }
+    .transport-prix.inc .transport-prix-lbl { color:#1A7A4A; }
+    .transport-prix.ext .transport-prix-lbl { color:var(--blue); }
+    .transport-prix-val { font-size:0.92rem; font-weight:800; color:var(--dark); }
+    .transport-prix.inc .transport-prix-val { color:#1A7A4A; }
+    .transport-prix.ext .transport-prix-val { color:var(--blue-dark); }
+    .transport-prix-val small { font-size:0.73rem; font-weight:500; color:var(--gray-text); }
+
+    /* ── PANIER DYNAMIQUE ── */
+    .recap-box { background:var(--blue-light); border:1.5px solid var(--blue); border-radius:14px; padding:20px 24px; margin:36px 0 0; }
+    .recap-title { font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--blue-dark); margin-bottom:14px; }
+    .recap-rows { display:flex; flex-direction:column; gap:10px; }
+    .recap-row { display:flex; align-items:flex-start; gap:12px; font-size:0.88rem; }
+    .recap-label { font-weight:700; color:var(--blue-dark); white-space:nowrap; flex-shrink:0; min-width:120px; }
+    .recap-val { color:var(--gray-text); font-style:italic; }
+    .recap-val.filled { color:var(--dark); font-style:normal; font-weight:600; }
+    .recap-total-row { display:flex; align-items:center; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:2px solid var(--blue); flex-wrap:wrap; gap:8px; }
+    .recap-total-label { font-size:0.88rem; font-weight:700; color:var(--blue-dark); text-transform:uppercase; letter-spacing:0.05em; }
+    .recap-total-amount { font-size:1.6rem; font-weight:900; color:var(--blue-dark); line-height:1; }
+    .total-eur { font-size:0.8rem; font-weight:500; color:var(--gray-text); display:block; text-align:right; margin-top:2px; }
+    .recap-nuits-row { font-size:0.78rem; color:var(--gray-text); margin-top:6px; padding-top:6px; border-top:1px solid var(--gray-2); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:4px; }
+
+    /* ── BOUTON PAIEMENT ── */
+    .btn-pay { display:flex; align-items:center; justify-content:center; gap:12px; width:100%; max-width:520px; margin:0 auto; background:var(--blue); color:#fff; border:none; border-radius:14px; padding:18px 28px; font-size:1.05rem; font-weight:800; cursor:pointer; transition:background 0.18s,transform 0.15s,box-shadow 0.18s; box-shadow:0 6px 24px rgba(0,87,184,0.3); }
+    .btn-pay:hover { background:var(--blue-dark); transform:translateY(-2px); box-shadow:0 10px 32px rgba(0,87,184,0.38); }
+    .btn-pay:disabled { background:var(--gray-3); box-shadow:none; cursor:not-allowed; transform:none; }
+    .btn-pay-icon { font-size:1.4rem; }
+    .btn-pay-text { display:flex; flex-direction:column; align-items:flex-start; gap:1px; }
+    .btn-pay-text strong { font-size:1rem; line-height:1.2; }
+    .btn-pay-text small { font-size:0.72rem; font-weight:500; opacity:0.85; }
+    .wa-confirm-hint { margin-top:12px; font-size:0.78rem; color:var(--gray-text); text-align:center; }
+
+    /* ── FORMULAIRE VOYAGEUR ── */
+    .form-section { padding:72px 0; background:var(--gray-1); border-top:2px solid var(--blue-light); }
     .form-card { background:var(--white); border:1.5px solid var(--gray-3); border-radius:var(--radius-lg); box-shadow:var(--shadow-md); padding:36px 32px; max-width:740px; margin:0 auto; }
     @media(max-width:560px){.form-card{padding:24px 18px;}}
     .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
@@ -109,7 +215,7 @@
     .btn-submit:hover { background:var(--blue-dark); transform:translateY(-1px); }
     .form-success { display:none; background:#E8F8EE; border:1.5px solid #4CAF50; border-radius:var(--radius); padding:18px 20px; text-align:center; color:#1B5E20; font-weight:700; margin-top:16px; font-size:0.95rem; }
 
-    /* PAIEMENTS */
+    /* ── PAIEMENTS ── */
     .pay-section { padding:72px 0; background:var(--white); border-top:1px solid var(--gray-2); border-bottom:1px solid var(--gray-2); }
     .pay-zones { display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:800px; margin:0 auto; }
     @media(max-width:640px){.pay-zones{grid-template-columns:1fr;}}
@@ -121,7 +227,7 @@
     .pay-badge { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:var(--gray-1); border:1.5px solid var(--gray-2); border-radius:8px; font-size:0.8rem; font-weight:700; color:var(--dark); white-space:nowrap; }
     .pay-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
 
-    /* PRESTATAIRES */
+    /* ── PRESTATAIRES ── */
     .presta-section { padding:72px 0; background:var(--gray-1); }
     .presta-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; align-items:stretch; }
     @media(max-width:768px){.presta-grid{grid-template-columns:1fr;}}
@@ -137,7 +243,7 @@
     .radio-btns label:hover,.radio-btns label.selected { background:var(--blue-light); border-color:var(--blue); color:var(--blue-dark); }
     .radio-btns input[type="radio"] { accent-color:var(--blue); flex-shrink:0; }
 
-    /* FOOTER */
+    /* ── FOOTER ── */
     footer { background:var(--blue-dark); color:rgba(255,255,255,0.7); padding:36px 20px; text-align:center; }
     .footer-brand { font-size:1rem; font-weight:800; color:#fff; margin-bottom:6px; }
     .footer-brand span { color:#7EC8F8; }
@@ -146,7 +252,7 @@
     .footer-links a { color:rgba(255,255,255,0.6); transition:color 0.18s; }
     .footer-links a:hover { color:#fff; }
 
-    /* BARRE UTILISATEUR */
+    /* ── TOPBAR UTILISATEUR ── */
     .user-topbar { display:none; background:var(--blue-light); border-bottom:1.5px solid var(--blue); padding:8px 20px; font-size:0.82rem; color:var(--blue-dark); font-weight:600; }
     .user-topbar.visible { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
     .user-topbar-left { display:flex; align-items:center; gap:8px; }
@@ -154,7 +260,7 @@
     .btn-logout { background:none; border:1.5px solid var(--blue); color:var(--blue); border-radius:8px; padding:4px 12px; font-size:0.76rem; font-weight:700; cursor:pointer; transition:all 0.15s; }
     .btn-logout:hover { background:var(--blue); color:#fff; }
 
-    /* VERROU */
+    /* ── VERROUS ── */
     .lock-overlay { position:absolute; inset:0; z-index:10; background:rgba(255,255,255,0.78); backdrop-filter:blur(2px); border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; cursor:pointer; transition:background 0.2s; }
     .lock-overlay:hover { background:rgba(232,240,251,0.9); }
     .lock-overlay-icon { font-size:1.8rem; }
@@ -162,7 +268,7 @@
     .hotel-card,.transport-card { position:relative; }
     body.authenticated .lock-overlay { display:none !important; }
 
-    /* MODAL */
+    /* ── MODALS ── */
     .modal-backdrop { position:fixed; inset:0; z-index:9000; background:rgba(10,20,40,0.62); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:16px; opacity:0; pointer-events:none; transition:opacity 0.22s; }
     .modal-backdrop.open { opacity:1; pointer-events:auto; }
     .modal-box { background:var(--white); border-radius:20px; box-shadow:0 24px 80px rgba(0,60,150,0.22); width:100%; max-width:460px; max-height:92vh; overflow-y:auto; transform:translateY(24px) scale(0.97); transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
@@ -173,7 +279,7 @@
     .modal-close { background:var(--gray-2); border:none; border-radius:50%; width:34px; height:34px; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--dark); transition:background 0.15s; }
     .modal-close:hover { background:var(--gray-3); }
     .modal-body { padding:20px 28px 28px; }
-    .modal-tabs { display:flex; gap:0; border-bottom:2px solid var(--gray-2); margin-bottom:22px; }
+    .modal-tabs { display:flex; border-bottom:2px solid var(--gray-2); margin-bottom:22px; }
     .modal-tab { flex:1; text-align:center; padding:10px 8px; font-size:0.88rem; font-weight:700; color:var(--gray-text); cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:all 0.15s; }
     .modal-tab.active { color:var(--blue); border-bottom-color:var(--blue); }
     .modal-panel { display:none; }
@@ -195,112 +301,12 @@
     .pwd-wrap { position:relative; }
     .pwd-toggle { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-text); padding:4px; }
 
-    /* HÉBERGEMENT + TRANSPORT */
-    .choix-section { background:var(--white); padding:64px 0 72px; border-top:2px solid var(--blue-light); }
-    .choix-block { margin-bottom:52px; }
-    .choix-block--transport { margin-bottom:36px; }
-    .choix-block-title { display:flex; align-items:flex-start; gap:16px; margin-bottom:28px; }
-    .choix-num { flex-shrink:0; width:42px; height:42px; background:var(--blue); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.15rem; font-weight:800; margin-top:2px; }
-    .choix-block-title h3 { font-size:1.2rem; font-weight:800; color:var(--blue-dark); margin-bottom:3px; line-height:1.3; }
-    .choix-block-sub { font-size:0.86rem; color:var(--gray-text); margin:0; }
-
-    /* Grille hôtel */
-    .hotel-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-    .hotel-card { position:relative; background:var(--white); border:2px solid var(--gray-3); border-radius:16px; overflow:hidden; cursor:pointer; transition:border-color 0.2s,box-shadow 0.2s,transform 0.18s; display:flex; flex-direction:column; box-shadow:0 2px 10px rgba(0,87,184,0.06); }
-    .hotel-card:hover { border-color:var(--blue-mid); box-shadow:0 6px 28px rgba(0,87,184,0.14); transform:translateY(-3px); }
-    .hotel-card input[type="radio"] { position:absolute; opacity:0; width:0; height:0; pointer-events:none; }
-    .hotel-card.is-selected { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,87,184,0.18),0 6px 28px rgba(0,87,184,0.16); }
-    .hotel-card.is-selected .hotel-select-btn { background:var(--blue); color:#fff; }
-    .hotel-card.is-selected .hotel-name { color:var(--blue); }
-    .hotel-card.is-selected .hotel-check-ring svg circle { fill:var(--blue); stroke:var(--blue); }
-    .hotel-card.is-selected .check-path { stroke:#fff; }
-
-    /* Image hôtel */
-    .hotel-img-wrap { position:relative; width:100%; height:180px; overflow:hidden; border-radius:8px 8px 0 0; flex-shrink:0; }
-    .hotel-img-wrap img { width:100%; height:180px; object-fit:cover; border-radius:8px 8px 0 0; display:block; transition:transform 0.4s ease; }
-    .hotel-card:hover .hotel-img-wrap img { transform:scale(1.04); }
-    .hotel-img-badge { position:absolute; top:10px; right:10px; background:rgba(255,255,255,0.94); color:var(--dark); font-size:0.72rem; font-weight:700; padding:3px 9px; border-radius:20px; backdrop-filter:blur(4px); }
-    .hotel-img-tag { position:absolute; top:10px; left:10px; background:var(--blue); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 9px; border-radius:20px; text-transform:uppercase; letter-spacing:0.06em; }
-
-    .hotel-body { padding:16px 16px 14px; flex:1; display:flex; flex-direction:column; gap:10px; }
-    .hotel-name { font-size:0.95rem; font-weight:800; color:var(--dark); line-height:1.25; transition:color 0.18s; }
-    .hotel-specs { display:flex; flex-direction:column; gap:4px; }
-    .hotel-spec-item { font-size:0.76rem; color:var(--gray-text); display:flex; align-items:flex-start; gap:5px; line-height:1.4; }
-    .hotel-badges { display:flex; flex-wrap:wrap; gap:5px; }
-    .eq-badge { display:inline-flex; align-items:center; gap:3px; background:var(--blue-light); color:var(--blue-dark); font-size:0.68rem; font-weight:600; padding:3px 8px; border-radius:20px; white-space:nowrap; }
-    .hotel-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:auto; padding-top:10px; border-top:1px solid var(--gray-2); flex-wrap:wrap; }
-    .hotel-prix { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px; }
-    .hotel-prix-amount { font-size:1.05rem; font-weight:800; color:var(--blue-dark); }
-    .hotel-prix-unit { font-size:0.75rem; color:var(--gray-text); font-weight:500; }
-    .hotel-prix-eur { font-size:0.7rem; color:var(--gray-text); padding:1px 7px; background:var(--gray-2); border-radius:10px; font-weight:500; }
-    .hotel-select-btn { font-size:0.75rem; font-weight:700; color:var(--blue); border:1.5px solid var(--blue); border-radius:8px; padding:5px 13px; transition:background 0.18s,color 0.18s; white-space:nowrap; flex-shrink:0; }
-    .hotel-check-ring { position:absolute; top:10px; left:10px; width:24px; height:24px; background:rgba(255,255,255,0.95); border-radius:50%; padding:2px; box-shadow:0 1px 4px rgba(0,0,0,0.15); z-index:2; }
-    .hotel-check-ring svg { width:100%; height:100%; }
-    .choix-note { font-size:0.78rem; color:var(--gray-text); background:var(--gray-1); border-left:3px solid var(--blue); border-radius:0 8px 8px 0; padding:10px 14px; margin-top:16px; line-height:1.55; }
-
-    /* Grille transport */
-    .transport-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; align-items:stretch; }
-    .transport-card { position:relative; background:var(--white); border:2px solid var(--gray-3); border-radius:16px; overflow:hidden; cursor:pointer; transition:border-color 0.2s,box-shadow 0.2s,transform 0.18s; display:flex; flex-direction:column; box-shadow:0 2px 10px rgba(0,87,184,0.06); }
-    .transport-card:hover { border-color:var(--blue-mid); box-shadow:0 6px 28px rgba(0,87,184,0.14); transform:translateY(-3px); }
-    .transport-card input[type="radio"] { position:absolute; opacity:0; width:0; height:0; pointer-events:none; }
-    .transport-card.is-selected { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,87,184,0.18); }
-    .transport-card.is-selected .transport-name { color:var(--blue); }
-    .transport-card.is-selected .transport-check-ring svg circle { fill:var(--blue); stroke:var(--blue); }
-    .transport-card.is-selected .transport-check-ring .check-path { stroke:#fff; }
-
-    /* Image transport */
-    .transport-img-wrap { position:relative; width:100%; height:160px; overflow:hidden; border-radius:8px 8px 0 0; flex-shrink:0; }
-    .transport-img-wrap img { width:100%; height:160px; object-fit:cover; border-radius:8px 8px 0 0; display:block; transition:transform 0.4s ease; }
-    .transport-card:hover .transport-img-wrap img { transform:scale(1.04); }
-    .transport-badge-popular { position:absolute; top:10px; left:50%; transform:translateX(-50%); background:var(--amber); color:#7a4500; font-size:0.68rem; font-weight:700; padding:3px 12px; border-radius:20px; white-space:nowrap; z-index:5; }
-    .transport-check-ring { position:absolute; top:10px; right:10px; width:24px; height:24px; background:rgba(255,255,255,0.95); border-radius:50%; padding:2px; box-shadow:0 1px 4px rgba(0,0,0,0.12); z-index:5; }
-    .transport-check-ring svg { width:100%; height:100%; }
-
-    .transport-body { padding:14px 16px; flex:1; display:flex; flex-direction:column; gap:9px; }
-    .transport-name { font-size:0.95rem; font-weight:800; color:var(--dark); transition:color 0.18s; }
-    .transport-specs { list-style:none; padding:9px 12px; margin:0; background:var(--gray-1); border-radius:9px; display:flex; flex-direction:column; gap:4px; }
-    .transport-specs li { font-size:0.76rem; color:var(--dark); display:flex; align-items:center; gap:5px; }
-    .transport-prix { margin-top:auto; padding:9px 13px; border-radius:10px; display:flex; flex-direction:column; gap:2px; text-align:center; }
-    .transport-prix.included { background:#E6F8EF; }
-    .transport-prix.extra { background:var(--blue-light); }
-    .transport-prix-label { font-size:0.67rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--gray-text); }
-    .transport-prix.included .transport-prix-label { color:#1A7A4A; }
-    .transport-prix.extra .transport-prix-label { color:var(--blue); }
-    .transport-prix-val { font-size:0.92rem; font-weight:800; color:var(--dark); }
-    .transport-prix.included .transport-prix-val { color:#1A7A4A; }
-    .transport-prix.extra .transport-prix-val { color:var(--blue-dark); }
-    .transport-prix-val small { font-size:0.73rem; font-weight:500; color:var(--gray-text); }
-
-    /* PANIER */
-    .recap-box { background:var(--blue-light); border:1.5px solid var(--blue); border-radius:14px; padding:20px 24px; margin:36px 0 0; }
-    .recap-title { font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--blue-dark); margin-bottom:14px; }
-    .recap-rows { display:flex; flex-direction:column; gap:10px; }
-    .recap-row { display:flex; align-items:flex-start; gap:12px; font-size:0.88rem; }
-    .recap-label { font-weight:700; color:var(--blue-dark); white-space:nowrap; flex-shrink:0; min-width:120px; }
-    .recap-val { color:var(--gray-text); font-style:italic; transition:color 0.2s,font-style 0.2s; }
-    .recap-val.filled { color:var(--dark); font-style:normal; font-weight:600; }
-    .recap-total-row { display:flex; align-items:center; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:2px solid var(--blue); flex-wrap:wrap; gap:8px; }
-    .recap-total-label { font-size:0.88rem; font-weight:700; color:var(--blue-dark); text-transform:uppercase; letter-spacing:0.05em; }
-    .recap-total-amount { font-size:1.6rem; font-weight:900; color:var(--blue-dark); line-height:1; }
-    .total-eur { font-size:0.8rem; font-weight:500; color:var(--gray-text); display:block; text-align:right; margin-top:2px; }
-    .recap-nuits-row { font-size:0.78rem; color:var(--gray-text); margin-top:6px; padding-top:6px; border-top:1px solid var(--gray-2); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:4px; }
-
-    /* BOUTON PAIEMENT */
-    .btn-pay { display:flex; align-items:center; justify-content:center; gap:12px; width:100%; max-width:520px; margin:0 auto; background:var(--blue); color:#fff; border:none; border-radius:14px; padding:18px 28px; font-size:1.05rem; font-weight:800; cursor:pointer; transition:background 0.18s,transform 0.15s,box-shadow 0.18s; box-shadow:0 6px 24px rgba(0,87,184,0.3); }
-    .btn-pay:hover { background:var(--blue-dark); transform:translateY(-2px); box-shadow:0 10px 32px rgba(0,87,184,0.38); }
-    .btn-pay:disabled { background:var(--gray-3); box-shadow:none; cursor:not-allowed; transform:none; }
-    .btn-pay-icon { font-size:1.4rem; }
-    .btn-pay-text { display:flex; flex-direction:column; align-items:flex-start; gap:1px; }
-    .btn-pay-text strong { font-size:1rem; line-height:1.2; }
-    .btn-pay-text small { font-size:0.72rem; font-weight:500; opacity:0.85; }
-    .wa-confirm-hint { margin-top:12px; font-size:0.78rem; color:var(--gray-text); text-align:center; }
-
-    /* MODAL PAIEMENT */
+    /* ── MODAL PAIEMENT ── */
     .pay-modal-box { max-width:500px; }
     .pay-amount-display { background:var(--blue-light); border-radius:12px; padding:16px 20px; text-align:center; margin-bottom:20px; }
-    .pay-amount-display .pay-lbl { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--blue-dark); margin-bottom:4px; }
-    .pay-amount-display .pay-big { font-size:2rem; font-weight:900; color:var(--blue-dark); }
-    .pay-amount-display .pay-sub { font-size:0.78rem; color:var(--gray-text); margin-top:2px; }
+    .pay-lbl { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--blue-dark); margin-bottom:4px; }
+    .pay-big { font-size:2rem; font-weight:900; color:var(--blue-dark); }
+    .pay-sub { font-size:0.78rem; color:var(--gray-text); margin-top:2px; }
     .pay-method-title { font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--gray-text); margin-bottom:12px; }
     .pay-methods-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
     .pay-method-card { border:2px solid var(--gray-3); border-radius:12px; padding:14px 12px; cursor:pointer; transition:all 0.18s; display:flex; flex-direction:column; align-items:center; gap:7px; text-align:center; background:var(--white); }
@@ -341,10 +347,6 @@
     @keyframes spin{to{transform:rotate(360deg);}}
     .pay-processing p { font-size:0.9rem; font-weight:600; color:var(--blue-dark); }
 
-    /* RESPONSIVE */
-    @media(max-width:900px){.hotel-grid{grid-template-columns:1fr 1fr;}.transport-grid{grid-template-columns:1fr 1fr;}}
-    @media(max-width:600px){.hotel-grid,.transport-grid{grid-template-columns:1fr;}.choix-section{padding:44px 0 56px;}.mfield-row{grid-template-columns:1fr;}}
-    @media(max-width:500px){.modal-body{padding:16px 18px 22px;}.modal-head{padding:20px 18px 0;}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
   </style>
 </head>
@@ -360,98 +362,94 @@
 </div>
 
 <!-- ══ MODAL AUTH ══ -->
-<div class="modal-backdrop" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+<div class="modal-backdrop" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
   <div class="modal-box">
     <div class="modal-head">
-      <div class="modal-head-text"><h2 id="authModalTitle">Accès Escale Réseau</h2><p>Connectez-vous ou créez votre compte gratuit</p></div>
-      <button class="modal-close" id="authModalClose" aria-label="Fermer">✕</button>
+      <div class="modal-head-text"><h2 id="authTitle">Accès Escale Réseau</h2><p>Connectez-vous ou créez votre compte gratuit</p></div>
+      <button class="modal-close" id="authClose" aria-label="Fermer">✕</button>
     </div>
     <div class="modal-body">
-      <div class="modal-tabs" role="tablist">
-        <div class="modal-tab active" id="tabLogin" role="tab" aria-selected="true" tabindex="0">Se connecter</div>
-        <div class="modal-tab" id="tabRegister" role="tab" aria-selected="false" tabindex="0">Créer un compte</div>
+      <div class="modal-tabs">
+        <div class="modal-tab active" id="tabLogin" tabindex="0">Se connecter</div>
+        <div class="modal-tab" id="tabRegister" tabindex="0">Créer un compte</div>
       </div>
-      <div class="modal-panel active" id="panelLogin" role="tabpanel">
-        <div class="modal-error" id="loginError"></div>
-        <div class="mfield"><label for="loginEmail">Adresse e-mail</label><input type="email" id="loginEmail" placeholder="votre@email.com" autocomplete="email" /></div>
-        <div class="mfield"><label for="loginPwd">Mot de passe</label><div class="pwd-wrap"><input type="password" id="loginPwd" placeholder="••••••••" autocomplete="current-password" /><button type="button" class="pwd-toggle" data-target="loginPwd" aria-label="Afficher">👁</button></div></div>
-        <button class="btn-modal-submit" id="btnLogin"><span>🔓</span> Se connecter</button>
+      <!-- Connexion -->
+      <div class="modal-panel active" id="panelLogin">
+        <div class="modal-error" id="loginErr"></div>
+        <div class="mfield"><label for="loginEmail">E-mail</label><input type="email" id="loginEmail" placeholder="votre@email.com" autocomplete="email" /></div>
+        <div class="mfield"><label for="loginPwd">Mot de passe</label><div class="pwd-wrap"><input type="password" id="loginPwd" placeholder="••••••••" /><button type="button" class="pwd-toggle" data-t="loginPwd">👁</button></div></div>
+        <button class="btn-modal-submit" id="btnLogin">🔓 Se connecter</button>
         <p class="modal-divider">Pas encore de compte ? <span class="switch-link" data-tab="tabRegister">Créer un compte →</span></p>
       </div>
-      <div class="modal-panel" id="panelRegister" role="tabpanel">
-        <div class="modal-error" id="registerError"></div>
-        <div id="registerForm">
+      <!-- Inscription -->
+      <div class="modal-panel" id="panelRegister">
+        <div class="modal-error" id="registerErr"></div>
+        <div id="regForm">
           <div class="mfield-row">
             <div class="mfield"><label for="regPrenom">Prénom</label><input type="text" id="regPrenom" placeholder="Jean-Paul" /></div>
             <div class="mfield"><label for="regNom">Nom</label><input type="text" id="regNom" placeholder="Dupont" /></div>
           </div>
           <div class="mfield"><label for="regEmail">E-mail</label><input type="email" id="regEmail" placeholder="votre@email.com" /></div>
           <div class="mfield"><label for="regWa">WhatsApp</label><input type="tel" id="regWa" placeholder="+225 05 03 60 57 25" /></div>
-          <div class="mfield"><label for="regPwd">Mot de passe (min. 6 car.)</label><div class="pwd-wrap"><input type="password" id="regPwd" placeholder="••••••••" /><button type="button" class="pwd-toggle" data-target="regPwd" aria-label="Afficher">👁</button></div></div>
-          <button class="btn-modal-submit" id="btnRegister"><span>✈️</span> Créer mon compte &amp; Réserver</button>
+          <div class="mfield"><label for="regPwd">Mot de passe (min. 6 car.)</label><div class="pwd-wrap"><input type="password" id="regPwd" placeholder="••••••••" /><button type="button" class="pwd-toggle" data-t="regPwd">👁</button></div></div>
+          <button class="btn-modal-submit" id="btnRegister">✈️ Créer mon compte &amp; Réserver</button>
           <p class="modal-divider">Déjà un compte ? <span class="switch-link" data-tab="tabLogin">Se connecter →</span></p>
         </div>
-        <div class="modal-success-msg" id="registerSuccess" style="display:none">
-          <span class="big-check">🎉</span><h3>Compte créé !</h3><p>Bienvenue dans SOS Passager Escale Réseau. Vous pouvez maintenant réserver.</p>
-        </div>
+        <div class="modal-success-msg" id="regOk" style="display:none"><span class="big-check">🎉</span><h3>Compte créé !</h3><p>Bienvenue dans SOS Passager Escale Réseau.</p></div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ══ MODAL PAIEMENT ══ -->
-<div class="modal-backdrop" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payModalTitle">
+<div class="modal-backdrop" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
   <div class="modal-box pay-modal-box">
     <div class="modal-head">
-      <div class="modal-head-text"><h2 id="payModalTitle">💳 Paiement sécurisé</h2><p>Votre réservation sera confirmée immédiatement</p></div>
-      <button class="modal-close" id="payModalClose" aria-label="Fermer">✕</button>
+      <div class="modal-head-text"><h2 id="payTitle">💳 Paiement sécurisé</h2><p>Votre réservation confirmée immédiatement</p></div>
+      <button class="modal-close" id="payClose" aria-label="Fermer">✕</button>
     </div>
     <div class="modal-body">
       <div id="payScreen">
-        <div class="pay-amount-display">
-          <div class="pay-lbl">Total à régler</div>
-          <div class="pay-big" id="payTotalDisplay">—</div>
-          <div class="pay-sub" id="paySubDisplay">Hébergement + Transport</div>
-        </div>
-        <div class="pay-method-title">Choisissez votre mode de paiement</div>
+        <div class="pay-amount-display"><div class="pay-lbl">Total à régler</div><div class="pay-big" id="payTotal">—</div><div class="pay-sub" id="paySub">Hébergement + Transport</div></div>
+        <div class="pay-method-title">Mode de paiement</div>
         <div class="pay-methods-grid">
-          <label class="pay-method-card" id="pmMobile"><input type="radio" name="payMethod" value="mobile" /><span class="pay-method-icon">📱</span><span class="pay-method-name">Mobile Money</span><span class="pay-method-sub">Wave · Orange · MTN · Moov</span></label>
-          <label class="pay-method-card" id="pmCard"><input type="radio" name="payMethod" value="card" /><span class="pay-method-icon">💳</span><span class="pay-method-name">Carte bancaire</span><span class="pay-method-sub">Visa · Mastercard</span></label>
+          <label class="pay-method-card" id="pmM"><input type="radio" name="pm" value="mobile"/><span class="pay-method-icon">📱</span><span class="pay-method-name">Mobile Money</span><span class="pay-method-sub">Wave · Orange · MTN · Moov</span></label>
+          <label class="pay-method-card" id="pmC"><input type="radio" name="pm" value="card"/><span class="pay-method-icon">💳</span><span class="pay-method-name">Carte bancaire</span><span class="pay-method-sub">Visa · Mastercard</span></label>
         </div>
-        <div class="pay-mm-detail" id="payMmDetail">
-          <div class="pay-method-title" style="margin-bottom:8px">Sélectionnez votre opérateur</div>
+        <div class="pay-mm-detail" id="payMm">
+          <div class="pay-method-title" style="margin-bottom:8px">Votre opérateur</div>
           <div class="pay-mm-options">
             <button type="button" class="pay-mm-btn" data-op="Wave">🔵 Wave</button>
             <button type="button" class="pay-mm-btn" data-op="Orange Money">🟠 Orange Money</button>
             <button type="button" class="pay-mm-btn" data-op="MTN MoMo">🟡 MTN MoMo</button>
             <button type="button" class="pay-mm-btn" data-op="Moov Money">🟢 Moov Money</button>
           </div>
-          <div class="mfield" style="margin-top:12px;margin-bottom:0"><label for="mmNumber">Numéro Mobile Money</label><input type="tel" id="mmNumber" class="card-input-fake" placeholder="+225 05 XX XX XX XX" /></div>
+          <div class="mfield" style="margin-top:12px;margin-bottom:0"><label for="mmNum">Numéro Mobile Money</label><input type="tel" id="mmNum" class="card-input-fake" placeholder="+225 05 XX XX XX XX" /></div>
         </div>
-        <div class="pay-card-detail" id="payCardDetail">
-          <div class="mfield" style="margin-bottom:10px"><label style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--dark)">Numéro de carte</label><input type="text" class="card-input-fake" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" /></div>
+        <div class="pay-card-detail" id="payCard">
+          <div class="mfield" style="margin-bottom:10px"><label style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--dark)">Numéro de carte</label><input type="text" class="card-input-fake" id="cardNum" placeholder="1234 5678 9012 3456" maxlength="19"/></div>
           <div class="card-row">
-            <div class="mfield" style="margin-bottom:0"><label style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--dark)">Expiration</label><input type="text" class="card-input-fake" placeholder="MM/AA" maxlength="5" /></div>
-            <div class="mfield" style="margin-bottom:0"><label style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--dark)">CVV</label><input type="text" class="card-input-fake" placeholder="123" maxlength="3" /></div>
+            <div class="mfield" style="margin-bottom:0"><label style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--dark)">Expiration</label><input type="text" class="card-input-fake" placeholder="MM/AA" maxlength="5"/></div>
+            <div class="mfield" style="margin-bottom:0"><label style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--dark)">CVV</label><input type="text" class="card-input-fake" placeholder="123" maxlength="3"/></div>
           </div>
         </div>
         <button class="btn-pay-now" id="btnPayNow" disabled>🔒 Valider le paiement</button>
-        <p class="pay-security-note">🔒 Paiement crypté SSL · Données sécurisées · Aucun frais caché</p>
+        <p class="pay-security-note">🔒 Paiement crypté SSL · Aucun frais caché</p>
       </div>
-      <div class="pay-processing" id="payProcessing"><div class="spin"></div><p>Validation du paiement en cours…</p></div>
-      <div class="pay-success-screen" id="paySuccess">
+      <div class="pay-processing" id="payProc"><div class="spin"></div><p>Validation en cours…</p></div>
+      <div class="pay-success-screen" id="paySucc">
         <span class="success-anim">✅</span>
         <h3>Réservation confirmée !</h3>
         <p>Vos détails ont été envoyés au chauffeur et à l'hébergeur.<br>Confirmation WhatsApp dans quelques minutes.</p>
         <div class="pay-success-details">
           <div class="sdt">📋 Récapitulatif</div>
-          <div class="pay-success-detail-row"><span>🏨 Hébergement</span><span id="successHotel">—</span></div>
-          <div class="pay-success-detail-row"><span>🚗 Transport</span><span id="successTransport">—</span></div>
-          <div class="pay-success-detail-row"><span>💰 Montant payé</span><span id="successAmount">—</span></div>
-          <div class="pay-success-detail-row"><span>👤 Client</span><span id="successClient">—</span></div>
+          <div class="pay-success-detail-row"><span>🏨 Hébergement</span><span id="sHotel">—</span></div>
+          <div class="pay-success-detail-row"><span>🚗 Transport</span><span id="sTransport">—</span></div>
+          <div class="pay-success-detail-row"><span>💰 Montant</span><span id="sAmount">—</span></div>
+          <div class="pay-success-detail-row"><span>👤 Client</span><span id="sClient">—</span></div>
         </div>
         <p class="pay-ref" id="payRef"></p>
-        <button class="btn-close-success" id="btnCloseSuccess">Retour à l'accueil ✈️</button>
+        <button class="btn-close-success" id="btnCloseSucc">Retour à l'accueil ✈️</button>
       </div>
     </div>
   </div>
@@ -460,38 +458,39 @@
 <!-- ══ NAVIGATION ══ -->
 <header class="navbar">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="SOS Passager — Accueil">
+    <a href="index.html" class="nav-logo">
       <div class="nav-logo-icon">SOS<br/>✈</div>
       <div class="nav-logo-text"><span class="brand">SOS Passager</span><span class="sub">Indemnisation &amp; Droits des passagers</span></div>
     </a>
-    <ul class="nav-links" role="navigation" aria-label="Navigation principale">
+    <ul class="nav-links">
       <li><a href="index.html">Accueil</a></li>
-      <li><a href="index.html">Droits</a></li>
-      <li><a href="index.html">Réclamer</a></li>
-      <li><a href="index.html">Dossier</a></li>
+      <li><a href="index.html#droits">Droits</a></li>
+      <li><a href="index.html#reclamer">Réclamer</a></li>
       <li><a href="escale-urgence.html" class="active">Escale Réseau</a></li>
-      <li><a href="index.html">Contact</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
     </ul>
-    <button class="nav-hamburger" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <button class="nav-hamburger" id="menuBtn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
-  <nav class="nav-mobile" id="mobileMenu" role="navigation">
-    <a href="index.html">Accueil</a><a href="index.html">Droits</a><a href="index.html">Réclamer</a>
-    <a href="index.html">Dossier</a><a href="escale-urgence.html">Escale Réseau</a><a href="index.html">Contact</a>
+  <nav class="nav-mobile" id="mobileMenu">
+    <a href="index.html">Accueil</a><a href="index.html#droits">Droits</a><a href="index.html#reclamer">Réclamer</a>
+    <a href="escale-urgence.html">Escale Réseau</a><a href="index.html#contact">Contact</a>
   </nav>
 </header>
 
-<!-- ══ HERO ══ -->
-<section class="hero" id="urgence" aria-labelledby="hero-title">
+<!-- ══════════════════════════════════════════════════
+     SECTION 1 — HERO
+══════════════════════════════════════════════════ -->
+<section class="hero" id="urgence">
   <div class="container">
     <div class="hero-grid">
       <div>
         <div class="hero-live"><span class="hero-live-dot"></span>RÉSEAU ACTIF — EUROPE &amp; AFRIQUE</div>
         <div class="section-tag">SOS Passager Escale Réseau · Hébergement &amp; Transport d'Urgence</div>
-        <h1 id="hero-title">Vol annulé ou<br/>correspondance manquée ?<br/><em>Ne dormez pas à l'aéroport !</em></h1>
-        <p class="hero-lead"><strong>SOS Passager Escale Réseau</strong> vous propose un Pack d'Urgence Clé en Main : Logement sécurisé de proximité + Chauffeur privé, activé en moins de 20 minutes.</p>
+        <h1>Vol annulé ou<br/>correspondance manquée ?<br/><em>Ne dormez pas à l'aéroport !</em></h1>
+        <p class="hero-lead"><strong>SOS Passager Escale Réseau</strong> vous propose un Pack d'Urgence Clé en Main : Logement résidentiel sécurisé + Chauffeur privé professionnel, activé en moins de 20 minutes.</p>
         <div class="cas-grid">
-          <div class="cas-card"><div style="display:flex;align-items:flex-start;gap:10px"><div class="cas-card-num blue">01</div><h3>Faute de la compagnie</h3></div><p>Vol annulé, surbooking, retard &gt; 3h ? Vous avancez les frais — nous vous fournissons une <strong>facture certifiée</strong> CE 261/2004 / UEMOA N°03/2003 pour le remboursement compagnie.</p><span class="cas-badge blue">Indemnité jusqu'à 600 € / 1 219 €</span></div>
-          <div class="cas-card"><div style="display:flex;align-items:flex-start;gap:10px"><div class="cas-card-num amber">02</div><h3>Retard personnel</h3></div><p>Plus de prise en charge ? Accédez à notre <strong>réseau partenaire négocié</strong> — jusqu'à <strong>3 fois moins cher</strong> qu'un hôtel d'aéroport classique.</p><span class="cas-badge amber">Tarifs préférentiels réseau</span></div>
+          <div class="cas-card"><div style="display:flex;align-items:flex-start;gap:10px"><div class="cas-card-num blue">01</div><h3>Faute de la compagnie</h3></div><p>Vol annulé, surbooking, retard &gt; 3h ? Nous vous fournissons une <strong>facture certifiée</strong> CE 261/2004 / UEMOA N°03/2003 pour le remboursement intégral.</p><span class="cas-badge blue">Indemnité jusqu'à 600 € / 1 219 €</span></div>
+          <div class="cas-card"><div style="display:flex;align-items:flex-start;gap:10px"><div class="cas-card-num amber">02</div><h3>Retard personnel</h3></div><p>Plus de prise en charge ? Accédez à notre <strong>réseau résidentiel négocié</strong> — jusqu'à <strong>3× moins cher</strong> qu'un hôtel d'aéroport.</p><span class="cas-badge amber">Tarifs préférentiels réseau</span></div>
         </div>
         <div class="wa-btns">
           <a href="https://wa.me/4917734314460" class="btn-wa" target="_blank" rel="noopener"><span class="btn-wa-icon">🟢</span><span class="btn-wa-text"><strong>Urgence WhatsApp · Europe</strong>+49 177 343 14 60</span></a>
@@ -502,10 +501,10 @@
         <h2>Comment ça marche ?</h2>
         <p>Pack activé en moins de 20 minutes chrono</p>
         <div class="panel-steps">
-          <div class="panel-step"><div class="panel-step-num">1</div><div class="panel-step-text">Contactez-nous sur WhatsApp ou remplissez le formulaire ci-dessous.</div></div>
-          <div class="panel-step"><div class="panel-step-num">2</div><div class="panel-step-text">Notre opérateur confirme un logement partenaire disponible &amp; sécurisé.</div></div>
-          <div class="panel-step"><div class="panel-step-num">3</div><div class="panel-step-text">Un chauffeur privé vous attend à la sortie de l'aéroport.</div></div>
-          <div class="panel-step"><div class="panel-step-num">4</div><div class="panel-step-text">Nous préparons votre facture certifiée pour le remboursement compagnie.</div></div>
+          <div class="panel-step"><div class="panel-step-num">1</div><div class="panel-step-text">Choisissez votre logement et votre transport dans le catalogue ci-dessous.</div></div>
+          <div class="panel-step"><div class="panel-step-num">2</div><div class="panel-step-text">Remplissez le formulaire de vol pour personnaliser votre prise en charge.</div></div>
+          <div class="panel-step"><div class="panel-step-num">3</div><div class="panel-step-text">Payez en ligne (Mobile Money ou Carte) — confirmation immédiate.</div></div>
+          <div class="panel-step"><div class="panel-step-num">4</div><div class="panel-step-text">Votre chauffeur vous attend à la sortie du terminal. Votre logement est prêt.</div></div>
         </div>
         <a href="https://wa.me/4917734314460" class="panel-wa-cta" target="_blank" rel="noopener"><span style="font-size:1.4rem">💬</span>Activer mon Pack maintenant</a>
       </div>
@@ -513,140 +512,44 @@
   </div>
 </section>
 
-<!-- ══ FORMULAIRE VOYAGEUR ══ -->
-<section class="form-section" id="demande" aria-labelledby="form-voyageur-title">
+<!-- ══════════════════════════════════════════════════
+     SECTION 2 — CATALOGUE VISUEL (HÉBERGEMENT + TRANSPORT)
+     Vague 1 : déplacée immédiatement après le Hero
+══════════════════════════════════════════════════ -->
+<section class="choix-section" id="choix-pack">
   <div class="container">
     <div class="section-head">
-      <div class="section-tag">Assistance immédiate</div>
-      <h2 id="form-voyageur-title">Formulaire de demande d'assistance voyageur</h2>
-      <p>Remplissez depuis votre smartphone — notre équipe vous contacte sous 15 minutes.</p>
-    </div>
-    <div class="form-card">
-      <form id="formVoyageur" action="https://formspree.io/f/xpwdjrkb" method="POST" novalidate>
-        <input type="hidden" name="_subject" value="[SOS Passager Escale] Demande d'assistance voyageur" />
-        <input type="hidden" name="type_formulaire" value="voyageur" />
-        <div class="form-grid">
-          <div class="field"><label for="v-prenom">Prénom</label><input type="text" id="v-prenom" name="prenom" placeholder="Ex : Jean-Paul" required autocomplete="given-name" /></div>
-          <div class="field"><label for="v-nom">Nom</label><input type="text" id="v-nom" name="nom" placeholder="Ex : Dupont" required autocomplete="family-name" /></div>
-          <div class="field full"><label for="v-phone">Numéro WhatsApp</label>
-            <div class="phone-row">
-              <div class="field-indicatif"><select id="v-indicatif" name="indicatif_pays" aria-label="Indicatif pays">
-                <option value="+33">🇫🇷 +33</option><option value="+32">🇧🇪 +32</option><option value="+41">🇨🇭 +41</option><option value="+49">🇩🇪 +49</option><option value="+44">🇬🇧 +44</option><option value="+34">🇪🇸 +34</option><option value="+39">🇮🇹 +39</option><option value="+1">🇺🇸 +1</option>
-                <option value="+225">🇨🇮 +225</option><option value="+221">🇸🇳 +221</option><option value="+223">🇲🇱 +223</option><option value="+229">🇧🇯 +229</option><option value="+226">🇧🇫 +226</option><option value="+224">🇬🇳 +224</option><option value="+228">🇹🇬 +228</option><option value="+227">🇳🇪 +227</option><option value="+237">🇨🇲 +237</option><option value="+242">🇨🇬 +242</option><option value="+212">🇲🇦 +212</option><option value="+213">🇩🇿 +213</option><option value="+216">🇹🇳 +216</option>
-              </select></div>
-              <div class="field-number"><input type="tel" id="v-phone" name="whatsapp" placeholder="Numéro sans indicatif" required /></div>
-            </div>
-          </div>
-          <div class="field full"><label for="v-aeroport">Aéroport actuel où vous êtes bloqué</label><input type="text" id="v-aeroport" name="aeroport" placeholder="Ex: Paris-CDG, Abidjan-FHB, Dakar-DSS…" required /></div>
-          <div class="field"><label for="v-vol">Numéro de vol</label><input type="text" id="v-vol" name="num_vol" placeholder="Ex: AF 471" required /></div>
-          <div class="field"><label for="v-compagnie">Compagnie aérienne</label><input type="text" id="v-compagnie" name="compagnie" placeholder="Ex: Air France, Ethiopian…" required /></div>
-          <div class="field full"><label for="v-motif">Motif de l'interruption</label>
-            <select id="v-motif" name="motif" required>
-              <option value="" disabled selected>— Sélectionnez —</option>
-              <option>✈️ Vol annulé</option><option>⏱️ Correspondance manquée</option><option>🚫 Surbooking / Refus d'embarquement</option><option>🙋 Erreur personnelle</option>
-            </select>
-          </div>
-          <div class="field full"><label>Passagers &amp; durée estimée</label>
-            <div class="pax-row">
-              <div class="field"><label for="v-adultes" style="font-size:0.73rem">Adultes</label><input type="number" id="v-adultes" name="nb_adultes" min="1" value="1" /></div>
-              <div class="field"><label for="v-enfants" style="font-size:0.73rem">Enfants</label><input type="number" id="v-enfants" name="nb_enfants" min="0" value="0" /></div>
-              <div class="field"><label for="v-nuits" style="font-size:0.73rem">Nuits estimées</label><input type="number" id="v-nuits" name="nb_nuits" min="1" value="1" /></div>
-            </div>
-          </div>
-        </div>
-        <button type="submit" class="btn-submit">Activer mon Pack via SOS Passager Escale Réseau 🚀</button>
-        <div class="form-success" id="successVoyageur" role="alert">✅ Demande envoyée ! Notre équipe vous contacte sur WhatsApp sous 15 minutes.</div>
-      </form>
-      <p style="text-align:center;font-size:0.78rem;color:var(--gray-text);margin-top:16px">📲 Ou contactez-nous directement sur WhatsApp pour une réponse encore plus rapide.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ══ HÉBERGEMENT + TRANSPORT ══ -->
-<section class="choix-section" id="choix-pack" aria-labelledby="choix-title">
-  <div class="container">
-    <div class="section-head">
-      <div class="section-tag">Pack Escale Réseau · Personnalisez votre séjour</div>
-      <h2 id="choix-title">Choisissez votre hébergement &amp; transport</h2>
-      <p>Sélectionnez vos options — confirmation de disponibilité en moins de 15 minutes.</p>
+      <div class="section-tag">Pack Escale Réseau · Composez votre séjour</div>
+      <h2>Choisissez votre hébergement &amp; transport</h2>
+      <p>Sélectionnez vos options — notre équipe confirme la disponibilité en moins de 15 minutes.</p>
     </div>
 
-    <!-- HÉBERGEMENT -->
+    <!-- ─── HÉBERGEMENT — Vague 2 : 3 logements résidentiels haut de gamme ─── -->
     <div class="choix-block">
       <div class="choix-block-title">
         <span class="choix-num">1</span>
-        <div><h3>Choisissez votre hébergement partenaire</h3><p class="choix-block-sub">Logements climatisés, vérifiés et sécurisés — proches des aéroports partenaires</p></div>
+        <div><h3>Choisissez votre logement résidentiel partenaire</h3><p class="choix-block-sub">Appartements &amp; Suites climatisés, vérifiés et sécurisés — proches des aéroports</p></div>
       </div>
-      <div class="hotel-grid" role="radiogroup" id="hotelGroup">
+      <div class="hotel-grid" id="hotelGroup">
 
-        <!-- CARD 1 — Abidjan -->
+        <!-- CARTE 1 — Côte d'Ivoire / Cocody -->
         <label class="hotel-card" for="h1">
-          <input type="radio" name="hebergement" id="h1" value="Studio Confort Privé — Abidjan Port-Bouët (1 chambre climatisée)" data-fcfa="25000" data-eur="38" />
-          <div class="lock-overlay" role="button" tabindex="0" aria-label="Connexion requise"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous pour réserver</span></div>
+          <input type="radio" name="heb" id="h1" value="Appartement de Luxe Cocody — Abidjan, 2 Chambres climatisées" data-fcfa="45000" data-eur="69" />
+          <div class="lock-overlay" role="button" tabindex="0"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous pour réserver</span></div>
           <div class="hotel-img-wrap">
-            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80&fit=crop" alt="Studio Confort Privé Abidjan" loading="lazy" />
-            <span class="hotel-img-badge">⭐ 4,8 / 5</span>
+            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80&fit=crop" alt="Appartement Luxe Cocody Abidjan" loading="lazy" />
+            <span class="hotel-img-badge">⭐ 4,9 / 5</span>
             <span class="hotel-img-tag">🇨🇮 Abidjan</span>
           </div>
-          <div class="hotel-check-ring"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="check-path" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="hcheck"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="hotel-body">
-            <div class="hotel-name">Studio Confort Privé — 1 Chambre (Climatisé)</div>
+            <div class="hotel-name">Appartement de Luxe Cocody — 2 Chambres (Climatisé)</div>
             <div class="hotel-specs">
-              <div class="hotel-spec-item">📍 Port-Bouët &nbsp;|&nbsp; 🚗 5 min de l'aéroport FHB (2,5 km)</div>
-              <div class="hotel-spec-item">❄️ Climatisation &nbsp;|&nbsp; 🛏️ 1 Grande Chambre + Salon</div>
-              <div class="hotel-spec-item">📶 Wi-Fi Fibre &nbsp;|&nbsp; 🔒 Zone Sécurisée &nbsp;|&nbsp; 🛁 SDB privée</div>
+              <div class="hotel-spec-item">📍 Abidjan - Cocody Les Deux Plateaux &nbsp;|&nbsp; 🚗 25 min de l'aéroport FHB</div>
+              <div class="hotel-spec-item">❄️ Climatisé &nbsp;|&nbsp; 🛏️ 2 Chambres + Grand Salon</div>
+              <div class="hotel-spec-item">📶 Wi-Fi Fibre &nbsp;|&nbsp; 🔒 Gardiennage 24h/24</div>
             </div>
-            <div class="hotel-badges"><span class="eq-badge">❄️ Climatisé</span><span class="eq-badge">📶 Wi-Fi Fibre</span><span class="eq-badge">🔒 Sécurisé</span><span class="eq-badge">🛁 SDB privée</span></div>
-            <div class="hotel-footer">
-              <div class="hotel-prix"><span class="hotel-prix-amount">25 000 FCFA</span><span class="hotel-prix-unit">/ nuit</span><span class="hotel-prix-eur">≈ 38 €</span></div>
-              <div class="hotel-select-btn">Sélectionner</div>
-            </div>
-          </div>
-        </label>
-
-        <!-- CARD 2 — Paris CDG -->
-        <label class="hotel-card" for="h2">
-          <input type="radio" name="hebergement" id="h2" value="Appartement Premium — Paris CDG, proche T2 (2 chambres)" data-fcfa="58500" data-eur="89" />
-          <div class="lock-overlay" role="button" tabindex="0" aria-label="Connexion requise"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous pour réserver</span></div>
-          <div class="hotel-img-wrap">
-            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80&fit=crop" alt="Appartement Premium Paris CDG" loading="lazy" />
-            <span class="hotel-img-badge">⭐ 4,9 / 5</span>
-            <span class="hotel-img-tag">🇫🇷 Paris CDG</span>
-          </div>
-          <div class="hotel-check-ring"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="check-path" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="hotel-body">
-            <div class="hotel-name">Appartement Premium — 2 Chambres (Clim Réversible)</div>
-            <div class="hotel-specs">
-              <div class="hotel-spec-item">📍 Roissy-en-France &nbsp;|&nbsp; 🚗 8 min de CDG T2 (4 km)</div>
-              <div class="hotel-spec-item">❄️ Clim réversible &nbsp;|&nbsp; 🛏️ 2 Chambres séparées</div>
-              <div class="hotel-spec-item">🍳 Cuisine équipée &nbsp;|&nbsp; 📶 Fibre &nbsp;|&nbsp; 🔒 Résidence gardée</div>
-            </div>
-            <div class="hotel-badges"><span class="eq-badge">❄️ Clim réversible</span><span class="eq-badge">🍳 Cuisine</span><span class="eq-badge">📶 Fibre</span><span class="eq-badge">🔒 Résidence gardée</span></div>
-            <div class="hotel-footer">
-              <div class="hotel-prix"><span class="hotel-prix-amount">89 €</span><span class="hotel-prix-unit">/ nuit</span><span class="hotel-prix-eur">≈ 58 500 FCFA</span></div>
-              <div class="hotel-select-btn">Sélectionner</div>
-            </div>
-          </div>
-        </label>
-
-        <!-- CARD 3 — Dakar -->
-        <label class="hotel-card" for="h3">
-          <input type="radio" name="hebergement" id="h3" value="Suite Familiale Privée — Dakar AIBD (3 chambres climatisées)" data-fcfa="45000" data-eur="69" />
-          <div class="lock-overlay" role="button" tabindex="0" aria-label="Connexion requise"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous pour réserver</span></div>
-          <div class="hotel-img-wrap">
-            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80&fit=crop" alt="Suite Familiale Dakar AIBD" loading="lazy" />
-            <span class="hotel-img-badge">⭐ 4,7 / 5</span>
-            <span class="hotel-img-tag">🇸🇳 Dakar</span>
-          </div>
-          <div class="hotel-check-ring"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="check-path" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="hotel-body">
-            <div class="hotel-name">Suite Familiale Privée — 3 Chambres (Climatisée)</div>
-            <div class="hotel-specs">
-              <div class="hotel-spec-item">📍 Diass &nbsp;|&nbsp; 🚗 10 min de l'aéroport AIBD (6 km)</div>
-              <div class="hotel-spec-item">❄️ Climatisation totale &nbsp;|&nbsp; 🛏️ 3 Chambres</div>
-              <div class="hotel-spec-item">👥 Jusqu'à 6 personnes &nbsp;|&nbsp; 🔒 Sécurité 24h/24</div>
-            </div>
-            <div class="hotel-badges"><span class="eq-badge">❄️ Clim totale</span><span class="eq-badge">📶 Wi-Fi</span><span class="eq-badge">👥 6 pers. max</span><span class="eq-badge">🔒 Sécurité 24h</span></div>
+            <div class="hotel-badges"><span class="eq-badge">❄️ Climatisé</span><span class="eq-badge">🛏️ 2 Chambres</span><span class="eq-badge">📶 Fibre</span><span class="eq-badge">🔒 Gardiennage 24h</span></div>
             <div class="hotel-footer">
               <div class="hotel-prix"><span class="hotel-prix-amount">45 000 FCFA</span><span class="hotel-prix-unit">/ nuit</span><span class="hotel-prix-eur">≈ 69 €</span></div>
               <div class="hotel-select-btn">Sélectionner</div>
@@ -654,100 +557,150 @@
           </div>
         </label>
 
-      </div><!-- /hotel-grid -->
-      <p class="choix-note">💡 D'autres logements disponibles selon votre aéroport — notre équipe vous propose les meilleures options disponibles lors de la confirmation WhatsApp.</p>
-    </div>
-
-    <!-- TRANSPORT -->
-    <div class="choix-block choix-block--transport">
-      <div class="choix-block-title">
-        <span class="choix-num">2</span>
-        <div><h3>Sélectionnez votre transport sécurisé</h3><p class="choix-block-sub">Chauffeur privé certifié — prise en charge à la sortie du terminal en 10 min</p></div>
-      </div>
-      <div class="transport-grid" role="radiogroup" id="transportGroup">
-
-        <!-- OPTION A — Berline -->
-        <label class="transport-card" for="t1">
-          <input type="radio" name="transport" id="t1" value="Berline Standard Climatisée (1-2 passagers)" data-fcfa="0" data-eur="0" />
-          <div class="lock-overlay" role="button" tabindex="0" aria-label="Connexion requise"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous</span></div>
-          <div class="transport-img-wrap">
-            <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80&fit=crop" alt="Berline standard climatisée" loading="lazy" />
+        <!-- CARTE 2 — Sénégal / Almadies -->
+        <label class="hotel-card" for="h2">
+          <input type="radio" name="heb" id="h2" value="Appartement Résidentiel Almadies — Dakar, 1 Chambre Premium" data-fcfa="55000" data-eur="84" />
+          <div class="lock-overlay" role="button" tabindex="0"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous pour réserver</span></div>
+          <div class="hotel-img-wrap">
+            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=80&fit=crop" alt="Appartement Résidentiel Almadies Dakar" loading="lazy" />
+            <span class="hotel-img-badge">⭐ 4,8 / 5</span>
+            <span class="hotel-img-tag">🇸🇳 Dakar</span>
           </div>
-          <div class="transport-check-ring"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="check-path" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="transport-body">
-            <div class="transport-name">🚖 Berline Standard (Climatisée)</div>
-            <ul class="transport-specs">
-              <li>👥 1 – 2 passagers</li>
-              <li>🧳 2 valises max</li>
-              <li>❄️ Climatisé</li>
-              <li>⏱️ Prise en charge en 10 min</li>
-            </ul>
-            <div class="transport-prix included"><span class="transport-prix-label">Prix</span><span class="transport-prix-val">Inclus dans le pack</span></div>
+          <div class="hcheck"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="hotel-body">
+            <div class="hotel-name">Appartement Résidentiel Almadies — 1 Chambre Premium</div>
+            <div class="hotel-specs">
+              <div class="hotel-spec-item">📍 Dakar - Les Almadies &nbsp;|&nbsp; 🚗 45 min de l'aéroport AIBD</div>
+              <div class="hotel-spec-item">❄️ Climatisation totale &nbsp;|&nbsp; 🛏️ 1 Chambre + Cuisine équipée</div>
+              <div class="hotel-spec-item">🌊 Proche Mer &nbsp;|&nbsp; 📶 Wi-Fi Fibre</div>
+            </div>
+            <div class="hotel-badges"><span class="eq-badge">❄️ Clim totale</span><span class="eq-badge">🌊 Proche Mer</span><span class="eq-badge">🍳 Cuisine</span><span class="eq-badge">📶 Fibre</span></div>
+            <div class="hotel-footer">
+              <div class="hotel-prix"><span class="hotel-prix-amount">55 000 FCFA</span><span class="hotel-prix-unit">/ nuit</span><span class="hotel-prix-eur">≈ 84 €</span></div>
+              <div class="hotel-select-btn">Sélectionner</div>
+            </div>
           </div>
         </label>
 
-        <!-- OPTION B — SUV -->
-        <label class="transport-card" for="t2">
-          <input type="radio" name="transport" id="t2" value="SUV Confort Climatisé (3-4 passagers, grand coffre)" data-fcfa="5000" data-eur="8" />
-          <div class="lock-overlay" role="button" tabindex="0" aria-label="Connexion requise"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous</span></div>
-          <div class="transport-img-wrap">
-            <span class="transport-badge-popular">⭐ Populaire</span>
-            <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&q=80&fit=crop" alt="SUV Confort climatisé" loading="lazy" />
+        <!-- CARTE 3 — France / Roissy CDG -->
+        <label class="hotel-card" for="h3">
+          <input type="radio" name="heb" id="h3" value="Suite Confort Roissy — 1 Chambre, proximité immédiate CDG" data-fcfa="58500" data-eur="89" />
+          <div class="lock-overlay" role="button" tabindex="0"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous pour réserver</span></div>
+          <div class="hotel-img-wrap">
+            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80&fit=crop" alt="Suite Confort Roissy CDG" loading="lazy" />
+            <span class="hotel-img-badge">⭐ 4,9 / 5</span>
+            <span class="hotel-img-tag">🇫🇷 Roissy CDG</span>
           </div>
-          <div class="transport-check-ring"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="check-path" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="hcheck"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="hotel-body">
+            <div class="hotel-name">Suite Confort Roissy — 1 Chambre (Proximité immédiate CDG)</div>
+            <div class="hotel-specs">
+              <div class="hotel-spec-item">📍 Roissy-en-France &nbsp;|&nbsp; 🚗 5 min des terminaux CDG (Navette dédiée)</div>
+              <div class="hotel-spec-item">❄️ Clim réversible &nbsp;|&nbsp; 🛏️ 1 Chambre confort</div>
+              <div class="hotel-spec-item">☕ Machine Nespresso &nbsp;|&nbsp; 🤫 Isolation phonique</div>
+            </div>
+            <div class="hotel-badges"><span class="eq-badge">❄️ Clim réversible</span><span class="eq-badge">☕ Nespresso</span><span class="eq-badge">🤫 Anti-bruit</span><span class="eq-badge">🚐 Navette dédiée</span></div>
+            <div class="hotel-footer">
+              <div class="hotel-prix"><span class="hotel-prix-amount">89 €</span><span class="hotel-prix-unit">/ nuit</span><span class="hotel-prix-eur">≈ 58 500 FCFA</span></div>
+              <div class="hotel-select-btn">Sélectionner</div>
+            </div>
+          </div>
+        </label>
+
+      </div><!-- /hotel-grid -->
+      <p class="choix-note">💡 D'autres logements disponibles selon votre aéroport — confirmation et alternatives envoyées sur WhatsApp dans les 15 minutes.</p>
+    </div><!-- /hébergement -->
+
+    <!-- ─── TRANSPORT — Vague 3 : photos professionnelles ─── -->
+    <div class="choix-block choix-block--transport">
+      <div class="choix-block-title">
+        <span class="choix-num">2</span>
+        <div><h3>Sélectionnez votre transport partenaire</h3><p class="choix-block-sub">Chauffeur professionnel certifié — prise en charge à la sortie du terminal en 10 min</p></div>
+      </div>
+      <div class="transport-grid" id="transportGroup">
+
+        <!-- Berline Standard -->
+        <label class="transport-card" for="t1">
+          <input type="radio" name="trp" id="t1" value="Berline Partenaire Yango Éco / UberX (1-2 passagers)" data-fcfa="0" data-eur="0" />
+          <div class="lock-overlay" role="button" tabindex="0"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous</span></div>
+          <div class="transport-img-wrap">
+            <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80&fit=crop" alt="Berline Standard climatisée" loading="lazy" />
+          </div>
+          <div class="tcheck"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="transport-body">
-            <div class="transport-name">🚘 SUV Confort (Climatisé)</div>
+            <div class="transport-name">🚖 Berline Partenaire (Yango Éco / UberX)</div>
+            <ul class="transport-specs">
+              <li>👥 1 – 2 passagers</li>
+              <li>🧳 2 valises max</li>
+              <li>❄️ Véhicule climatisé</li>
+              <li>⏱️ Prise en charge en 10 min</li>
+            </ul>
+            <div class="transport-prix inc"><span class="transport-prix-lbl">Prix</span><span class="transport-prix-val">Inclus dans le pack</span></div>
+          </div>
+        </label>
+
+        <!-- SUV Confort -->
+        <label class="transport-card" for="t2">
+          <input type="radio" name="trp" id="t2" value="SUV Premium Yango Confort / Uber Comfort (3-4 passagers)" data-fcfa="5000" data-eur="8" />
+          <div class="lock-overlay" role="button" tabindex="0"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous</span></div>
+          <div class="transport-img-wrap">
+            <span class="t-badge-pop">⭐ Populaire</span>
+            <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&q=80&fit=crop" alt="SUV Confort professionnel" loading="lazy" />
+          </div>
+          <div class="tcheck"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="transport-body">
+            <div class="transport-name">🚘 SUV Premium (Yango Confort / Uber Comfort)</div>
             <ul class="transport-specs">
               <li>👥 3 – 4 passagers</li>
               <li>🧳 4 grosses valises</li>
               <li>❄️ Climatisation renforcée</li>
               <li>🥤 Eau fraîche à bord</li>
             </ul>
-            <div class="transport-prix extra"><span class="transport-prix-label">Supplément</span><span class="transport-prix-val">+5 000 FCFA <small>/ +8 €</small></span></div>
+            <div class="transport-prix ext"><span class="transport-prix-lbl">Supplément</span><span class="transport-prix-val">+5 000 FCFA <small>/ +8 €</small></span></div>
           </div>
         </label>
 
-        <!-- OPTION C — Van -->
+        <!-- Van Navette -->
         <label class="transport-card" for="t3">
-          <input type="radio" name="transport" id="t3" value="Van Navette Groupe Climatisé (jusqu'à 7 passagers)" data-fcfa="10000" data-eur="15" />
-          <div class="lock-overlay" role="button" tabindex="0" aria-label="Connexion requise"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous</span></div>
+          <input type="radio" name="trp" id="t3" value="Van Navette Yango Max / UberVAN (jusqu'à 7 passagers)" data-fcfa="10000" data-eur="15" />
+          <div class="lock-overlay" role="button" tabindex="0"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous</span></div>
           <div class="transport-img-wrap">
-            <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fit=crop" alt="Van navette groupe climatisé" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fit=crop" alt="Van navette groupe professionnel" loading="lazy" />
           </div>
-          <div class="transport-check-ring"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="check-path" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="tcheck"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="transport-body">
-            <div class="transport-name">🚐 Van / Navette (Climatisé)</div>
+            <div class="transport-name">🚐 Van Navette (Yango Max / UberVAN)</div>
             <ul class="transport-specs">
               <li>👨‍👩‍👧‍👦 Jusqu'à 7 passagers</li>
               <li>🧳 +6 grosses valises</li>
-              <li>❄️ Climatisé · Idéal familles</li>
+              <li>❄️ Climatisé · Idéal Familles &amp; Groupes</li>
               <li>♿ Accès PMR possible</li>
             </ul>
-            <div class="transport-prix extra"><span class="transport-prix-label">Supplément</span><span class="transport-prix-val">+10 000 FCFA <small>/ +15 €</small></span></div>
+            <div class="transport-prix ext"><span class="transport-prix-lbl">Supplément</span><span class="transport-prix-val">+10 000 FCFA <small>/ +15 €</small></span></div>
           </div>
         </label>
 
       </div><!-- /transport-grid -->
-    </div>
+    </div><!-- /transport -->
 
-    <!-- PANIER -->
+    <!-- ─── PANIER DYNAMIQUE ─── -->
     <div class="recap-box" id="recapBox" aria-live="polite">
       <div class="recap-title">📋 Votre sélection</div>
       <div class="recap-rows">
-        <div class="recap-row"><span class="recap-label">🏨 Hébergement</span><span class="recap-val" id="recapHotel">Aucun sélectionné</span></div>
-        <div class="recap-row"><span class="recap-label">🚗 Transport</span><span class="recap-val" id="recapTransport">Aucun sélectionné</span></div>
+        <div class="recap-row"><span class="recap-label">🏨 Hébergement</span><span class="recap-val" id="recapH">Aucun sélectionné</span></div>
+        <div class="recap-row"><span class="recap-label">🚗 Transport</span><span class="recap-val" id="recapT">Aucun sélectionné</span></div>
       </div>
-      <div class="recap-total-row" id="recapTotalRow" style="display:none">
+      <div class="recap-total-row" id="recapTotRow" style="display:none">
         <span class="recap-total-label">💰 Total estimé</span>
-        <div><div class="recap-total-amount" id="recapTotalFcfa">—</div><span class="total-eur" id="recapTotalEur"></span></div>
+        <div><div class="recap-total-amount" id="recapFcfa">—</div><span class="total-eur" id="recapEur"></span></div>
       </div>
-      <div class="recap-nuits-row" id="recapNuitsRow" style="display:none">
-        <span>Calcul basé sur <strong id="recapNuitsVal">1</strong> nuit(s)</span>
-        <span id="recapDetail" style="font-style:italic"></span>
+      <div class="recap-nuits-row" id="recapNR" style="display:none">
+        <span>Calcul basé sur <strong id="recapNV">1</strong> nuit(s)</span>
+        <span id="recapDet" style="font-style:italic"></span>
       </div>
     </div>
 
-    <!-- BOUTON PAIEMENT -->
+    <!-- ─── BOUTON PAIEMENT ─── -->
     <div style="margin-top:28px;text-align:center">
       <button class="btn-pay" id="btnPay" disabled>
         <span class="btn-pay-icon">🔒</span>
@@ -759,13 +712,111 @@
   </div>
 </section>
 
-<!-- ══ PAIEMENTS ══ -->
-<section class="pay-section" id="paiements" aria-labelledby="pay-title">
+<!-- ══════════════════════════════════════════════════
+     SECTION 3 — FORMULAIRE VOYAGEUR
+     Vague 1 : déplacé sous le catalogue
+     Vague 4 : menus déroulants intelligents
+══════════════════════════════════════════════════ -->
+<section class="form-section" id="demande">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Étape 3 · Validation de votre identité &amp; vol</div>
+      <h2>Formulaire de demande d'assistance voyageur</h2>
+      <p>Renseignez votre vol et vos coordonnées — notre équipe vous contacte sous <strong>15 minutes</strong> pour confirmer votre pack.</p>
+    </div>
+    <div class="form-card">
+      <form id="formVoyageur" action="https://formspree.io/f/xpwdjrkb" method="POST" novalidate>
+        <input type="hidden" name="_subject" value="[SOS Passager Escale] Demande d'assistance voyageur" />
+        <input type="hidden" name="type_formulaire" value="voyageur" />
+        <div class="form-grid">
+          <div class="field"><label for="v-prenom">Prénom</label><input type="text" id="v-prenom" name="prenom" placeholder="Ex : Jean-Paul" required autocomplete="given-name" /></div>
+          <div class="field"><label for="v-nom">Nom</label><input type="text" id="v-nom" name="nom" placeholder="Ex : Dupont" required autocomplete="family-name" /></div>
+          <div class="field full">
+            <label for="v-phone">Numéro WhatsApp</label>
+            <div class="phone-row">
+              <div class="field-indicatif">
+                <select id="v-indicatif" name="indicatif" aria-label="Indicatif pays">
+                  <option value="+33">🇫🇷 +33</option><option value="+32">🇧🇪 +32</option><option value="+41">🇨🇭 +41</option><option value="+49">🇩🇪 +49</option><option value="+44">🇬🇧 +44</option>
+                  <option value="+225">🇨🇮 +225</option><option value="+221">🇸🇳 +221</option><option value="+223">🇲🇱 +223</option><option value="+229">🇧🇯 +229</option><option value="+226">🇧🇫 +226</option><option value="+224">🇬🇳 +224</option><option value="+228">🇹🇬 +228</option><option value="+227">🇳🇪 +227</option><option value="+237">🇨🇲 +237</option><option value="+234">🇳🇬 +234</option>
+                </select>
+              </div>
+              <div class="field-number"><input type="tel" id="v-phone" name="whatsapp" placeholder="Numéro sans indicatif" required /></div>
+            </div>
+          </div>
+
+          <!-- Vague 4 : menu déroulant aéroport -->
+          <div class="field full">
+            <label for="v-aeroport">Aéroport actuel où vous êtes bloqué</label>
+            <select id="v-aeroport" name="aeroport" required>
+              <option value="" disabled selected>— Sélectionnez votre aéroport —</option>
+              <option value="Abidjan (ABJ - FHB)">🇨🇮 Abidjan (ABJ - FHB)</option>
+              <option value="Dakar (DSS - AIBD)">🇸🇳 Dakar (DSS - AIBD)</option>
+              <option value="Paris (CDG - Roissy)">🇫🇷 Paris (CDG - Roissy)</option>
+              <option value="Paris (ORY - Orly)">🇫🇷 Paris (ORY - Orly)</option>
+              <option value="Bruxelles (BRU)">🇧🇪 Bruxelles (BRU)</option>
+              <option value="Bamako (BKO)">🇲🇱 Bamako (BKO)</option>
+              <option value="Ouagadougou (OUA)">🇧🇫 Ouagadougou (OUA)</option>
+              <option value="Cotonou (COO)">🇧🇯 Cotonou (COO)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="v-vol">Numéro de vol</label>
+            <input type="text" id="v-vol" name="num_vol" placeholder="Ex: AF 471" required />
+          </div>
+
+          <!-- Vague 4 : menu déroulant compagnie -->
+          <div class="field">
+            <label for="v-compagnie">Compagnie aérienne</label>
+            <select id="v-compagnie" name="compagnie" required>
+              <option value="" disabled selected>— Compagnie —</option>
+              <option>Air France</option>
+              <option>Air Côte d'Ivoire</option>
+              <option>Corsair</option>
+              <option>Brussels Airlines</option>
+              <option>Royal Air Maroc</option>
+              <option>Tunisair</option>
+              <option>Air Algérie</option>
+              <option>Ethiopian Airlines</option>
+              <option>Kenya Airways</option>
+              <option>Turkish Airlines</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label for="v-motif">Motif de l'interruption</label>
+            <select id="v-motif" name="motif" required>
+              <option value="" disabled selected>— Sélectionnez —</option>
+              <option>✈️ Vol annulé</option><option>⏱️ Correspondance manquée</option><option>🚫 Surbooking / Refus d'embarquement</option><option>🙋 Erreur personnelle</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Passagers &amp; durée estimée</label>
+            <div class="pax-row">
+              <div class="field"><label for="v-adultes" style="font-size:.73rem">Adultes</label><input type="number" id="v-adultes" name="nb_adultes" min="1" value="1" /></div>
+              <div class="field"><label for="v-enfants" style="font-size:.73rem">Enfants</label><input type="number" id="v-enfants" name="nb_enfants" min="0" value="0" /></div>
+              <div class="field"><label for="v-nuits" style="font-size:.73rem">Nombre de nuits</label><input type="number" id="v-nuits" name="nb_nuits" min="1" value="1" /></div>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn-submit">Valider mon Profil Voyageur &amp; Activer le Pack 🚀</button>
+        <div class="form-success" id="successVoyageur" role="alert">✅ Demande envoyée ! Notre équipe vous contacte sous 15 minutes sur WhatsApp.</div>
+      </form>
+      <p style="text-align:center;font-size:.78rem;color:var(--gray-text);margin-top:16px">📲 Ou écrivez-nous directement sur WhatsApp pour une réponse immédiate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 4 — PAIEMENTS MULTI-DEVISES
+══════════════════════════════════════════════════ -->
+<section class="pay-section" id="paiements">
   <div class="container">
     <div class="section-head">
       <div class="section-tag">Paiements sécurisés multi-devises</div>
-      <h2 id="pay-title">Payez comme vous voulez, où que vous soyez</h2>
-      <p>SOS Passager Escale Réseau accepte toutes les solutions de paiement — Europe &amp; Afrique de l'Ouest.</p>
+      <h2>Payez comme vous voulez, où que vous soyez</h2>
+      <p>SOS Passager accepte toutes les solutions de paiement locales — Europe &amp; Afrique de l'Ouest.</p>
     </div>
     <div class="pay-zones">
       <div class="pay-zone-card"><div class="pay-zone-head"><span class="pay-zone-flag">🌍</span><h3>Zone Europe</h3></div><div class="pay-badges"><span class="pay-badge"><span class="pay-dot" style="background:#1A73E8"></span>Visa</span><span class="pay-badge"><span class="pay-dot" style="background:#EB001B"></span>Mastercard</span><span class="pay-badge">🍎 Apple Pay</span><span class="pay-badge"><span class="pay-dot" style="background:#003087"></span>PayPal</span></div></div>
@@ -774,18 +825,20 @@
   </div>
 </section>
 
-<!-- ══ PRESTATAIRES ══ -->
-<section class="presta-section" id="prestataires" aria-labelledby="presta-title">
+<!-- ══════════════════════════════════════════════════
+     SECTION 5 — PRESTATAIRES
+══════════════════════════════════════════════════ -->
+<section class="presta-section" id="prestataires">
   <div class="container">
     <div class="section-head">
       <div class="section-tag">Réseau Partenaire</div>
-      <h2 id="presta-title">Intégrer SOS Passager Escale Réseau</h2>
-      <p>Vous êtes hôtelier, propriétaire ou transporteur ? Rejoignez notre réseau et accédez à des voyageurs qualifiés 24h/24.</p>
+      <h2>Intégrer SOS Passager Escale Réseau</h2>
+      <p>Hôtelier, propriétaire ou transporteur ? Rejoignez notre réseau et accédez à des voyageurs qualifiés 24h/24.</p>
     </div>
     <div class="presta-grid">
-      <div class="presta-card"><div class="presta-icon">🏨</div><h3>Hébergeurs</h3><p>Studios, appartements, guesthouses proches des aéroports. Remplissage garanti en cas de perturbations aériennes.</p><span class="presta-commission">Commission 12% par réservation</span><p class="presta-charte">Charte qualité SOS Passager · Paiement sous 48h</p></div>
-      <div class="presta-card"><div class="presta-icon">🚗</div><h3>Chauffeurs privés</h3><p>VTC certifiés, véhicules récents et climatisés. Intervention rapide dès validation de la réservation voyageur.</p><span class="presta-commission">Commission 10% par course</span><p class="presta-charte">Disponibilité 24h/24 · 7j/7 · Assurance couverte</p></div>
-      <div class="presta-card"><div class="presta-icon">🤝</div><h3>Agences de voyage</h3><p>Proposez le Pack Escale à vos clients. Programme d'affiliation avec commission sur chaque pack activé.</p><span class="presta-commission">Commission 8% par pack</span><p class="presta-charte">Tableau de bord dédié · Support prioritaire</p></div>
+      <div class="presta-card"><div class="presta-icon">🏨</div><h3>Hébergeurs</h3><p>Appartements, studios, guesthouses résidentiels proches des aéroports. Remplissage garanti en cas de perturbations aériennes.</p><span class="presta-commission">Commission 12% / réservation</span><p class="presta-charte">Charte qualité SOS Passager · Paiement sous 48h</p></div>
+      <div class="presta-card"><div class="presta-icon">🚗</div><h3>Chauffeurs privés</h3><p>VTC certifiés, véhicules récents et climatisés. Intervention rapide dès validation de la réservation voyageur.</p><span class="presta-commission">Commission 10% / course</span><p class="presta-charte">Disponibilité 24h/24 · 7j/7 · Assurance couverte</p></div>
+      <div class="presta-card"><div class="presta-icon">🤝</div><h3>Agences de voyage</h3><p>Proposez le Pack Escale à vos clients. Programme d'affiliation avec commission sur chaque pack activé.</p><span class="presta-commission">Commission 8% / pack</span><p class="presta-charte">Tableau de bord dédié · Support prioritaire</p></div>
     </div>
     <div style="margin-top:48px">
       <div class="section-head" style="margin-bottom:32px"><h2>Formulaire d'inscription prestataire</h2><p>Notre équipe vous contacte sous 24h pour finaliser le partenariat.</p></div>
@@ -797,17 +850,17 @@
             <div class="field"><label for="p-prenom">Prénom</label><input type="text" id="p-prenom" name="prenom" placeholder="Ex : Kouamé" required /></div>
             <div class="field"><label for="p-nom">Nom</label><input type="text" id="p-nom" name="nom" placeholder="Ex : Assouman" required /></div>
             <div class="field full"><label for="p-societe">Nom de la société / Activité</label><input type="text" id="p-societe" name="societe" placeholder="Ex: Résidence Les Palmiers · VTC Confort Abidjan" required /></div>
-            <div class="field full"><label for="p-type">Type de prestation</label>
-              <div class="radio-btns" role="radiogroup">
-                <label><input type="radio" name="type_prestation" value="Hébergement" required />🏨 Hébergement (Studio / Appartement / Guesthouse)</label>
-                <label><input type="radio" name="type_prestation" value="Transport VTC" />🚗 Transport privé (VTC / Chauffeur particulier)</label>
-                <label><input type="radio" name="type_prestation" value="Les deux" />🤝 Les deux (Hébergement + Transport)</label>
-                <label><input type="radio" name="type_prestation" value="Agence de voyage" />✈️ Agence de voyage / Affiliation</label>
+            <div class="field full"><label>Type de prestation</label>
+              <div class="radio-btns">
+                <label><input type="radio" name="type_presta" value="Hébergement" required />🏨 Hébergement (Appartement / Studio / Guesthouse)</label>
+                <label><input type="radio" name="type_presta" value="Transport VTC" />🚗 Transport privé (VTC / Chauffeur)</label>
+                <label><input type="radio" name="type_presta" value="Les deux" />🤝 Les deux</label>
+                <label><input type="radio" name="type_presta" value="Agence" />✈️ Agence de voyage / Affiliation</label>
               </div>
             </div>
             <div class="field full"><label for="p-ville">Ville / Aéroport couvert</label><input type="text" id="p-ville" name="ville" placeholder="Ex: Abidjan (FHB) · Paris (CDG) · Dakar (AIBD)" required /></div>
             <div class="field"><label for="p-email">E-mail professionnel</label><input type="email" id="p-email" name="email" placeholder="contact@votresociete.com" required /></div>
-            <div class="field"><label for="p-whatsapp">WhatsApp professionnel</label><input type="tel" id="p-whatsapp" name="whatsapp" placeholder="+225 07 XX XX XX XX" required /></div>
+            <div class="field"><label for="p-wa">WhatsApp professionnel</label><input type="tel" id="p-wa" name="whatsapp" placeholder="+225 07 XX XX XX XX" required /></div>
           </div>
           <button type="submit" class="btn-submit">Intégrer SOS Passager Escale Réseau 🤝</button>
           <div class="form-success" id="successPrestataire" role="alert">✅ Inscription reçue ! Notre équipe vous contacte sous 24h.</div>
@@ -821,398 +874,383 @@
 <footer>
   <div class="footer-brand">SOS <span>Passager</span> Escale Réseau</div>
   <p class="footer-sub">Hébergement &amp; Transport d'Urgence · Europe &amp; Afrique · CE 261/2004 · UEMOA N°03/2003</p>
-  <nav class="footer-links" aria-label="Liens de pied de page">
+  <nav class="footer-links">
     <a href="index.html">Accueil</a><a href="index.html">Droits passagers</a>
     <a href="index.html">Mentions légales</a><a href="index.html">Confidentialité</a>
     <a href="mailto:franckvanie@yahoo.de">franckvanie@yahoo.de</a>
   </nav>
 </footer>
 
-<!-- ══════════════════════════════════════════════════════
-     JAVASCRIPT — AUTH · PANIER · PAIEMENT
-══════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════════
+     JAVASCRIPT COMPLET — VAGUE 5
+     Auth · Panier multi-devises · Paiement · Smooth Scroll
+══════════════════════════════════════════════════ -->
 <script>
-(function () {
-  'use strict';
+(function(){
+'use strict';
 
-  /* ── Hamburger ── */
-  var menuBtn = document.getElementById('menuBtn');
-  var mobileMenu = document.getElementById('mobileMenu');
-  if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener('click', function () {
-      var isOpen = mobileMenu.classList.toggle('open');
-      menuBtn.setAttribute('aria-expanded', isOpen.toString());
-    });
-  }
+/* ── Hamburger ── */
+var mb=document.getElementById('menuBtn'),mn=document.getElementById('mobileMenu');
+if(mb&&mn){mb.addEventListener('click',function(){var o=mn.classList.toggle('open');mb.setAttribute('aria-expanded',o.toString());});}
 
-  /* ── Formspree ── */
-  function setupForm(formId, successId) {
-    var form = document.getElementById(formId);
-    var succ = document.getElementById(successId);
-    if (!form) return;
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var btn = form.querySelector('.btn-submit');
-      if (!btn) return;
-      btn.disabled = true; btn.textContent = 'Envoi en cours…';
-      fetch(form.action, { method:'POST', body:new FormData(form), headers:{'Accept':'application/json'} })
-        .then(function(r){ if(r.ok){ if(succ) succ.style.display='block'; form.reset(); btn.textContent='✅ Envoyé'; } else { btn.disabled=false; btn.textContent='Réessayer'; } })
-        .catch(function(){ btn.disabled=false; btn.textContent='Réessayer'; });
-    });
-  }
-  setupForm('formVoyageur','successVoyageur');
-  setupForm('formPrestataire','successPrestataire');
-
-  /* ── Radios prestataire ── */
-  document.querySelectorAll('.radio-btns label').forEach(function(lbl){
-    var inp=lbl.querySelector('input');
-    if(inp) inp.addEventListener('change', function(){
-      document.querySelectorAll('.radio-btns label').forEach(function(l){l.classList.remove('selected');});
-      lbl.classList.add('selected');
-    });
+/* ── Formspree ── */
+function setupForm(fId,sId){
+  var f=document.getElementById(fId),s=document.getElementById(sId);
+  if(!f)return;
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var b=f.querySelector('.btn-submit');if(!b)return;
+    b.disabled=true;b.textContent='Envoi en cours…';
+    fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}})
+      .then(function(r){if(r.ok){if(s)s.style.display='block';f.reset();b.textContent='✅ Envoyé';}else{b.disabled=false;b.textContent='Réessayer';}})
+      .catch(function(){b.disabled=false;b.textContent='Réessayer';});
   });
+}
+setupForm('formVoyageur','successVoyageur');
+setupForm('formPrestataire','successPrestataire');
 
-  /* ══ UTILISATEUR localStorage ══ */
-  var SKEY='sosp_user';
-  function saveUser(u){ try{localStorage.setItem(SKEY,JSON.stringify(u));}catch(e){} }
-  function getUser(){ try{var u=localStorage.getItem(SKEY);return u?JSON.parse(u):null;}catch(e){return null;} }
-  function remUser(){ try{localStorage.removeItem(SKEY);}catch(e){} }
-  function allUsers(){ try{return JSON.parse(localStorage.getItem('sosp_users')||'[]');}catch(e){return[];} }
-  function addUser(u){ var us=allUsers();us.push(u);try{localStorage.setItem('sosp_users',JSON.stringify(us));}catch(e){} }
-  function findUser(email){ return allUsers().find(function(u){return u.email===email;})||null; }
-  function validEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
+/* ── Radios prestataire ── */
+document.querySelectorAll('.radio-btns label').forEach(function(l){
+  var i=l.querySelector('input');
+  if(i)i.addEventListener('change',function(){document.querySelectorAll('.radio-btns label').forEach(function(x){x.classList.remove('selected');});l.classList.add('selected');});
+});
 
-  /* ══ ÉTAT ══ */
-  var S={ user:getUser(), hotel:null, transport:null, nuits:1, payMethod:null, mmOp:null };
+/* ══ UTILISATEUR localStorage ══ */
+var SK='sosp_user';
+function saveU(u){try{localStorage.setItem(SK,JSON.stringify(u));}catch(e){}}
+function getU(){try{var u=localStorage.getItem(SK);return u?JSON.parse(u):null;}catch(e){return null;}}
+function remU(){try{localStorage.removeItem(SK);}catch(e){}}
+function allU(){try{return JSON.parse(localStorage.getItem('sosp_users')||'[]');}catch(e){return[];}}
+function addU(u){var us=allU();us.push(u);try{localStorage.setItem('sosp_users',JSON.stringify(us));}catch(e){}}
+function findU(email){return allU().find(function(u){return u.email===email;})||null;}
+function okEmail(e){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
 
-  /* ══ TOPBAR ══ */
-  var topbar=document.getElementById('userTopbar');
-  var avatar=document.getElementById('userAvatar');
-  var greet =document.getElementById('userGreeting');
-  var logoutBtn=document.getElementById('btnLogout');
+/* ══ ÉTAT GLOBAL ══ */
+var S={user:getU(),hotel:null,transport:null,nuits:1,pm:null,mmOp:null};
 
-  function applyAuth(){
-    if(S.user){
-      document.body.classList.add('authenticated');
-      if(topbar) topbar.classList.add('visible');
-      var ini=((S.user.prenom||'?')[0]+(S.user.nom||'?')[0]).toUpperCase();
-      if(avatar) avatar.textContent=ini;
-      if(greet)  greet.textContent='Bonjour '+S.user.prenom+' · Compte actif ✅';
-    } else {
-      document.body.classList.remove('authenticated');
-      if(topbar) topbar.classList.remove('visible');
-    }
-    updatePayBtn();
+/* ══ TOPBAR ══ */
+var topbar=document.getElementById('userTopbar');
+var avatar=document.getElementById('userAvatar');
+var greet=document.getElementById('userGreeting');
+var logoutBtn=document.getElementById('btnLogout');
+
+function applyAuth(){
+  if(S.user){
+    document.body.classList.add('authenticated');
+    if(topbar)topbar.classList.add('visible');
+    var ini=((S.user.prenom||'?')[0]+(S.user.nom||'?')[0]).toUpperCase();
+    if(avatar)avatar.textContent=ini;
+    if(greet)greet.textContent='Bonjour '+S.user.prenom+' · Compte actif ✅';
+  }else{
+    document.body.classList.remove('authenticated');
+    if(topbar)topbar.classList.remove('visible');
   }
+  updatePayBtn();
+}
 
-  if(logoutBtn) logoutBtn.addEventListener('click',function(){
-    S.user=null; remUser(); S.hotel=null; S.transport=null;
-    resetCards(); updateRecap(); applyAuth();
+if(logoutBtn)logoutBtn.addEventListener('click',function(){
+  S.user=null;remU();S.hotel=null;S.transport=null;
+  resetCards();updateRecap();applyAuth();
+});
+
+/* Verrous → ouvrir modal auth */
+document.querySelectorAll('.lock-overlay').forEach(function(ov){
+  ov.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();openM('authModal');});
+  ov.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openM('authModal');}});
+});
+
+/* ══ MODALS ══ */
+function openM(id){var m=document.getElementById(id);if(m){m.classList.add('open');document.body.style.overflow='hidden';}}
+function closeM(id){var m=document.getElementById(id);if(m){m.classList.remove('open');document.body.style.overflow='';}}
+
+var aC=document.getElementById('authClose'),pC=document.getElementById('payClose');
+if(aC)aC.addEventListener('click',function(){closeM('authModal');});
+if(pC)pC.addEventListener('click',function(){closeM('payModal');});
+['authModal','payModal'].forEach(function(id){
+  var m=document.getElementById(id);
+  if(m)m.addEventListener('click',function(e){if(e.target===m)closeM(id);});
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeM('authModal');closeM('payModal');}});
+
+/* Tabs auth */
+var tL=document.getElementById('tabLogin'),tR=document.getElementById('tabRegister');
+function switchTab(aid){
+  [tL,tR].forEach(function(t){
+    if(!t)return;
+    var on=t.id===aid;
+    t.classList.toggle('active',on);
+    var p=document.getElementById(t.id==='tabLogin'?'panelLogin':'panelRegister');
+    if(p)p.classList.toggle('active',on);
   });
+}
+if(tL)tL.addEventListener('click',function(){switchTab('tabLogin');});
+if(tR)tR.addEventListener('click',function(){switchTab('tabRegister');});
+document.querySelectorAll('.switch-link').forEach(function(l){
+  l.addEventListener('click',function(){switchTab(l.getAttribute('data-tab'));});
+});
 
-  /* Clics verrous */
-  document.querySelectorAll('.lock-overlay').forEach(function(ov){
-    ov.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();openM('authModal');});
-    ov.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openM('authModal');}});
+/* Toggle pwd */
+document.querySelectorAll('.pwd-toggle').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var inp=document.getElementById(btn.getAttribute('data-t'));
+    if(!inp)return;
+    inp.type=inp.type==='text'?'password':'text';
+    btn.textContent=inp.type==='text'?'🙈':'👁';
   });
+});
 
-  /* ══ MODALS ══ */
-  function openM(id){var m=document.getElementById(id);if(m){m.classList.add('open');document.body.style.overflow='hidden';}}
-  function closeM(id){var m=document.getElementById(id);if(m){m.classList.remove('open');document.body.style.overflow='';}}
+function showErr(el,msg){if(!el)return;el.textContent=msg;el.style.display='block';}
 
-  var aClose=document.getElementById('authModalClose');
-  var pClose=document.getElementById('payModalClose');
-  if(aClose) aClose.addEventListener('click',function(){closeM('authModal');});
-  if(pClose) pClose.addEventListener('click',function(){closeM('payModal');});
-  ['authModal','payModal'].forEach(function(id){
-    var m=document.getElementById(id);
-    if(m) m.addEventListener('click',function(e){if(e.target===m) closeM(id);});
-  });
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeM('authModal');closeM('payModal');}});
+/* Connexion */
+var bL=document.getElementById('btnLogin'),lE=document.getElementById('loginErr');
+if(bL)bL.addEventListener('click',function(){
+  if(lE)lE.style.display='none';
+  var email=(document.getElementById('loginEmail')||{}).value.trim();
+  var pwd=(document.getElementById('loginPwd')||{}).value;
+  if(!email||!pwd){showErr(lE,'Veuillez remplir tous les champs.');return;}
+  if(!okEmail(email)){showErr(lE,'Adresse e-mail invalide.');return;}
+  var st=findU(email);
+  if(!st){showErr(lE,'Aucun compte trouvé. Créez un compte.');return;}
+  if(st.pwd!==pwd){showErr(lE,'Mot de passe incorrect.');return;}
+  S.user=st;saveU(S.user);applyAuth();
+  closeM('authModal');toast('Bienvenue '+S.user.prenom+' ! 👋');
+});
 
-  /* Tabs auth */
-  var tLog=document.getElementById('tabLogin');
-  var tReg=document.getElementById('tabRegister');
-  function switchTab(aid){
-    [tLog,tReg].forEach(function(t){
-      if(!t) return;
-      var on=t.id===aid;
-      t.classList.toggle('active',on); t.setAttribute('aria-selected',on.toString());
-      var p=document.getElementById(t.id==='tabLogin'?'panelLogin':'panelRegister');
-      if(p) p.classList.toggle('active',on);
-    });
-  }
-  if(tLog) tLog.addEventListener('click',function(){switchTab('tabLogin');});
-  if(tReg) tReg.addEventListener('click',function(){switchTab('tabRegister');});
-  document.querySelectorAll('.switch-link').forEach(function(l){
-    l.addEventListener('click',function(){switchTab(l.getAttribute('data-tab'));});
-  });
-
-  /* Toggle password */
-  document.querySelectorAll('.pwd-toggle').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      var inp=document.getElementById(btn.getAttribute('data-target'));
-      if(!inp) return;
-      inp.type=inp.type==='text'?'password':'text';
-      btn.textContent=inp.type==='text'?'🙈':'👁';
-    });
-  });
-
-  function showErr(el,msg){if(!el)return;el.textContent=msg;el.style.display='block';}
-
-  /* ── Connexion ── */
-  var bLogin=document.getElementById('btnLogin');
-  var lErr=document.getElementById('loginError');
-  if(bLogin) bLogin.addEventListener('click',function(){
-    if(lErr) lErr.style.display='none';
-    var email=(document.getElementById('loginEmail')||{}).value.trim();
-    var pwd=(document.getElementById('loginPwd')||{}).value;
-    if(!email||!pwd){showErr(lErr,'Veuillez remplir tous les champs.');return;}
-    if(!validEmail(email)){showErr(lErr,'Adresse e-mail invalide.');return;}
-    var stored=findUser(email);
-    if(!stored){showErr(lErr,'Aucun compte trouvé. Créez un compte.');return;}
-    if(stored.pwd!==pwd){showErr(lErr,'Mot de passe incorrect.');return;}
-    S.user=stored; saveUser(S.user); applyAuth();
-    closeM('authModal'); toast('Bienvenue '+S.user.prenom+' ! 👋');
-  });
-
-  /* ── Inscription ── */
-  var bReg=document.getElementById('btnRegister');
-  var rErr=document.getElementById('registerError');
-  if(bReg) bReg.addEventListener('click',function(){
-    if(rErr) rErr.style.display='none';
-    var prenom=(document.getElementById('regPrenom')||{}).value.trim();
-    var nom=(document.getElementById('regNom')||{}).value.trim();
-    var email=(document.getElementById('regEmail')||{}).value.trim();
-    var wa=(document.getElementById('regWa')||{}).value.trim();
-    var pwd=(document.getElementById('regPwd')||{}).value;
-    if(!prenom||!nom||!email||!wa||!pwd){showErr(rErr,'Veuillez remplir tous les champs.');return;}
-    if(!validEmail(email)){showErr(rErr,'Adresse e-mail invalide.');return;}
-    if(pwd.length<6){showErr(rErr,'Mot de passe minimum 6 caractères.');return;}
-    if(findUser(email)){showErr(rErr,'Un compte existe déjà. Connectez-vous.');return;}
-    var nu={prenom:prenom,nom:nom,email:email,wa:wa,pwd:pwd};
-    addUser(nu); S.user=nu; saveUser(nu);
-    var rf=document.getElementById('registerForm');
-    var rs=document.getElementById('registerSuccess');
-    if(rf) rf.style.display='none'; if(rs) rs.style.display='block';
-    applyAuth();
-    setTimeout(function(){
-      closeM('authModal');
-      if(rf) rf.style.display=''; if(rs) rs.style.display='none';
-      toast('Compte créé ! Bienvenue '+prenom+' 🎉');
-    },2200);
-  });
-
-  /* ══ CARTES HÔTEL / TRANSPORT ══ */
-  function setupHotelCards(){
-    var cards=document.querySelectorAll('.hotel-card');
-    cards.forEach(function(card){
-      var radio=card.querySelector('input[type="radio"]');
-      if(!radio) return;
-      card.addEventListener('click',function(e){
-        if(!S.user){e.preventDefault();openM('authModal');return;}
-        cards.forEach(function(c){c.classList.remove('is-selected');});
-        card.classList.add('is-selected'); radio.checked=true;
-        S.hotel={label:radio.value,fcfa:parseInt(radio.getAttribute('data-fcfa')||'0',10),eur:parseInt(radio.getAttribute('data-eur')||'0',10)};
-        updateRecap();
-      });
-    });
-  }
-
-  function setupTransportCards(){
-    var cards=document.querySelectorAll('.transport-card');
-    cards.forEach(function(card){
-      var radio=card.querySelector('input[type="radio"]');
-      if(!radio) return;
-      card.addEventListener('click',function(e){
-        if(!S.user){e.preventDefault();openM('authModal');return;}
-        cards.forEach(function(c){c.classList.remove('is-selected');});
-        card.classList.add('is-selected'); radio.checked=true;
-        S.transport={label:radio.value,fcfa:parseInt(radio.getAttribute('data-fcfa')||'0',10),eur:parseInt(radio.getAttribute('data-eur')||'0',10)};
-        updateRecap();
-      });
-    });
-  }
-
-  function resetCards(){
-    document.querySelectorAll('.hotel-card,.transport-card').forEach(function(c){
-      c.classList.remove('is-selected');
-      var r=c.querySelector('input[type="radio"]');if(r)r.checked=false;
-    });
-  }
-
-  function getNuits(){var i=document.getElementById('v-nuits');var n=i?parseInt(i.value,10):1;return(isNaN(n)||n<1)?1:n;}
-
-  var vn=document.getElementById('v-nuits');
-  if(vn) vn.addEventListener('input',function(){S.nuits=getNuits();updateRecap();});
-
-  function fmtF(n){if(n===0)return'Inclus';return n.toLocaleString('fr-FR')+' FCFA';}
-
-  function updateRecap(){
-    S.nuits=getNuits();
-    var rH=document.getElementById('recapHotel');
-    var rT=document.getElementById('recapTransport');
-    var rRow=document.getElementById('recapTotalRow');
-    var rF=document.getElementById('recapTotalFcfa');
-    var rE=document.getElementById('recapTotalEur');
-    var rNR=document.getElementById('recapNuitsRow');
-    var rNV=document.getElementById('recapNuitsVal');
-    var rD=document.getElementById('recapDetail');
-
-    if(rH){if(S.hotel){rH.textContent=S.hotel.label;rH.classList.add('filled');}else{rH.textContent='Aucun sélectionné';rH.classList.remove('filled');}}
-    if(rT){if(S.transport){rT.textContent=S.transport.label;rT.classList.add('filled');}else{rT.textContent='Aucun sélectionné';rT.classList.remove('filled');}}
-
-    if(S.hotel&&S.transport){
-      var tF=(S.hotel.fcfa*S.nuits)+S.transport.fcfa;
-      var tE=(S.hotel.eur*S.nuits)+S.transport.eur;
-      if(rRow)rRow.style.display='flex';if(rNR)rNR.style.display='flex';
-      if(rF)rF.textContent=fmtF(tF);
-      if(rE&&tE>0)rE.textContent='≈ '+tE+' €';
-      if(rNV)rNV.textContent=S.nuits;
-      if(rD)rD.textContent=fmtF(S.hotel.fcfa)+' × '+S.nuits+' nuit(s) + '+fmtF(S.transport.fcfa);
-    } else {
-      if(rRow)rRow.style.display='none';if(rNR)rNR.style.display='none';
-    }
-    updatePayBtn();
-  }
-
-  /* ── Bouton paiement ── */
-  var btnPay=document.getElementById('btnPay');
-  function updatePayBtn(){
-    if(!btnPay) return;
-    var ready=!!(S.user&&S.hotel&&S.transport);
-    btnPay.disabled=!ready;
-    var icon=btnPay.querySelector('.btn-pay-icon');
-    var strong=btnPay.querySelector('strong');
-    var small=btnPay.querySelector('small');
-    if(!S.user){
-      if(icon)icon.textContent='🔒';
-      if(strong)strong.textContent='Connectez-vous pour réserver';
-      if(small)small.textContent='Créez un compte gratuit en 30 secondes';
-    } else if(!S.hotel||!S.transport){
-      if(icon)icon.textContent='🛒';
-      if(strong)strong.textContent='Complétez votre sélection';
-      if(small)small.textContent='Choisissez un hébergement et un transport';
-    } else {
-      var n=getNuits();
-      var tF=(S.hotel.fcfa*n)+S.transport.fcfa;
-      var tE=(S.hotel.eur*n)+S.transport.eur;
-      if(icon)icon.textContent='💳';
-      if(strong)strong.textContent='Procéder au paiement — '+fmtF(tF);
-      if(small)small.textContent=(tE>0?'≈ '+tE+' €  · ':'' )+'Paiement sécurisé SSL';
-    }
-  }
-
-  if(btnPay) btnPay.addEventListener('click',function(){
-    if(!S.user){openM('authModal');return;}
-    if(!S.hotel||!S.transport) return;
-    openPayM();
-  });
-
-  /* ══ MODAL PAIEMENT ══ */
-  function openPayM(){
-    showPayScr('main');
-    S.payMethod=null; S.mmOp=null;
-    var n=getNuits();
-    var tF=(S.hotel.fcfa*n)+S.transport.fcfa;
-    var tE=(S.hotel.eur*n)+S.transport.eur;
-    var pb=document.getElementById('payTotalDisplay');
-    var ps=document.getElementById('paySubDisplay');
-    if(pb)pb.textContent=fmtF(tF)+(tE>0?' / '+tE+' €':'');
-    if(ps)ps.textContent=S.hotel.label.split('—')[0].trim()+' · '+S.transport.label.split('(')[0].trim();
-    document.querySelectorAll('.pay-method-card').forEach(function(c){c.classList.remove('selected');});
-    var mm=document.getElementById('payMmDetail');if(mm)mm.classList.remove('visible');
-    var cd=document.getElementById('payCardDetail');if(cd)cd.classList.remove('visible');
-    document.querySelectorAll('.pay-mm-btn').forEach(function(b){b.classList.remove('active');});
-    var bpn=document.getElementById('btnPayNow');if(bpn)bpn.disabled=true;
-    openM('payModal');
-  }
-
-  function showPayScr(w){
-    var map={main:'payScreen',processing:'payProcessing',success:'paySuccess'};
-    Object.keys(map).forEach(function(k){var el=document.getElementById(map[k]);if(el)el.style.display=(k===w)?'block':'none';});
-  }
-
-  var pmM=document.getElementById('pmMobile');
-  var pmC=document.getElementById('pmCard');
-  function onMethod(m){
-    S.payMethod=m;
-    var mm=document.getElementById('payMmDetail');
-    var cd=document.getElementById('payCardDetail');
-    [pmM,pmC].forEach(function(c){if(c)c.classList.remove('selected');});
-    if(m==='mobile'){if(pmM)pmM.classList.add('selected');if(mm)mm.classList.add('visible');if(cd)cd.classList.remove('visible');}
-    else{if(pmC)pmC.classList.add('selected');if(cd)cd.classList.add('visible');if(mm)mm.classList.remove('visible');}
-    chkReady();
-  }
-  if(pmM) pmM.addEventListener('click',function(){onMethod('mobile');});
-  if(pmC) pmC.addEventListener('click',function(){onMethod('card');});
-
-  document.querySelectorAll('.pay-mm-btn').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      document.querySelectorAll('.pay-mm-btn').forEach(function(b){b.classList.remove('active');});
-      btn.classList.add('active'); S.mmOp=btn.getAttribute('data-op'); chkReady();
-    });
-  });
-
-  var cnum=document.getElementById('cardNumber');
-  if(cnum) cnum.addEventListener('input',function(){
-    var v=this.value.replace(/\D/g,'').substring(0,16);
-    this.value=v.replace(/(.{4})/g,'$1 ').trim(); chkReady();
-  });
-
-  var mmn=document.getElementById('mmNumber');
-  if(mmn) mmn.addEventListener('input',chkReady);
-
-  function chkReady(){
-    var bpn=document.getElementById('btnPayNow');if(!bpn)return;
-    var ok=false;
-    if(S.payMethod==='mobile'){var mm=(document.getElementById('mmNumber')||{}).value;ok=!!(S.mmOp&&mm&&mm.trim().length>6);}
-    else if(S.payMethod==='card'){var cn=(document.getElementById('cardNumber')||{}).value.replace(/\s/g,'');ok=cn.length>=16;}
-    bpn.disabled=!ok;
-  }
-
-  var bpn=document.getElementById('btnPayNow');
-  if(bpn) bpn.addEventListener('click',function(){
-    showPayScr('processing');
-    setTimeout(showSuccess,2200);
-  });
-
-  function showSuccess(){
-    var n=getNuits();
-    var tF=(S.hotel.fcfa*n)+S.transport.fcfa;
-    var tE=(S.hotel.eur*n)+S.transport.eur;
-    var ref='SOS-'+Date.now().toString(36).toUpperCase();
-    var g=function(id){return document.getElementById(id);};
-    if(g('successHotel'))    g('successHotel').textContent=S.hotel.label.split('—')[0].trim();
-    if(g('successTransport'))g('successTransport').textContent=S.transport.label.split('(')[0].trim();
-    if(g('successAmount'))   g('successAmount').textContent=fmtF(tF)+(tE>0?' / '+tE+' €':'');
-    if(g('successClient'))   g('successClient').textContent=S.user.prenom+' '+S.user.nom;
-    if(g('payRef'))          g('payRef').textContent='Référence : '+ref;
-    showPayScr('success');
-  }
-
-  var bcs=document.getElementById('btnCloseSuccess');
-  if(bcs) bcs.addEventListener('click',function(){
-    closeM('payModal');
-    S.hotel=null; S.transport=null; resetCards(); updateRecap();
-    toast('Réservation confirmée ✅ Notre équipe vous contacte sur WhatsApp.');
-    setTimeout(function(){var s=document.getElementById('choix-pack');if(s)s.scrollIntoView({behavior:'smooth'});},300);
-  });
-
-  /* ══ TOAST ══ */
-  function toast(msg){
-    var t=document.createElement('div');
-    t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1A2538;color:#fff;padding:13px 22px;border-radius:12px;font-size:0.88rem;font-weight:700;z-index:99999;max-width:90vw;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.25);transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1)';
-    t.textContent=msg; document.body.appendChild(t);
-    requestAnimationFrame(function(){requestAnimationFrame(function(){t.style.transform='translateX(-50%) translateY(0)';});});
-    setTimeout(function(){t.style.transform='translateX(-50%) translateY(80px)';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},400);},3500);
-  }
-
-  /* ══ INIT ══ */
-  setupHotelCards();
-  setupTransportCards();
+/* Inscription */
+var bR=document.getElementById('btnRegister'),rE=document.getElementById('registerErr');
+if(bR)bR.addEventListener('click',function(){
+  if(rE)rE.style.display='none';
+  var prenom=(document.getElementById('regPrenom')||{}).value.trim();
+  var nom=(document.getElementById('regNom')||{}).value.trim();
+  var email=(document.getElementById('regEmail')||{}).value.trim();
+  var wa=(document.getElementById('regWa')||{}).value.trim();
+  var pwd=(document.getElementById('regPwd')||{}).value;
+  if(!prenom||!nom||!email||!wa||!pwd){showErr(rE,'Veuillez remplir tous les champs.');return;}
+  if(!okEmail(email)){showErr(rE,'E-mail invalide.');return;}
+  if(pwd.length<6){showErr(rE,'Mot de passe minimum 6 caractères.');return;}
+  if(findU(email)){showErr(rE,'Un compte existe déjà. Connectez-vous.');return;}
+  var nu={prenom:prenom,nom:nom,email:email,wa:wa,pwd:pwd};
+  addU(nu);S.user=nu;saveU(nu);
+  var rf=document.getElementById('regForm'),rs=document.getElementById('regOk');
+  if(rf)rf.style.display='none';if(rs)rs.style.display='block';
   applyAuth();
-  updateRecap();
+  setTimeout(function(){closeM('authModal');if(rf)rf.style.display='';if(rs)rs.style.display='none';toast('Compte créé ! Bienvenue '+prenom+' 🎉');},2200);
+});
+
+/* ══ CARTES — SÉLECTION ══ */
+function setupHotelCards(){
+  var cards=document.querySelectorAll('.hotel-card');
+  cards.forEach(function(card){
+    var radio=card.querySelector('input[type="radio"]');if(!radio)return;
+    card.addEventListener('click',function(e){
+      if(!S.user){e.preventDefault();openM('authModal');return;}
+      cards.forEach(function(c){c.classList.remove('is-selected');});
+      card.classList.add('is-selected');radio.checked=true;
+      S.hotel={label:radio.value,fcfa:parseInt(radio.getAttribute('data-fcfa')||'0',10),eur:parseInt(radio.getAttribute('data-eur')||'0',10)};
+      updateRecap();
+      /* Smooth scroll vers formulaire si transport aussi sélectionné */
+      if(S.transport)smoothScrollToForm();
+    });
+  });
+}
+
+function setupTransportCards(){
+  var cards=document.querySelectorAll('.transport-card');
+  cards.forEach(function(card){
+    var radio=card.querySelector('input[type="radio"]');if(!radio)return;
+    card.addEventListener('click',function(e){
+      if(!S.user){e.preventDefault();openM('authModal');return;}
+      cards.forEach(function(c){c.classList.remove('is-selected');});
+      card.classList.add('is-selected');radio.checked=true;
+      S.transport={label:radio.value,fcfa:parseInt(radio.getAttribute('data-fcfa')||'0',10),eur:parseInt(radio.getAttribute('data-eur')||'0',10)};
+      updateRecap();
+      /* Vague 1 : Smooth Scroll vers formulaire si hébergement aussi sélectionné */
+      if(S.hotel)smoothScrollToForm();
+    });
+  });
+}
+
+/* Vague 1 — Smooth Scroll vers section formulaire */
+function smoothScrollToForm(){
+  setTimeout(function(){
+    var target=document.getElementById('demande');
+    if(!target)return;
+    var offset=80; /* hauteur navbar sticky */
+    var top=target.getBoundingClientRect().top+window.pageYOffset-offset;
+    window.scrollTo({top:top,behavior:'smooth'});
+    toast('✅ Sélection complète ! Renseignez maintenant votre vol 👇');
+  },350);
+}
+
+function resetCards(){
+  document.querySelectorAll('.hotel-card,.transport-card').forEach(function(c){
+    c.classList.remove('is-selected');
+    var r=c.querySelector('input[type="radio"]');if(r)r.checked=false;
+  });
+}
+
+function getNuits(){var i=document.getElementById('v-nuits');var n=i?parseInt(i.value,10):1;return(isNaN(n)||n<1)?1:n;}
+var vn=document.getElementById('v-nuits');
+if(vn)vn.addEventListener('input',function(){S.nuits=getNuits();updateRecap();});
+
+function fmtF(n){if(n===0)return'Inclus';return n.toLocaleString('fr-FR')+' FCFA';}
+
+function updateRecap(){
+  S.nuits=getNuits();
+  var rH=document.getElementById('recapH');
+  var rT=document.getElementById('recapT');
+  var rRow=document.getElementById('recapTotRow');
+  var rF=document.getElementById('recapFcfa');
+  var rE=document.getElementById('recapEur');
+  var rNR=document.getElementById('recapNR');
+  var rNV=document.getElementById('recapNV');
+  var rD=document.getElementById('recapDet');
+  if(rH){if(S.hotel){rH.textContent=S.hotel.label.split('—')[0].trim();rH.classList.add('filled');}else{rH.textContent='Aucun sélectionné';rH.classList.remove('filled');}}
+  if(rT){if(S.transport){rT.textContent=S.transport.label.split('(')[0].trim();rT.classList.add('filled');}else{rT.textContent='Aucun sélectionné';rT.classList.remove('filled');}}
+  if(S.hotel&&S.transport){
+    var tF=(S.hotel.fcfa*S.nuits)+S.transport.fcfa;
+    var tE=(S.hotel.eur*S.nuits)+S.transport.eur;
+    if(rRow)rRow.style.display='flex';if(rNR)rNR.style.display='flex';
+    if(rF)rF.textContent=fmtF(tF);
+    if(rE&&tE>0)rE.textContent='≈ '+tE+' €';
+    if(rNV)rNV.textContent=S.nuits;
+    if(rD)rD.textContent=fmtF(S.hotel.fcfa)+' × '+S.nuits+' nuit(s) + '+fmtF(S.transport.fcfa);
+  }else{
+    if(rRow)rRow.style.display='none';if(rNR)rNR.style.display='none';
+  }
+  updatePayBtn();
+}
+
+/* Bouton paiement */
+var btnPay=document.getElementById('btnPay');
+function updatePayBtn(){
+  if(!btnPay)return;
+  var ready=!!(S.user&&S.hotel&&S.transport);
+  btnPay.disabled=!ready;
+  var icon=btnPay.querySelector('.btn-pay-icon');
+  var strong=btnPay.querySelector('strong');
+  var small=btnPay.querySelector('small');
+  if(!S.user){
+    if(icon)icon.textContent='🔒';
+    if(strong)strong.textContent='Connectez-vous pour réserver';
+    if(small)small.textContent='Créez un compte gratuit en 30 secondes';
+  }else if(!S.hotel||!S.transport){
+    if(icon)icon.textContent='🛒';
+    if(strong)strong.textContent='Complétez votre sélection';
+    if(small)small.textContent='Choisissez un hébergement et un transport';
+  }else{
+    var n=getNuits();
+    var tF=(S.hotel.fcfa*n)+S.transport.fcfa;
+    var tE=(S.hotel.eur*n)+S.transport.eur;
+    if(icon)icon.textContent='💳';
+    if(strong)strong.textContent='Procéder au paiement — '+fmtF(tF);
+    if(small)small.textContent=(tE>0?'≈ '+tE+' €  · ':'' )+'Paiement sécurisé SSL';
+  }
+}
+
+if(btnPay)btnPay.addEventListener('click',function(){
+  if(!S.user){openM('authModal');return;}
+  if(!S.hotel||!S.transport)return;
+  openPayM();
+});
+
+/* ══ MODAL PAIEMENT ══ */
+function openPayM(){
+  showPS('main');S.pm=null;S.mmOp=null;
+  var n=getNuits();
+  var tF=(S.hotel.fcfa*n)+S.transport.fcfa;
+  var tE=(S.hotel.eur*n)+S.transport.eur;
+  var pb=document.getElementById('payTotal');
+  var ps=document.getElementById('paySub');
+  if(pb)pb.textContent=fmtF(tF)+(tE>0?' / '+tE+' €':'');
+  if(ps)ps.textContent=S.hotel.label.split('—')[0].trim()+' · '+S.transport.label.split('(')[0].trim();
+  document.querySelectorAll('.pay-method-card').forEach(function(c){c.classList.remove('selected');});
+  var mm=document.getElementById('payMm');if(mm)mm.classList.remove('visible');
+  var cd=document.getElementById('payCard');if(cd)cd.classList.remove('visible');
+  document.querySelectorAll('.pay-mm-btn').forEach(function(b){b.classList.remove('active');});
+  var bpn=document.getElementById('btnPayNow');if(bpn)bpn.disabled=true;
+  openM('payModal');
+}
+
+function showPS(w){
+  var map={main:'payScreen',processing:'payProc',success:'paySucc'};
+  Object.keys(map).forEach(function(k){var el=document.getElementById(map[k]);if(el)el.style.display=(k===w)?'block':'none';});
+}
+
+var pmM=document.getElementById('pmM'),pmC=document.getElementById('pmC');
+function onPM(m){
+  S.pm=m;
+  var mm=document.getElementById('payMm'),cd=document.getElementById('payCard');
+  [pmM,pmC].forEach(function(c){if(c)c.classList.remove('selected');});
+  if(m==='mobile'){if(pmM)pmM.classList.add('selected');if(mm)mm.classList.add('visible');if(cd)cd.classList.remove('visible');}
+  else{if(pmC)pmC.classList.add('selected');if(cd)cd.classList.add('visible');if(mm)mm.classList.remove('visible');}
+  chkPay();
+}
+if(pmM)pmM.addEventListener('click',function(){onPM('mobile');});
+if(pmC)pmC.addEventListener('click',function(){onPM('card');});
+
+document.querySelectorAll('.pay-mm-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.pay-mm-btn').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');S.mmOp=btn.getAttribute('data-op');chkPay();
+  });
+});
+
+var cnum=document.getElementById('cardNum');
+if(cnum)cnum.addEventListener('input',function(){
+  var v=this.value.replace(/\D/g,'').substring(0,16);
+  this.value=v.replace(/(.{4})/g,'$1 ').trim();chkPay();
+});
+var mmn=document.getElementById('mmNum');
+if(mmn)mmn.addEventListener('input',chkPay);
+
+function chkPay(){
+  var bpn=document.getElementById('btnPayNow');if(!bpn)return;
+  var ok=false;
+  if(S.pm==='mobile'){var mm=(document.getElementById('mmNum')||{}).value;ok=!!(S.mmOp&&mm&&mm.trim().length>6);}
+  else if(S.pm==='card'){var cn=(document.getElementById('cardNum')||{}).value.replace(/\s/g,'');ok=cn.length>=16;}
+  bpn.disabled=!ok;
+}
+
+var bpn=document.getElementById('btnPayNow');
+if(bpn)bpn.addEventListener('click',function(){showPS('processing');setTimeout(showSucc,2200);});
+
+function showSucc(){
+  var n=getNuits();
+  var tF=(S.hotel.fcfa*n)+S.transport.fcfa;
+  var tE=(S.hotel.eur*n)+S.transport.eur;
+  var ref='SOS-'+Date.now().toString(36).toUpperCase();
+  var g=function(id){return document.getElementById(id);};
+  if(g('sHotel'))g('sHotel').textContent=S.hotel.label.split('—')[0].trim();
+  if(g('sTransport'))g('sTransport').textContent=S.transport.label.split('(')[0].trim();
+  if(g('sAmount'))g('sAmount').textContent=fmtF(tF)+(tE>0?' / '+tE+' €':'');
+  if(g('sClient'))g('sClient').textContent=S.user.prenom+' '+S.user.nom;
+  if(g('payRef'))g('payRef').textContent='Référence : '+ref;
+  showPS('success');
+}
+
+var bcs=document.getElementById('btnCloseSucc');
+if(bcs)bcs.addEventListener('click',function(){
+  closeM('payModal');
+  S.hotel=null;S.transport=null;resetCards();updateRecap();
+  toast('Réservation confirmée ✅ Notre équipe vous contacte sur WhatsApp.');
+  setTimeout(function(){var s=document.getElementById('choix-pack');if(s)s.scrollIntoView({behavior:'smooth'});},300);
+});
+
+/* Toast */
+function toast(msg){
+  var t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1A2538;color:#fff;padding:13px 22px;border-radius:12px;font-size:.88rem;font-weight:700;z-index:99999;max-width:90vw;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.25);transition:transform .3s cubic-bezier(.34,1.56,.64,1)';
+  t.textContent=msg;document.body.appendChild(t);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){t.style.transform='translateX(-50%) translateY(0)';});});
+  setTimeout(function(){t.style.transform='translateX(-50%) translateY(80px)';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},400);},3800);
+}
+
+/* INIT */
+setupHotelCards();
+setupTransportCards();
+applyAuth();
+updateRecap();
 
 })();
 </script>
