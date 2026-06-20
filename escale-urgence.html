@@ -477,6 +477,7 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
 .tunnel-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:24px;flex-wrap:wrap}
 .tunnel-nav.center{justify-content:center}
 .btn-continuer{display:inline-flex;align-items:center;gap:10px;background:var(--green);color:#fff;border:none;border-radius:12px;padding:14px 24px;font-size:.95rem;font-weight:800;cursor:pointer;transition:background .18s,transform .15s,box-shadow .18s;box-shadow:0 4px 18px rgba(29,185,84,.35);text-decoration:none;white-space:nowrap}
+@media(max-width:600px){.btn-continuer{width:100%;justify-content:center;font-size:1rem;padding:16px 20px}.btn-revenir{width:100%;justify-content:center}.tunnel-nav{flex-direction:column-reverse}}
 .btn-continuer:hover{background:var(--green-dk);transform:translateY(-2px);box-shadow:0 8px 28px rgba(29,185,84,.45)}
 .btn-continuer:disabled{background:var(--gray-3);box-shadow:none;cursor:not-allowed;transform:none}
 .btn-revenir{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--gray-t);border:1.5px solid var(--gray-3);border-radius:12px;padding:12px 20px;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .18s;text-decoration:none;white-space:nowrap}
@@ -485,35 +486,6 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
 
 /* Reduced motion */
 
-
-/* ══ MODAL RÉCAPITULATIF FLOTTANT ══ */
-.recap-modal-bd{position:fixed;bottom:0;left:0;right:0;z-index:8000;
-  display:flex;align-items:flex-end;justify-content:center;
-  pointer-events:none;padding:0 16px 16px}
-.recap-modal-pill{
-  background:var(--white);border-radius:20px 20px 16px 16px;
-  box-shadow:0 -4px 40px rgba(0,30,80,.18);
-  border:1.5px solid var(--gray-3);
-  max-width:680px;width:100%;
-  transform:translateY(100%);opacity:0;
-  transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .25s;
-  pointer-events:none;
-}
-.recap-modal-pill.visible{transform:translateY(0);opacity:1;pointer-events:auto}
-.recap-pill-head{display:flex;align-items:center;justify-content:space-between;
-  padding:14px 20px 10px;border-bottom:1px solid var(--gray-2);cursor:pointer}
-.recap-pill-head h4{font-size:.92rem;font-weight:800;color:var(--navy)}
-.recap-pill-toggle{background:var(--gray-2);border:none;border-radius:50%;width:28px;height:28px;
-  font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.recap-pill-body{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.recap-pill-items{display:flex;flex-direction:column;gap:6px;flex:1}
-.recap-pill-row{display:flex;align-items:center;gap:8px;font-size:.84rem}
-.recap-pill-row span:first-child{font-weight:700;color:var(--dark);min-width:80px}
-.recap-pill-row span:last-child{color:var(--gray-t)}
-.recap-pill-total{text-align:right;flex-shrink:0}
-.recap-pill-total-amt{font-size:1.5rem;font-weight:900;color:var(--navy)}
-.recap-pill-total-eur{font-size:.75rem;color:var(--gray-t)}
-.recap-pill-pay{display:flex;flex-direction:column;gap:8px;min-width:180px}
 
 /* ══ BOUTONS PACK INVERSÉS ══ */
 .pack-btn-primary {
@@ -680,35 +652,6 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
 </div>
 
 
-<!-- ══ MODAL RÉCAPITULATIF FLOTTANT (pill) ══ -->
-<div class="recap-modal-bd" id="recapPillBd" aria-live="polite">
-  <div class="recap-modal-pill" id="recapPill">
-    <div class="recap-pill-head" onclick="toggleRecapPill()">
-      <h4>📋 Votre Pack SOS Passager Complet</h4>
-      <button class="recap-pill-toggle" id="recapPillToggle" aria-label="Réduire/Agrandir">▲</button>
-    </div>
-    <div class="recap-pill-body" id="recapPillBody">
-      <div class="recap-pill-items">
-        <div class="recap-pill-row"><span>🏨 Logement</span><span id="pillH">—</span></div>
-        <div class="recap-pill-row" id="pillRowT" style="display:none"><span>🚗 Transport</span><span id="pillT">—</span></div>
-        <div class="recap-pill-row"><span>📄 Réclamation</span><span style="color:var(--green-dk);font-weight:700">✅ Incluse</span></div>
-      </div>
-      <div class="recap-pill-total" id="recapPillTotal" style="display:none">
-        <div class="recap-pill-total-amt" id="pillAmt">—</div>
-        <div class="recap-pill-total-eur" id="pillEur"></div>
-      </div>
-      <div class="recap-pill-pay">
-        <button class="btn-continuer" style="padding:12px 18px;font-size:.88rem" onclick="scrollToSection('facture-selection')" id="pillPayBtn">
-          💳 Procéder au paiement →
-        </button>
-        <button class="btn-revenir" style="padding:9px 14px;font-size:.78rem" onclick="scrollToSection('demande')">
-          📝 Renseigner mon vol d'abord
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- ══ BULLE WA ══ -->
 <div class="wa-wrap" id="waWrap">
   <div class="wa-menu" id="waMenu" role="menu">
@@ -770,8 +713,8 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
 <!-- ══ BARRE URGENCE ══ -->
 <div class="urgence-bar" role="alert">
   <span class="urgence-dot"></span>
-  <span>Vol annulé ? Correspondance manquée ? <strong>Logement + chauffeur en 20 min</strong></span>
-  <a href="#catalogue-logements">Voir les offres →</a>
+  <span>✈️ Vol annulé ? La compagnie ne vous loge pas ? <strong>On s'occupe de tout en 20 min</strong></span>
+  <a href="#catalogue-logements" onclick="scrollToSection('catalogue-logements');return false">Cliquez ici →</a>
 </div>
 
 <!-- ══ SECTION 1 — HERO ══ -->
@@ -1525,7 +1468,7 @@ if(mb&&mn){
   mn.querySelectorAll('a').forEach(function(link){
     link.addEventListener('click',function(){
       mn.classList.remove('open');mb.classList.remove('open');mb.setAttribute('aria-expanded','false');
-    });
+    },{ passive:true });
   });
 }
 
@@ -1548,7 +1491,7 @@ function addU(u){var us=allU();us.push(u);try{localStorage.setItem('sosp_users',
 function findU(em){return allU().find(function(u){return u.email===em;})||null;}
 function okEmail(e){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
 
-var S={user:getU(),hotel:null,transport:null,nuits:1,pm:null,mmOp:null};
+var S={user:getU(),hotel:null,transport:null,nuits:1,pm:null,mmOp:null,formDone:false};
 
 /* Topbar */
 var topbar=document.getElementById('userTopbar'),uAv=document.getElementById('userAvatar'),uGr=document.getElementById('userGreeting'),btnLg=document.getElementById('btnLogout');
@@ -1569,7 +1512,9 @@ if(btnLg)btnLg.addEventListener('click',function(){S.user=null;remU();S.hotel=nu
 
 /* Verrous */
 document.querySelectorAll('.lock-overlay').forEach(function(ov){
-  ov.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();openM('authModal');});
+  function handleLock(e){e.preventDefault();e.stopPropagation();openM('authModal');}
+  ov.addEventListener('click',handleLock);
+  ov.addEventListener('touchend',handleLock,{passive:false});
 });
 
 /* Modales */
@@ -1636,51 +1581,6 @@ if(bR)bR.addEventListener('click',function(){
 
 /* Smooth scroll */
 function smoothTo(id,off){var t=document.getElementById(id);if(!t)return;var top=t.getBoundingClientRect().top+window.pageYOffset-(70+(off||0));window.scrollTo({top:top,behavior:'smooth'});}
-
-/* ══ MODAL PILL RÉCAPITULATIF ══ */
-var _pillOpen = true;
-
-function updateRecapPill(){
-  var pill  = document.getElementById('recapPill');
-  var bd    = document.getElementById('recapPillBd');
-  if(!pill) return;
-
-  /* N'afficher la pill que si un logement est sélectionné */
-  if(!S.hotel){ pill.classList.remove('visible'); return; }
-  pill.classList.add('visible');
-  bd.style.pointerEvents = 'auto';
-
-  var pH  = document.getElementById('pillH');
-  var pT  = document.getElementById('pillT');
-  var pRT = document.getElementById('pillRowT');
-  var pAm = document.getElementById('pillAmt');
-  var pEu = document.getElementById('pillEur');
-  var pTo = document.getElementById('recapPillTotal');
-
-  if(pH) pH.textContent = S.hotel.label.split('—')[0].trim();
-  if(S.transport){
-    if(pRT) pRT.style.display = 'flex';
-    if(pT)  pT.textContent   = S.transport.label.split('(')[0].trim() + ' — aller simple';
-  } else {
-    if(pRT) pRT.style.display = 'none';
-  }
-
-  var n   = S.nuits || 1;
-  var tF  = (S.hotel.fcfa * n) + (S.transport ? S.transport.fcfa : 0);
-  var tE  = (S.hotel.eur  * n) + (S.transport ? S.transport.eur  : 0);
-  if(pTo) pTo.style.display = 'flex';
-  if(pAm) pAm.textContent  = fmtF(tF);
-  if(pEu && tE > 0) pEu.textContent = '≈ ' + tE + ' €';
-}
-
-function toggleRecapPill(){
-  var body = document.getElementById('recapPillBody');
-  var tog  = document.getElementById('recapPillToggle');
-  if(!body) return;
-  _pillOpen = !_pillOpen;
-  body.style.display = _pillOpen ? '' : 'none';
-  if(tog) tog.textContent = _pillOpen ? '▲' : '▼';
-}
 
 /* ══ SCROLL PRÉCIS — offset navbar 70px ══ */
 function scrollToSection(id,extra){
@@ -1817,14 +1717,21 @@ function updatePayBtn(){
   var icon=btnPay.querySelector('.btn-pay-icon');
   if(!S.user){if(icon)icon.textContent='🔒';if(txt)txt.textContent='Connectez-vous pour réserver';if(sub)sub.textContent='Créez un compte gratuit en 30 secondes';}
   else if(!S.hotel){if(icon)icon.textContent='🛒';if(txt)txt.textContent='Choisissez votre logement';if(sub)sub.textContent='Sélectionnez une formule ci-dessus';}
+  else if(!S.formDone){
+    /* Formulaire non encore soumis — bloquer le paiement */
+    btnPay.disabled=true;
+    if(icon)icon.textContent='📝';
+    if(txt)txt.textContent='Renseignez d\'abord votre vol';
+    if(sub)sub.textContent='Remplissez le formulaire voyageur ci-dessus pour continuer';
+  }
   else{
     var n=getNuits();var tF=(S.hotel.fcfa*n)+(S.transport?S.transport.fcfa:0);var tE=(S.hotel.eur*n)+(S.transport?S.transport.eur:0);
     var lbl=S.transport?'Pack Logement + Transport':'Pack Logement seul';
+    btnPay.disabled=false;
     if(icon)icon.textContent='💳';
     if(txt)txt.textContent='Procéder au paiement — '+fmtF(tF);
     if(sub)sub.textContent=lbl+(tE>0?' · ≈ '+tE+' €':'')+' · Réclamation incluse';
   }
-  updateRecapPill();
 }
 
 if(btnPay)btnPay.addEventListener('click',function(){
@@ -1919,7 +1826,19 @@ function setupForm(fId,sId){
     if(!b.dataset.origTxt)b.dataset.origTxt=origTxt;
     b.disabled=true;b.textContent='Envoi en cours…';
     fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}})
-      .then(function(r){if(r.ok){if(s)s.style.display='block';f.reset();b.textContent='✅ Envoyé';}else{b.disabled=false;b.textContent=origTxt;}})
+      .then(function(r){
+        if(r.ok){
+          if(s)s.style.display='block';
+          f.reset();
+          b.textContent='✅ Envoyé';
+          /* Débloquer paiement après soumission formulaire voyageur */
+          if(fId==='formVoyageur'){
+            S.formDone=true;
+            updatePayBtn();
+            toast('✅ Profil enregistré — vous pouvez maintenant payer !');
+          }
+        }else{b.disabled=false;b.textContent=origTxt;}
+      })
       .catch(function(){b.disabled=false;b.textContent=origTxt;});
   });
 }
@@ -1999,7 +1918,6 @@ setupHotelCards();
 setupTransportCards();
 applyAuth();
 updateRecap();
-updateRecapPill();
 
 })();
 </script>
