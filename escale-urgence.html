@@ -68,6 +68,20 @@
       text-decoration:none; white-space:nowrap;
     }
     .nav-back-btn:hover { background:var(--blue-light); transform:translateY(-1px); }
+
+    /* ── Menu desktop ancres ── */
+    .nav-desktop-links {
+      display:flex; align-items:center; gap:4px; flex:1;
+      justify-content:center; flex-wrap:nowrap;
+    }
+    .nav-desktop-links a {
+      color:rgba(255,255,255,.82); font-size:.78rem; font-weight:600;
+      text-decoration:none; padding:6px 10px; border-radius:8px;
+      white-space:nowrap; transition:background .15s, color .15s;
+    }
+    .nav-desktop-links a:hover { background:rgba(255,255,255,.12); color:#fff; }
+    .nav-phone-link:hover { color:#fff !important; }
+    @media(max-width:900px){ .nav-desktop-links { display:none; } .nav-phone-link { display:none !important; } }
     .nav-hamburger {
       display:none; flex-direction:column; justify-content:center; gap:5px;
       background:rgba(255,255,255,.12); border:1.5px solid rgba(255,255,255,.25);
@@ -110,8 +124,8 @@
 
     /* ════ HERO ════ */
     .hero {
-      background:linear-gradient(135deg, var(--blue-dark) 0%, #0065D1 50%, var(--blue-light) 100%);
-      padding:56px 0 48px; border-bottom:3px solid var(--blue);
+      background:linear-gradient(135deg, #001A4A 0%, #003E8A 55%, #0057B8 100%);
+      padding:56px 0 48px; border-bottom:3px solid var(--green);
       position:relative; overflow:hidden;
     }
     .hero::before {
@@ -382,23 +396,55 @@
     .t-prix.ext .t-prix-val { color:var(--blue-dark); }
     .t-prix-val small { font-size:.72rem; font-weight:500; color:var(--gray-text); }
 
-    /* ════ PANIER / FACTURE SÉLECTION ════ */
-    .facture-section { background:var(--white); padding:52px 0; border-top:2px solid var(--blue-light); }
+    /* ════ PANIER / FACTURE SÉLECTION — Booking style ════ */
+    .facture-section { background:var(--gray-1); padding:52px 0; border-top:2px solid var(--blue-light); }
     .recap-box {
-      background:var(--green-light); border:2px solid var(--green);
-      border-radius:16px; padding:24px 28px; max-width:700px; margin:0 auto;
+      background:var(--white);
+      border:1.5px solid var(--gray-3);
+      border-radius:16px;
+      padding:28px 32px;
+      max-width:680px; margin:0 auto;
+      box-shadow:var(--shadow-md);
     }
-    .recap-title { font-size:.82rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--green-dark); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-    .recap-rows { display:flex; flex-direction:column; gap:10px; }
-    .recap-row { display:flex; align-items:flex-start; gap:12px; font-size:.88rem; }
-    .recap-label { font-weight:700; color:var(--green-dark); white-space:nowrap; flex-shrink:0; min-width:110px; }
-    .recap-val { color:var(--gray-text); font-style:italic; transition:color .2s; }
+    .recap-title {
+      font-size:.78rem; font-weight:800; text-transform:uppercase;
+      letter-spacing:.08em; color:var(--blue-dark);
+      margin-bottom:20px; padding-bottom:14px;
+      border-bottom:2px solid var(--gray-2);
+      display:flex; align-items:center; gap:8px;
+    }
+    .recap-rows { display:flex; flex-direction:column; gap:12px; }
+    .recap-row {
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; font-size:.9rem; padding:10px 0;
+      border-bottom:1px solid var(--gray-2);
+    }
+    .recap-row:last-child { border-bottom:none; }
+    .recap-label { font-weight:700; color:var(--dark); display:flex; align-items:center; gap:6px; }
+    .recap-val { color:var(--gray-text); font-style:italic; transition:color .2s; text-align:right; }
     .recap-val.filled { color:var(--dark); font-style:normal; font-weight:600; }
-    .recap-total-row { display:flex; align-items:center; justify-content:space-between; margin-top:16px; padding-top:16px; border-top:2px solid var(--green); flex-wrap:wrap; gap:8px; }
-    .recap-total-label { font-size:.88rem; font-weight:700; color:var(--green-dark); text-transform:uppercase; letter-spacing:.05em; }
-    .recap-total-amt { font-size:1.7rem; font-weight:900; color:var(--green-dark); line-height:1; }
-    .recap-total-eur { font-size:.8rem; font-weight:500; color:var(--gray-text); display:block; text-align:right; margin-top:2px; }
-    .recap-nuits-row { font-size:.78rem; color:var(--gray-text); margin-top:8px; padding-top:8px; border-top:1px solid rgba(29,185,84,.25); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:4px; }
+    .recap-val.green { color:var(--green-dark); font-style:normal; font-weight:700; }
+    .recap-total-row {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-top:20px; padding:18px 24px;
+      background:var(--blue-dark); border-radius:12px;
+      flex-wrap:wrap; gap:8px;
+    }
+    .recap-total-label { font-size:.88rem; font-weight:700; color:rgba(255,255,255,.8); text-transform:uppercase; letter-spacing:.05em; }
+    .recap-total-amt { font-size:1.8rem; font-weight:900; color:#fff; line-height:1; }
+    .recap-total-eur { font-size:.78rem; font-weight:500; color:rgba(255,255,255,.6); display:block; text-align:right; margin-top:2px; }
+    .recap-nuits-row { font-size:.78rem; color:var(--gray-text); margin-top:10px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:4px; }
+
+    /* CGU checkbox */
+    .recap-cgu {
+      background:var(--gray-1); border:1.5px solid var(--gray-3);
+      border-radius:12px; padding:14px 16px; margin-top:16px;
+      display:flex; align-items:flex-start; gap:12px;
+    }
+    .recap-cgu input[type="checkbox"] { margin-top:2px; width:18px; height:18px; accent-color:var(--blue); flex-shrink:0; cursor:pointer; }
+    .recap-cgu label { font-size:.8rem; color:var(--gray-text); line-height:1.6; cursor:pointer; }
+    .recap-cgu label a { color:var(--blue); font-weight:700; }
+    .recap-cgu-err { display:none; color:#C0392B; font-size:.76rem; font-weight:700; margin-top:6px; }
 
     /* ── BOUTON PAIEMENT — VERT OFFICIEL SOS PASSAGER ── */
     .btn-pay {
@@ -543,12 +589,25 @@
     .btn-logout { background:none; border:1.5px solid var(--blue); color:var(--blue); border-radius:8px; padding:3px 12px; font-size:.74rem; font-weight:700; cursor:pointer; transition:all .15s; }
     .btn-logout:hover { background:var(--blue); color:#fff; }
 
-    /* ════ VERROUS AUTH ════ */
-    .lock-overlay { position:absolute; inset:0; z-index:10; background:rgba(255,255,255,.8); backdrop-filter:blur(3px); border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; cursor:pointer; transition:background .2s; }
-    .lock-overlay:hover { background:rgba(232,240,251,.9); }
-    .lock-icon { font-size:1.7rem; }
-    .lock-txt { font-size:.73rem; font-weight:700; color:var(--blue-dark); text-align:center; padding:0 10px; }
-    .hotel-card,.transport-card { position:relative; }
+    /* ════ VERROUS AUTH — réduit pour laisser voir le produit ════ */
+    .lock-overlay {
+      position:absolute; inset:0; z-index:10;
+      background:rgba(255,255,255,.55);
+      backdrop-filter:blur(2px);
+      border-radius:14px;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      gap:6px; cursor:pointer;
+      transition:background .2s;
+    }
+    .lock-overlay:hover { background:rgba(232,240,251,.75); }
+    .lock-icon { font-size:1.4rem; }
+    .lock-txt {
+      font-size:.75rem; font-weight:800; color:var(--blue-dark);
+      text-align:center; padding:6px 14px;
+      background:rgba(255,255,255,.95); border-radius:20px;
+      box-shadow:0 2px 8px rgba(0,0,0,.12);
+    }
     body.authenticated .lock-overlay { display:none !important; }
 
     /* ════ MODAL GÉNÉRIQUE ════ */
@@ -736,24 +795,16 @@
 <div class="modal-backdrop" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
   <div class="modal-box">
     <div class="modal-head">
-      <div class="modal-head-text"><h2 id="authTitle">Accès Escale Réseau</h2><p>Connectez-vous ou créez votre compte gratuit</p></div>
+      <div class="modal-head-text"><h2 id="authTitle">Rejoindre SOS Passager</h2><p>Créez votre compte gratuit ou connectez-vous</p></div>
       <button class="modal-close" id="authClose" aria-label="Fermer">✕</button>
     </div>
     <div class="modal-body">
       <div class="modal-tabs">
-        <div class="modal-tab active" id="tabLogin" tabindex="0">Se connecter</div>
-        <div class="modal-tab" id="tabRegister" tabindex="0">Créer un compte</div>
+        <div class="modal-tab active" id="tabRegister" tabindex="0">✈️ Créer un compte</div>
+        <div class="modal-tab" id="tabLogin" tabindex="0">Se connecter</div>
       </div>
-      <!-- Connexion -->
-      <div class="modal-panel active" id="panelLogin">
-        <div class="modal-error" id="loginErr"></div>
-        <div class="mfield"><label for="loginEmail">E-mail</label><input type="email" id="loginEmail" placeholder="votre@email.com" autocomplete="email"/></div>
-        <div class="mfield"><label for="loginPwd">Mot de passe</label><div class="pwd-wrap"><input type="password" id="loginPwd" placeholder="••••••••"/><button type="button" class="pwd-toggle" data-t="loginPwd">👁</button></div></div>
-        <button class="btn-modal-submit" id="btnLogin">🔓 Se connecter</button>
-        <p class="modal-divider">Pas encore de compte ? <span class="switch-link" data-tab="tabRegister">Créer un compte →</span></p>
-      </div>
-      <!-- Inscription -->
-      <div class="modal-panel" id="panelRegister">
+      <!-- Inscription EN PREMIER -->
+      <div class="modal-panel active" id="panelRegister">
         <div class="modal-error" id="registerErr"></div>
         <div id="regForm">
           <div class="mfield-row">
@@ -763,10 +814,18 @@
           <div class="mfield"><label for="regEmail">E-mail</label><input type="email" id="regEmail" placeholder="votre@email.com"/></div>
           <div class="mfield"><label for="regWa">WhatsApp</label><input type="tel" id="regWa" placeholder="+225 05 03 60 57 25"/></div>
           <div class="mfield"><label for="regPwd">Mot de passe (min. 6 car.)</label><div class="pwd-wrap"><input type="password" id="regPwd" placeholder="••••••••"/><button type="button" class="pwd-toggle" data-t="regPwd">👁</button></div></div>
-          <button class="btn-modal-submit" id="btnRegister">✈️ Créer mon compte &amp; Réserver</button>
+          <button class="btn-modal-submit" id="btnRegister" style="background:var(--green);">✈️ Créer mon compte &amp; Réserver</button>
           <p class="modal-divider">Déjà un compte ? <span class="switch-link" data-tab="tabLogin">Se connecter →</span></p>
         </div>
         <div class="modal-success-msg" id="regOk" style="display:none"><span class="big-check">🎉</span><h3>Compte créé !</h3><p>Bienvenue dans SOS Passager Escale Réseau.</p></div>
+      </div>
+      <!-- Connexion EN SECOND -->
+      <div class="modal-panel" id="panelLogin">
+        <div class="modal-error" id="loginErr"></div>
+        <div class="mfield"><label for="loginEmail">E-mail</label><input type="email" id="loginEmail" placeholder="votre@email.com" autocomplete="email"/></div>
+        <div class="mfield"><label for="loginPwd">Mot de passe</label><div class="pwd-wrap"><input type="password" id="loginPwd" placeholder="••••••••"/><button type="button" class="pwd-toggle" data-t="loginPwd">👁</button></div></div>
+        <button class="btn-modal-submit" id="btnLogin">🔓 Se connecter</button>
+        <p class="modal-divider">Pas encore de compte ? <span class="switch-link" data-tab="tabRegister">Créer un compte →</span></p>
       </div>
     </div>
   </div>
@@ -896,24 +955,45 @@
 </div>
 
 
-<!-- ══ VAGUE 2 — NAVIGATION BOOKING STYLE ══ -->
+<!-- ══ NAVIGATION DESKTOP COMPLÈTE ══ -->
 <header class="navbar">
   <div class="nav-inner">
     <a href="index.html" class="nav-brand">
       <div class="nav-brand-icon">SOS<br/>✈</div>
       <div class="nav-brand-name">SOS <span>Passager</span></div>
     </a>
-    <div class="nav-center">🛌 Bloqué à l'aéroport ? On s'occupe de tout.</div>
-    <a href="index.html#reclamer" class="nav-back-btn" style="background:var(--green);color:#fff;border:none;">💰 Réclamer mon indemnité</a>
+
+    <!-- Menu desktop ancres -->
+    <nav class="nav-desktop-links" aria-label="Navigation principale">
+      <a href="#pack-sos-complet">🎯 Pack</a>
+      <a href="#catalogue-logements">🏨 Logement</a>
+      <a href="#section-transport">🚗 Transport</a>
+      <a href="#facture-selection">📋 Panier</a>
+      <a href="#demande">📝 Mon Vol</a>
+      <a href="#reclamer-indemnite">💰 Réclamation</a>
+    </nav>
+
+    <!-- Numéro + bouton réclamer -->
+    <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+      <a href="https://wa.me/22505036057255" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.8);font-size:.78rem;font-weight:600;text-decoration:none;white-space:nowrap;"
+         class="nav-phone-link">
+        <span style="font-size:.9rem;">📞</span>+225 05 03 60 57 25
+      </a>
+      <a href="index.html#reclamer" class="nav-back-btn" style="background:var(--green);color:#fff;border:none;">💰 Réclamer</a>
+    </div>
+
     <button class="nav-hamburger" id="menuBtn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
   <nav class="nav-mobile" id="mobileMenu">
     <a href="index.html#reclamer" style="color:#4ADE80;font-weight:800;">💰 Réclamer mon indemnité</a>
+    <a href="#pack-sos-complet">🎯 Pack SOS Complet</a>
     <a href="#catalogue-logements">🏨 Hébergements</a>
     <a href="#section-transport">🚗 Transport Yango</a>
-    <a href="#pack-sos-complet">🎯 Pack SOS Complet</a>
     <a href="#facture-selection">📋 Mon Panier</a>
     <a href="#demande">📝 Formulaire Vol</a>
+    <a href="#reclamer-indemnite">💰 Réclamation indemnité</a>
+    <a href="#cgu-pack">⚖️ CGU</a>
     <a href="index.html">← Retour SOS Passager</a>
   </nav>
 </header>
@@ -934,15 +1014,15 @@
       <div>
         <div class="hero-live"><span class="hero-live-dot"></span>RÉSEAU ACTIF — EUROPE &amp; AFRIQUE</div>
         <div class="section-tag" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">SOS Passager Escale Réseau · Pack Urgence Clé en Main</div>
-        <h1>Vol annulé ou correspondance<br/>manquée ? <em>Ne dormez pas<br/>à l'aéroport !</em></h1>
-        <p class="hero-lead"><strong style="color:#7EC8F8">SOS Passager Escale Réseau</strong> : Logement résidentiel sécurisé + Chauffeur Yango privé, activé en moins de 20 minutes. Pack certifié CE 261/2004 / UEMOA N°03/2003.</p>
+        <h1>Votre hébergement est assuré.<br/><em>Votre argent sera réclamé.</em></h1>
+        <p class="hero-lead">Hébergement résidentiel garanti après un vol annulé, reporté ou une correspondance manquée — <strong style="color:#4ADE80">jusqu'à 3× moins cher</strong> qu'un hôtel d'aéroport. Facture certifiée CE 261/2004 / UEMOA N°03/2003 fournie.</p>
         <div class="cas-grid">
           <div class="cas-card"><div style="display:flex;align-items:flex-start;gap:10px"><div class="cas-card-num blue">01</div><h3>Faute de la compagnie</h3></div><p>Vol annulé, surbooking, retard &gt; 3h ? Facture certifiée fournie pour remboursement intégral.</p><span class="cas-badge blue">Indemnité jusqu'à 600 € / 1 219 €</span></div>
           <div class="cas-card"><div style="display:flex;align-items:flex-start;gap:10px"><div class="cas-card-num amber">02</div><h3>Retard personnel</h3></div><p>Accédez à notre réseau résidentiel négocié — jusqu'à <strong>3× moins cher</strong> qu'un hôtel d'aéroport.</p><span class="cas-badge amber">Tarifs préférentiels réseau</span></div>
         </div>
         <!-- VAGUE 2 : bouton scroll vers catalogue, pas de lien WA -->
-        <button class="hero-cta-scroll" onclick="document.getElementById('catalogue-logements').scrollIntoView({behavior:'smooth'})">
-          🏨 Choisir mon logement &amp; transport →
+        <button class="hero-cta-scroll" onclick="document.getElementById('pack-sos-complet').scrollIntoView({behavior:'smooth'})">
+          🎯 Découvrir le Pack SOS Complet →
         </button>
       </div>
       <div class="hero-panel">
@@ -955,7 +1035,7 @@
           <div class="panel-step"><div class="panel-step-num">4</div><div class="panel-step-text">Chauffeur à la sortie du terminal. Facture certifiée envoyée par e-mail.</div></div>
         </div>
         <button class="hero-cta-scroll" style="width:100%;justify-content:center" onclick="document.getElementById('catalogue-logements').scrollIntoView({behavior:'smooth'})">
-          🚀 Activer mon Pack maintenant
+          🏨 Choisir mon logement maintenant →
         </button>
       </div>
     </div>
@@ -963,7 +1043,96 @@
 </section>
 
 <!-- ══════════════════════════════════════
-     SECTION 2 — CATALOGUE LOGEMENTS (Vague 3)
+     SECTION 2 — PACK SOS COMPLET
+     Hébergement + Transport + Réclamation
+══════════════════════════════════════ -->
+<section style="background:linear-gradient(135deg,#003E8A 0%,#0057B8 100%);padding:48px 20px;" id="pack-sos-complet">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+
+    <!-- Badge -->
+    <div style="display:inline-block;background:rgba(29,185,84,.2);border:1px solid rgba(29,185,84,.5);color:#4ADE80;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;padding:5px 16px;border-radius:20px;margin-bottom:16px;">
+      🎯 Nouveau · Pack Tout-en-Un
+    </div>
+
+    <h2 style="font-size:clamp(1.3rem,3vw,1.9rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:12px;">
+      Pack SOS Complet<br/>
+      <span style="color:#4ADE80">On gère tout. Ce soir ET demain.</span>
+    </h2>
+
+    <p style="font-size:.92rem;color:rgba(255,255,255,.8);max-width:520px;margin:0 auto 28px;line-height:1.65;">
+      Un seul contact, un seul paiement, tout est géré :<br/>
+      vous dormez, nous réclamons votre argent.
+    </p>
+
+    <!-- 3 colonnes ce que comprend le pack -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;">
+
+      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:18px 14px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">🛏️</div>
+        <div style="font-size:.88rem;font-weight:700;color:#fff;margin-bottom:4px;">Logement</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.7);line-height:1.4;">Résidence partenaire sécurisée près de l'aéroport</div>
+        <div style="margin-top:10px;font-size:.78rem;font-weight:800;color:#4ADE80;">Inclus</div>
+      </div>
+
+      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:18px 14px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">🚗</div>
+        <div style="font-size:.88rem;font-weight:700;color:#fff;margin-bottom:4px;">Transport</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.7);line-height:1.4;">Chauffeur Yango à la sortie du terminal · 10 min</div>
+        <div style="margin-top:10px;font-size:.78rem;font-weight:800;color:#4ADE80;">Tarif réel Yango</div>
+      </div>
+
+      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:18px 14px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">📄</div>
+        <div style="font-size:.88rem;font-weight:700;color:#fff;margin-bottom:4px;">Réclamation</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.7);line-height:1.4;">Dossier complet déposé auprès de la compagnie</div>
+        <div style="margin-top:10px;font-size:.78rem;font-weight:800;color:#4ADE80;">Commission succès uniquement</div>
+      </div>
+
+    </div>
+
+    <!-- Prix -->
+    <div style="background:rgba(255,255,255,.08);border:2px solid rgba(29,185,84,.4);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:inline-block;min-width:280px;">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.6);margin-bottom:6px;">À partir de</div>
+      <div style="font-size:2.2rem;font-weight:900;color:#fff;line-height:1;">25 000 <span style="font-size:1.1rem;font-weight:600;color:rgba(255,255,255,.7)">FCFA</span></div>
+      <div style="font-size:.88rem;color:rgba(255,255,255,.6);margin-top:2px;">≈ 38 € · Logement inclus</div>
+      <div style="font-size:.76rem;color:rgba(255,255,255,.5);margin-top:8px;line-height:1.5;">+ tarif réel Yango · + commission réclamation si succès</div>
+    </div>
+
+    <!-- Boutons activation pack -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:460px;">
+
+      <a href="https://wa.me/22505036057255?text=Bonjour%2C%20je%20souhaite%20activer%20le%20Pack%20SOS%20Complet%20(logement%2C%20transport%20et%20r%C3%A9clamation)"
+         target="_blank" rel="noopener"
+         style="display:flex;align-items:center;justify-content:center;gap:10px;background:#25D366;color:#fff;text-decoration:none;border-radius:14px;padding:15px 28px;font-size:.95rem;font-weight:800;box-shadow:0 6px 24px rgba(37,211,102,.4);width:100%;transition:background .18s;"
+         onmouseover="this.style.background='#1EB857'" onmouseout="this.style.background='#25D366'">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.374 0 0 5.373 0 12c0 2.116.549 4.107 1.508 5.838L0 24l6.335-1.48A11.933 11.933 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.37l-.36-.214-3.727.977.996-3.645-.235-.374A9.817 9.817 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+        <span>💬 Activer via WhatsApp</span>
+      </a>
+
+      <a href="mailto:franckvanie@yahoo.de?subject=Pack%20SOS%20Complet%20%E2%80%94%20Demande%20d%27activation&body=Bonjour%2C%0A%0AJe%20souhaite%20activer%20le%20Pack%20SOS%20Complet%20(logement%20%2B%20transport%20%2B%20r%C3%A9clamation).%0A%0AVoici%20ma%20situation%20%3A%0A-%20Nom%20%2F%20Pr%C3%A9nom%20%3A%0A-%20N%C2%B0%20de%20vol%20%3A%0A-%20A%C3%A9roport%20actuel%20%3A%0A-%20Motif%20(annulation%2C%20retard%2C%20surbooking)%20%3A%0A%0AMerci"
+         style="display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(255,255,255,.12);color:#fff;text-decoration:none;border-radius:14px;padding:13px 28px;font-size:.9rem;font-weight:700;border:1.5px solid rgba(255,255,255,.3);width:100%;transition:background .18s;"
+         onmouseover="this.style.background='rgba(255,255,255,.2)'" onmouseout="this.style.background='rgba(255,255,255,.12)'">
+        📧 Activer par e-mail
+      </a>
+
+      <!-- Bouton scroll vers catalogue — réservation en ligne directe -->
+      <button onclick="document.getElementById('catalogue-logements').scrollIntoView({behavior:'smooth'})"
+         style="display:flex;align-items:center;justify-content:center;gap:10px;background:transparent;color:rgba(255,255,255,.7);text-decoration:none;border-radius:14px;padding:11px 28px;font-size:.85rem;font-weight:600;border:1px dashed rgba(255,255,255,.3);width:100%;cursor:pointer;transition:all .18s;"
+         onmouseover="this.style.color='#fff';this.style.borderColor='rgba(255,255,255,.6)'"
+         onmouseout="this.style.color='rgba(255,255,255,.7)';this.style.borderColor='rgba(255,255,255,.3)'">
+        🏨 Ou réserver directement en ligne →
+      </button>
+
+      <p style="font-size:.74rem;color:rgba(255,255,255,.5);margin:0;text-align:center;">
+        📄 Facture certifiée envoyée par WhatsApp et/ou e-mail · Sans frais de réclamation si échec
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 3 — CATALOGUE LOGEMENTS (Vague 3)
      id="catalogue-logements" — Style Booking
 ══════════════════════════════════════ -->
 <section class="catalogue-section" id="catalogue-logements">
@@ -1088,7 +1257,7 @@
 </section>
 
 <!-- ══════════════════════════════════════
-     SECTION 3 — TRANSPORT YANGO (Vague 4)
+     SECTION 4 — TRANSPORT YANGO (Vague 4)
      id="section-transport"
 ══════════════════════════════════════ -->
 <section class="transport-section" id="section-transport">
@@ -1171,7 +1340,7 @@
 </section>
 
 <!-- ══════════════════════════════════════
-     SECTION 4 — PANIER / FACTURE SÉLECTION
+     SECTION 5 — PANIER / FACTURE SÉLECTION
      id="facture-selection"
 ══════════════════════════════════════ -->
 <section class="facture-section" id="facture-selection">
@@ -1184,61 +1353,49 @@
     <div class="recap-box" id="recapBox" aria-live="polite">
       <div class="recap-title">📋 Votre Pack SOS Escale</div>
       <div class="recap-rows">
-        <div class="recap-row"><span class="recap-label">🏨 Hébergement</span><span class="recap-val" id="recapH">Aucun sélectionné</span></div>
-        <div class="recap-row" id="recapRowTransport" style="display:none"><span class="recap-label">🚗 Transport</span><span class="recap-val" id="recapT">—</span></div>
+        <div class="recap-row">
+          <span class="recap-label">🏨 Hébergement</span>
+          <span class="recap-val" id="recapH">Aucun sélectionné</span>
+        </div>
+        <div class="recap-row" id="recapRowTransport" style="display:none">
+          <span class="recap-label">🚗 Transport</span>
+          <span class="recap-val" id="recapT">—</span>
+        </div>
         <div class="recap-row">
           <span class="recap-label">📄 Réclamation</span>
-          <span class="recap-val filled" style="color:var(--green-dark);font-style:normal;">
-            Incluse · Commission 25% si succès uniquement
-          </span>
+          <span class="recap-val green">✅ Incluse · Commission 25% si succès</span>
+        </div>
+        <div class="recap-row" id="recapNR" style="display:none">
+          <span class="recap-label" style="color:var(--gray-text);font-weight:500;font-size:.82rem;">Détail</span>
+          <span style="font-size:.82rem;color:var(--gray-text);text-align:right;" id="recapDet"></span>
         </div>
       </div>
+
+      <!-- Total -->
       <div class="recap-total-row" id="recapTotRow" style="display:none">
-        <span class="recap-total-label">💰 Total à payer aujourd'hui</span>
-        <div>
+        <span class="recap-total-label">💰 Total à payer</span>
+        <div style="text-align:right">
           <div class="recap-total-amt" id="recapFcfa">—</div>
           <span class="recap-total-eur" id="recapEur"></span>
+          <span style="font-size:.68rem;color:rgba(255,255,255,.5);display:block;margin-top:2px;">nuit(s) : <strong id="recapNV">1</strong></span>
         </div>
       </div>
-      <div class="recap-nuits-row" id="recapNR" style="display:none">
-        <span>Calcul basé sur <strong id="recapNV">1</strong> nuit(s)</span>
-        <span id="recapDet" style="font-style:italic"></span>
-      </div>
-    </div>
-    <!-- ── MANDAT DE REPRÉSENTATION — CASE OBLIGATOIRE AVANT PAIEMENT ── -->
-    <div style="
-      background:#FFF8E6; border:2px solid #F59E0B;
-      border-radius:12px; padding:16px 18px; margin-bottom:14px;
-    ">
-      <label for="v-mandat" style="
-        display:flex; align-items:flex-start; gap:14px;
-        cursor:pointer; user-select:none;
-      ">
-        <input type="checkbox" id="v-mandat" name="mandat_accepte" value="oui" required
-               style="margin-top:3px; width:18px; height:18px; accent-color:#F59E0B; flex-shrink:0;" />
-        <span style="font-size:.82rem; color:#1A2538; line-height:1.6;">
-          <strong style="display:block; font-size:.88rem; color:#92400E; margin-bottom:4px;">
-            ⚖️ Mandat de réclamation — Obligatoire pour bénéficier du tarif préférentiel
-          </strong>
-          En bénéficiant du tarif préférentiel du Pack SOS Escale Réseau (hébergement + transport),
-          je mandate expressément <strong>SOS PASSAGER / Ivoire Consulting</strong> pour engager en mon nom
-          toutes les démarches amiables et judiciaires nécessaires à l'obtention d'une indemnisation
-          auprès de ma compagnie aérienne, en application du Règlement
-          <strong>CE 261/2004</strong> et/ou du Règlement <strong>UEMOA N°03/2003/CM/UEMOA</strong>.<br/>
-          Commission : <strong>25% TTC</strong> sur les sommes obtenues.
-          <strong style="color:#1DB954;">Aucun frais si échec.</strong>
-          <span style="display:block; margin-top:6px; font-size:.76rem; color:#5A6A7E;">
-            Ce mandat est consenti librement en contrepartie du tarif préférentiel.
-            Je reste libre de le révoquer par écrit, auquel cas le prix plein marché s'applique.
-          </span>
-        </span>
-      </label>
-      <div id="mandat-err" style="display:none; color:#C0392B; font-size:.78rem; font-weight:700; margin-top:8px; padding-left:32px;">
-        ⚠️ Vous devez accepter le mandat de réclamation pour bénéficier du tarif préférentiel.
-      </div>
-    </div>
-    <!-- ──────────────────────────────────────────────── -->
 
+      <!-- CGU obligatoire -->
+      <div class="recap-cgu" id="recapCguWrap">
+        <input type="checkbox" id="v-cgu" name="cgu_accepte" />
+        <div>
+          <label for="v-cgu">
+            J'ai lu et j'accepte les
+            <a href="#cgu-pack">Conditions Générales du Pack SOS Escale Réseau</a>,
+            notamment le <strong>mandat de réclamation</strong> confié à SOS PASSAGER
+            (commission 25% sur indemnité obtenue, sans frais si échec).
+          </label>
+          <div class="recap-cgu-err" id="cguErr">⚠️ Vous devez accepter les conditions générales pour continuer.</div>
+        </div>
+      </div>
+
+    </div>
     <button class="btn-pay" id="btnPay" disabled>
       <span class="btn-pay-icon">🔒</span>
       <span class="btn-pay-text"><strong>Connectez-vous pour réserver</strong><small>Sélectionnez un hébergement et un transport</small></span>
@@ -1260,88 +1417,7 @@
 </section>
 
 <!-- ══════════════════════════════════════
-     PACK SOS COMPLET
-     Hébergement + Transport + Réclamation
-══════════════════════════════════════ -->
-<section style="background:linear-gradient(135deg,#003E8A 0%,#0057B8 100%);padding:48px 20px;" id="pack-sos-complet">
-  <div style="max-width:760px;margin:0 auto;text-align:center;">
-
-    <!-- Badge -->
-    <div style="display:inline-block;background:rgba(29,185,84,.2);border:1px solid rgba(29,185,84,.5);color:#4ADE80;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;padding:5px 16px;border-radius:20px;margin-bottom:16px;">
-      🎯 Nouveau · Pack Tout-en-Un
-    </div>
-
-    <h2 style="font-size:clamp(1.3rem,3vw,1.9rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:12px;">
-      Pack SOS Complet<br/>
-      <span style="color:#4ADE80">On gère tout. Ce soir ET demain.</span>
-    </h2>
-
-    <p style="font-size:.92rem;color:rgba(255,255,255,.8);max-width:520px;margin:0 auto 28px;line-height:1.65;">
-      Un seul contact, un seul paiement, tout est géré :<br/>
-      vous dormez, nous réclamons votre argent.
-    </p>
-
-    <!-- 3 colonnes ce que comprend le pack -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;">
-
-      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:18px 14px;text-align:center;">
-        <div style="font-size:2rem;margin-bottom:8px;">🛏️</div>
-        <div style="font-size:.88rem;font-weight:700;color:#fff;margin-bottom:4px;">Logement</div>
-        <div style="font-size:.75rem;color:rgba(255,255,255,.7);line-height:1.4;">Résidence partenaire sécurisée près de l'aéroport</div>
-        <div style="margin-top:10px;font-size:.78rem;font-weight:800;color:#4ADE80;">Inclus</div>
-      </div>
-
-      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:18px 14px;text-align:center;">
-        <div style="font-size:2rem;margin-bottom:8px;">🚗</div>
-        <div style="font-size:.88rem;font-weight:700;color:#fff;margin-bottom:4px;">Transport</div>
-        <div style="font-size:.75rem;color:rgba(255,255,255,.7);line-height:1.4;">Chauffeur Yango à la sortie du terminal · 10 min</div>
-        <div style="margin-top:10px;font-size:.78rem;font-weight:800;color:#4ADE80;">Tarif réel Yango</div>
-      </div>
-
-      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:18px 14px;text-align:center;">
-        <div style="font-size:2rem;margin-bottom:8px;">📄</div>
-        <div style="font-size:.88rem;font-weight:700;color:#fff;margin-bottom:4px;">Réclamation</div>
-        <div style="font-size:.75rem;color:rgba(255,255,255,.7);line-height:1.4;">Dossier complet déposé auprès de la compagnie</div>
-        <div style="margin-top:10px;font-size:.78rem;font-weight:800;color:#4ADE80;">Commission succès uniquement</div>
-      </div>
-
-    </div>
-
-    <!-- Prix -->
-    <div style="background:rgba(255,255,255,.08);border:2px solid rgba(29,185,84,.4);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:inline-block;min-width:280px;">
-      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.6);margin-bottom:6px;">À partir de</div>
-      <div style="font-size:2.2rem;font-weight:900;color:#fff;line-height:1;">25 000 <span style="font-size:1.1rem;font-weight:600;color:rgba(255,255,255,.7)">FCFA</span></div>
-      <div style="font-size:.88rem;color:rgba(255,255,255,.6);margin-top:2px;">≈ 38 € · Logement inclus</div>
-      <div style="font-size:.76rem;color:rgba(255,255,255,.5);margin-top:8px;line-height:1.5;">+ tarif réel Yango · + commission réclamation si succès</div>
-    </div>
-
-    <!-- Boutons activation pack -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:460px;">
-
-      <a href="https://wa.me/22505036057255?text=Bonjour%2C%20je%20souhaite%20activer%20le%20Pack%20SOS%20Complet%20(logement%2C%20transport%20et%20r%C3%A9clamation)"
-         target="_blank" rel="noopener"
-         style="display:flex;align-items:center;justify-content:center;gap:10px;background:#25D366;color:#fff;text-decoration:none;border-radius:14px;padding:15px 28px;font-size:.95rem;font-weight:800;box-shadow:0 6px 24px rgba(37,211,102,.4);width:100%;transition:background .18s;"
-         onmouseover="this.style.background='#1EB857'" onmouseout="this.style.background='#25D366'">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.374 0 0 5.373 0 12c0 2.116.549 4.107 1.508 5.838L0 24l6.335-1.48A11.933 11.933 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.37l-.36-.214-3.727.977.996-3.645-.235-.374A9.817 9.817 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
-        <span>💬 Activer via WhatsApp</span>
-      </a>
-
-      <a href="mailto:franckvanie@yahoo.de?subject=Pack%20SOS%20Complet%20%E2%80%94%20Demande%20d%27activation&body=Bonjour%2C%0A%0AJe%20souhaite%20activer%20le%20Pack%20SOS%20Complet%20(logement%20%2B%20transport%20%2B%20r%C3%A9clamation).%0A%0AVoici%20ma%20situation%20%3A%0A-%20Nom%20%2F%20Pr%C3%A9nom%20%3A%0A-%20N%C2%B0%20de%20vol%20%3A%0A-%20A%C3%A9roport%20actuel%20%3A%0A-%20Motif%20(annulation%2C%20retard%2C%20surbooking)%20%3A%0A%0AMerci"
-         style="display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(255,255,255,.12);color:#fff;text-decoration:none;border-radius:14px;padding:13px 28px;font-size:.9rem;font-weight:700;border:1.5px solid rgba(255,255,255,.3);width:100%;transition:background .18s;"
-         onmouseover="this.style.background='rgba(255,255,255,.2)'" onmouseout="this.style.background='rgba(255,255,255,.12)'">
-        📧 Activer par e-mail
-      </a>
-
-      <p style="font-size:.74rem;color:rgba(255,255,255,.5);margin:0;text-align:center;">
-        📄 Facture certifiée envoyée par WhatsApp et/ou e-mail · Sans frais de réclamation si échec
-      </p>
-    </div>
-
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════
-     SECTION 5 — FORMULAIRE VOYAGEUR
+     SECTION 6 — FORMULAIRE VOYAGEUR
      Vague 1 : champ e-mail ajouté
      Vague 5 : select aéroport + compagnie
 ══════════════════════════════════════ -->
@@ -1475,61 +1551,25 @@
           </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════════════
-             CHECKBOX INDEMNISATION — COCHÉE PAR DÉFAUT
-             Si cochée → redirection vers index.html#reclamer
-             après soumission avec données pré-remplies
-        ════════════════════════════════════════════════════ -->
-        <div style="border-top:1.5px solid var(--gray-2);margin-top:24px;padding-top:20px;">
-          <label for="v-indemnisation" id="indemnisation-label" style="
-            display:flex; align-items:flex-start; gap:14px;
-            background:#E6F9EE; border:2px solid var(--green);
-            border-radius:14px; padding:16px 18px;
-            cursor:pointer; transition:background .18s, box-shadow .18s;
-            user-select:none;
-          ">
-            <!-- Case à cocher masquée — rendue visuellement ci-dessous -->
-            <input type="checkbox" id="v-indemnisation" name="demande_indemnisation"
-                   value="oui" checked
-                   style="position:absolute;opacity:0;width:0;height:0;pointer-events:none;" />
-
-            <!-- Visuel de la coche -->
-            <span id="indemnisation-box" style="
-              flex-shrink:0; margin-top:1px;
-              width:24px; height:24px; border-radius:7px;
-              background:var(--green); border:2px solid var(--green);
-              display:flex; align-items:center; justify-content:center;
-              transition:background .15s, border-color .15s;
-            " aria-hidden="true">
-              <svg id="indemnisation-check" viewBox="0 0 14 14" fill="none" width="14" height="14">
-                <path d="M2.5 7L5.5 10L11.5 4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-
-            <span style="flex:1;">
-              <span style="display:block; font-size:.97rem; font-weight:700; color:#0A4A1E; margin-bottom:4px; line-height:1.35;">
-                Oui, je veux récupérer mon argent
-              </span>
-              <span style="display:block; font-size:.82rem; color:#1A6B30; line-height:1.55;">
-                Déposer automatiquement ma demande d'indemnité auprès de la compagnie aérienne —
-                <strong style="color:#0A4A1E;">jusqu'à 600 € ou plus selon votre vol</strong>,
-                sans frais si échec.
-              </span>
-            </span>
-
-            <span style="
-              flex-shrink:0; background:var(--green); color:#fff;
-              font-size:.68rem; font-weight:800; text-transform:uppercase;
-              letter-spacing:.06em; padding:4px 10px; border-radius:20px;
-              white-space:nowrap; margin-top:1px;
-            ">Recommandé</span>
-          </label>
-
-          <p style="font-size:.74rem;color:var(--gray-text);margin-top:8px;text-align:center;line-height:1.5;">
-            Si coché, votre dossier d'indemnisation sera pré-rempli et ouvert automatiquement après envoi.
-          </p>
+        <!-- ✅ Réclamation incluse automatiquement — mention sobre -->
+        <div style="
+          background:#E6F9EE; border-left:4px solid var(--green);
+          border-radius:0 10px 10px 0; padding:14px 18px; margin-top:24px;
+          display:flex; align-items:flex-start; gap:12px;
+        ">
+          <span style="font-size:1.4rem;flex-shrink:0;margin-top:2px;">✅</span>
+          <div>
+            <div style="font-size:.9rem;font-weight:700;color:#0A4A1E;margin-bottom:4px;">
+              Réclamation d'indemnisation automatiquement incluse
+            </div>
+            <div style="font-size:.8rem;color:#1A6B30;line-height:1.6;">
+              En validant ce formulaire, votre dossier de réclamation sera automatiquement
+              déposé auprès de votre compagnie aérienne —
+              <strong>jusqu'à 600 € ou plus selon votre vol</strong>.
+              Commission 25% uniquement si succès. <strong>Sans frais si échec.</strong>
+            </div>
+          </div>
         </div>
-        <!-- ════════════════════════════════════════════════ -->
 
         <button type="submit" class="btn-submit">Valider mon Profil Voyageur &amp; Activer le Pack 🚀</button>
         <div class="form-success" id="successVoyageur" role="alert">✅ Demande envoyée ! Notre équipe vous contacte sous 15 minutes sur WhatsApp &amp; e-mail.</div>
@@ -1539,7 +1579,7 @@
 </section>
 
 <!-- ══════════════════════════════════════
-     SECTION 6 — PAIEMENTS
+     SECTION 7 — PAIEMENTS
 ══════════════════════════════════════ -->
 <section class="pay-section" id="paiements">
   <div class="container">
@@ -1556,7 +1596,48 @@
 </section>
 
 <!-- ══════════════════════════════════════
-     SECTION 7 — PRESTATAIRES
+     SECTION 8 — ENCART RÉCLAMATION INDEMNISATION
+     Pousse l'utilisateur vers le formulaire d'indemnisation index.html
+══════════════════════════════════════ -->
+<section class="indemnisation-cta" id="reclamer-indemnite" aria-labelledby="indemnisation-title">
+  <div class="indemnisation-cta-inner">
+
+    <div class="indemnisation-badge">✈️ Votre droit · CE 261/2004 · UEMOA N°03/2003</div>
+
+    <h3 id="indemnisation-title">
+      Votre vol était annulé ou en retard ?<br/>
+      <span>Réclamez votre indemnité — jusqu'à 600 €</span>
+    </h3>
+
+    <div class="indemnisation-montants">
+      <div class="indemnisation-montant">
+        <strong>250 €</strong>
+        <span>Vol court<br/>&lt; 1 500 km</span>
+      </div>
+      <div class="indemnisation-montant">
+        <strong>400 €</strong>
+        <span>Vol moyen<br/>1 500–3 500 km</span>
+      </div>
+      <div class="indemnisation-montant">
+        <strong>600 €</strong>
+        <span>Vol long<br/>&gt; 3 500 km</span>
+      </div>
+    </div>
+
+    <p>Vos informations de vol sont déjà enregistrées. Notre équipe prend en charge votre dossier et négocie directement avec la compagnie aérienne. <strong style="color:#fff">Sans frais si nous ne gagnons pas.</strong></p>
+
+    <a href="index.html#reclamer" class="indemnisation-cta-btn">
+      <span style="font-size:1.3rem">💰</span>
+      <span>Déposer ma réclamation maintenant →</span>
+    </a>
+
+    <p class="indemnisation-cta-sub">⚡ Traitement sous 48h · Aucun frais si pas de résultat · 100% en ligne</p>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 9 — PRESTATAIRES
 ══════════════════════════════════════ -->
 <section class="presta-section" id="prestataires">
   <div class="container">
@@ -1636,47 +1717,6 @@
         </form>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════
-     ENCART CROSS-SELL — RÉCLAMATION INDEMNISATION
-     Pousse l'utilisateur vers le formulaire d'indemnisation index.html
-══════════════════════════════════════ -->
-<section class="indemnisation-cta" id="reclamer-indemnite" aria-labelledby="indemnisation-title">
-  <div class="indemnisation-cta-inner">
-
-    <div class="indemnisation-badge">✈️ Votre droit · CE 261/2004 · UEMOA N°03/2003</div>
-
-    <h3 id="indemnisation-title">
-      Votre vol était annulé ou en retard ?<br/>
-      <span>Réclamez votre indemnité — jusqu'à 600 €</span>
-    </h3>
-
-    <div class="indemnisation-montants">
-      <div class="indemnisation-montant">
-        <strong>250 €</strong>
-        <span>Vol court<br/>&lt; 1 500 km</span>
-      </div>
-      <div class="indemnisation-montant">
-        <strong>400 €</strong>
-        <span>Vol moyen<br/>1 500–3 500 km</span>
-      </div>
-      <div class="indemnisation-montant">
-        <strong>600 €</strong>
-        <span>Vol long<br/>&gt; 3 500 km</span>
-      </div>
-    </div>
-
-    <p>Vos informations de vol sont déjà enregistrées. Notre équipe prend en charge votre dossier et négocie directement avec la compagnie aérienne. <strong style="color:#fff">Sans frais si nous ne gagnons pas.</strong></p>
-
-    <a href="index.html#reclamer" class="indemnisation-cta-btn">
-      <span style="font-size:1.3rem">💰</span>
-      <span>Déposer ma réclamation maintenant →</span>
-    </a>
-
-    <p class="indemnisation-cta-sub">⚡ Traitement sous 48h · Aucun frais si pas de résultat · 100% en ligne</p>
-
   </div>
 </section>
 
@@ -2143,26 +2183,27 @@ function updatePayBtn(){
 
 if(btnPay)btnPay.addEventListener('click',function(){
   if(!S.user){openM('authModal');return;}
-  if(!S.hotel||!S.transport)return;
-  /* Vérifier que le mandat est coché */
-  var mandat = document.getElementById('v-mandat');
-  var mandatErr = document.getElementById('mandat-err');
-  if(mandat && !mandat.checked){
-    if(mandatErr) mandatErr.style.display='block';
-    mandat.scrollIntoView({behavior:'smooth', block:'center'});
+  if(!S.hotel)return;
+  /* Vérifier que les CGU sont acceptées */
+  var cgu = document.getElementById('v-cgu');
+  var cguErr = document.getElementById('cguErr');
+  if(cgu && !cgu.checked){
+    if(cguErr) cguErr.style.display='block';
+    var cguWrap = document.getElementById('recapCguWrap');
+    if(cguWrap) cguWrap.scrollIntoView({behavior:'smooth', block:'center'});
     return;
   }
-  if(mandatErr) mandatErr.style.display='none';
+  if(cguErr) cguErr.style.display='none';
   openPayM();
 });
 
-/* Masquer l'erreur mandat dès que l'utilisateur coche */
+/* Masquer erreur CGU dès que coché */
 (function(){
-  var mandat = document.getElementById('v-mandat');
-  var mandatErr = document.getElementById('mandat-err');
-  if(mandat && mandatErr){
-    mandat.addEventListener('change', function(){
-      if(mandat.checked) mandatErr.style.display='none';
+  var cgu = document.getElementById('v-cgu');
+  var cguErr = document.getElementById('cguErr');
+  if(cgu && cguErr){
+    cgu.addEventListener('change', function(){
+      if(cgu.checked) cguErr.style.display='none';
     });
   }
 })();
@@ -2371,53 +2412,17 @@ updateRecap();
   });
 })();
 
-/* ══ CHECKBOX INDEMNISATION — TOGGLE VISUEL + REDIRECTION ══ */
+/* ══ REDIRECTION VERS RÉCLAMATION APRÈS SOUMISSION FORMULAIRE ══
+   La réclamation est incluse automatiquement dans le pack.
+   Après soumission, redirection vers index.html#reclamer avec données pré-remplies.
+══ */
 (function(){
-  var lbl   = document.getElementById('indemnisation-label');
-  var cb    = document.getElementById('v-indemnisation');
-  var box   = document.getElementById('indemnisation-box');
-  var check = document.getElementById('indemnisation-check');
-  if(!lbl || !cb || !box) return;
-
-  function applyState(){
-    if(cb.checked){
-      /* État coché — vert */
-      lbl.style.background    = '#E6F9EE';
-      lbl.style.borderColor   = '#1DB954';
-      box.style.background    = '#1DB954';
-      box.style.borderColor   = '#1DB954';
-      if(check) check.style.display = 'block';
-    } else {
-      /* État décoché — neutre */
-      lbl.style.background    = '#F7F9FC';
-      lbl.style.borderColor   = '#C8D5E8';
-      box.style.background    = '#fff';
-      box.style.borderColor   = '#C8D5E8';
-      if(check) check.style.display = 'none';
-    }
-  }
-
-  /* Clic sur le label → toggle */
-  lbl.addEventListener('click', function(e){
-    e.preventDefault();
-    cb.checked = !cb.checked;
-    applyState();
-  });
-
-  /* État initial (coché par défaut) */
-  applyState();
-
-  /* ── Redirection après soumission si case cochée ── */
   var form = document.getElementById('formVoyageur');
   if(form){
     form.addEventListener('submit', function(){
-      if(cb.checked){
-        /* Attendre 3s (temps d'affichage du message succès) puis rediriger */
-        setTimeout(function(){
-          /* Les données sont déjà dans sessionStorage (bloc vague 4) */
-          window.location.href = 'index.html#reclamer';
-        }, 3200);
-      }
+      setTimeout(function(){
+        window.location.href = 'index.html#reclamer';
+      }, 3200);
     });
   }
 })();
