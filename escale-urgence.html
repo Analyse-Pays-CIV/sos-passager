@@ -55,8 +55,9 @@
     .nav-brand-name span { color:#7EC8F8; }
     .nav-center {
       display:flex; align-items:center; gap:8px;
-      background:rgba(255,255,255,.12); border-radius:20px; padding:5px 14px;
-      font-size:0.78rem; font-weight:700; color:rgba(255,255,255,.9);
+      background:rgba(29,185,84,.18); border:1px solid rgba(29,185,84,.35);
+      border-radius:20px; padding:5px 14px;
+      font-size:0.78rem; font-weight:700; color:#fff;
     }
     .nav-back-btn {
       display:flex; align-items:center; gap:8px;
@@ -68,10 +69,21 @@
     }
     .nav-back-btn:hover { background:var(--blue-light); transform:translateY(-1px); }
     .nav-hamburger {
-      display:none; flex-direction:column; gap:5px;
-      background:none; border:none; cursor:pointer; padding:8px;
+      display:none; flex-direction:column; justify-content:center; gap:5px;
+      background:rgba(255,255,255,.12); border:1.5px solid rgba(255,255,255,.25);
+      border-radius:8px; cursor:pointer;
+      padding:10px 11px; min-width:44px; min-height:44px;
+      flex-shrink:0;
     }
-    .nav-hamburger span { display:block; width:22px; height:2px; background:#fff; border-radius:2px; }
+    .nav-hamburger span {
+      display:block; width:22px; height:2.5px;
+      background:#fff; border-radius:2px;
+      transition:transform .2s, opacity .2s;
+    }
+    .nav-hamburger:hover { background:rgba(255,255,255,.2); }
+    .nav-hamburger.open span:nth-child(1) { transform:translateY(7.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity:0; }
+    .nav-hamburger.open span:nth-child(3) { transform:translateY(-7.5px) rotate(-45deg); }
     .nav-mobile {
       display:none; flex-direction:column;
       background:var(--blue-dark); border-top:1px solid rgba(255,255,255,.12);
@@ -620,6 +632,49 @@
 
     @media(max-width:500px){.modal-body{padding:14px 16px 22px;}.modal-head{padding:18px 16px 0;}.mfield-row{grid-template-columns:1fr;}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
+
+    /* ════ BARRE D'URGENCE (sous nav) ════ */
+    .urgence-bar {
+      background:var(--white);
+      border-bottom:2px solid #FFBCBC;
+      color:#C0392B; padding:9px 20px;
+      font-size:.82rem; font-weight:700;
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      flex-wrap:wrap;
+    }
+    .urgence-bar-dot { width:8px; height:8px; background:#C0392B; border-radius:50%; animation:blink 1s ease-in-out infinite; flex-shrink:0; }
+    .urgence-bar strong { color:#C0392B; }
+    .urgence-bar a { color:#C0392B; text-decoration:underline; font-weight:800; white-space:nowrap; }
+
+    /* ════ ENCART CROSS-SELL INDEMNISATION ════ */
+    .indemnisation-cta {
+      background:linear-gradient(135deg,#003E8A 0%,#0057B8 100%);
+      border-top:3px solid var(--green); border-bottom:3px solid var(--green);
+      padding:36px 20px; text-align:center;
+    }
+    .indemnisation-cta-inner { max-width:680px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:16px; }
+    .indemnisation-badge { background:rgba(29,185,84,.2); border:1px solid rgba(29,185,84,.4); color:#4ADE80; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; padding:5px 14px; border-radius:20px; }
+    .indemnisation-cta h3 { font-size:clamp(1.1rem,3vw,1.55rem); font-weight:900; color:#fff; line-height:1.25; margin:0; }
+    .indemnisation-cta h3 span { color:#4ADE80; }
+    .indemnisation-cta p { font-size:.88rem; color:rgba(255,255,255,.8); line-height:1.65; max-width:520px; margin:0; }
+    .indemnisation-cta-btn {
+      display:inline-flex; align-items:center; gap:10px;
+      background:var(--green); color:#fff; text-decoration:none;
+      border-radius:14px; padding:16px 28px;
+      font-size:1rem; font-weight:800;
+      box-shadow:0 6px 24px rgba(29,185,84,.4);
+      transition:background .18s,transform .15s,box-shadow .18s;
+      border:none; cursor:pointer; width:100%; max-width:420px; justify-content:center;
+    }
+    .indemnisation-cta-btn:hover { background:var(--green-dark); transform:translateY(-2px); box-shadow:0 10px 32px rgba(29,185,84,.5); }
+    .indemnisation-cta-sub { font-size:.74rem; color:rgba(255,255,255,.5); }
+    .indemnisation-montants { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:4px 0; }
+    .indemnisation-montant {
+      background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
+      border-radius:10px; padding:10px 16px; text-align:center; flex:1; min-width:120px;
+    }
+    .indemnisation-montant strong { display:block; font-size:1.1rem; font-weight:900; color:#4ADE80; }
+    .indemnisation-montant span { font-size:.72rem; color:rgba(255,255,255,.7); }
   </style>
 </head>
 <body>
@@ -721,6 +776,40 @@
           <div class="sdr"><span>👤 Client</span><span id="sClient">—</span></div>
         </div>
         <p class="pay-ref" id="payRef"></p>
+
+        <!-- ═══ CROSS-SELL : POUSSER VERS L'INDEMNISATION ═══ -->
+        <div style="
+          background:linear-gradient(135deg,#003E8A 0%,#0057B8 100%);
+          border-radius:14px; padding:18px 20px; margin:18px 0 14px;
+          text-align:left; border:2px solid rgba(126,200,248,.3);
+        ">
+          <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#7EC8F8;margin-bottom:8px;">
+            💡 Saviez-vous que…
+          </div>
+          <p style="font-size:.92rem;font-weight:700;color:#fff;line-height:1.45;margin-bottom:12px;">
+            Si votre vol était <strong style="color:#4ADE80">annulé, retardé de +3h ou surbooké</strong>, vous avez droit à une indemnité pouvant atteindre <strong style="color:#4ADE80">600 € ou 1 219 €</strong>.
+          </p>
+          <p style="font-size:.8rem;color:rgba(255,255,255,.75);margin-bottom:14px;line-height:1.5;">
+            Vos informations sont déjà enregistrées. En un clic, déposez votre dossier de réclamation — notre équipe s'occupe de tout face à la compagnie.
+          </p>
+          <a href="index.html#reclamer"
+             onclick="document.getElementById('btnCloseSucc').click()"
+             style="
+               display:flex;align-items:center;justify-content:center;gap:10px;
+               background:#1DB954;color:#fff;text-decoration:none;
+               border-radius:10px;padding:13px 18px;
+               font-size:.92rem;font-weight:800;
+               box-shadow:0 4px 18px rgba(29,185,84,.4);
+               transition:background .18s;
+             "
+             onmouseover="this.style.background='#158A3E'"
+             onmouseout="this.style.background='#1DB954'">
+            <span style="font-size:1.2rem">💰</span>
+            <span>Réclamer mon indemnité maintenant →</span>
+          </a>
+        </div>
+        <!-- ════════════════════════════════════════════ -->
+
         <button class="btn-close-succ" id="btnCloseSucc">Retour à l'accueil ✈️</button>
       </div>
     </div>
@@ -770,18 +859,27 @@
       <div class="nav-brand-icon">SOS<br/>✈</div>
       <div class="nav-brand-name">SOS <span>Passager</span></div>
     </a>
-    <div class="nav-center">🌐 Écosystème Escale Réseau</div>
-    <a href="index.html" class="nav-back-btn">Retour au site principal ✈</a>
+    <div class="nav-center">🛌 Bloqué à l'aéroport ? On s'occupe de tout.</div>
+    <a href="index.html#reclamer" class="nav-back-btn" style="background:var(--green);color:#fff;border:none;">💰 Réclamer mon indemnité</a>
     <button class="nav-hamburger" id="menuBtn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
   <nav class="nav-mobile" id="mobileMenu">
-    <a href="index.html">🏠 Accueil SOS Passager</a>
+    <a href="index.html#reclamer" style="color:#4ADE80;font-weight:800;">💰 Réclamer mon indemnité</a>
     <a href="#catalogue-logements">🏨 Hébergements</a>
     <a href="#section-transport">🚗 Transport Yango</a>
+    <a href="#pack-sos-complet">🎯 Pack SOS Complet</a>
     <a href="#facture-selection">📋 Mon Panier</a>
     <a href="#demande">📝 Formulaire Vol</a>
+    <a href="index.html">← Retour SOS Passager</a>
   </nav>
 </header>
+
+<!-- ══ BARRE URGENCE — fond blanc, texte rouge ══ -->
+<div class="urgence-bar" role="alert">
+  <span class="urgence-bar-dot"></span>
+  <span>Vol annulé ? Correspondance manquée ? <strong>Logement + chauffeur en 20 min</strong></span>
+  <a href="#catalogue-logements">Voir les offres →</a>
+</div>
 
 <!-- ══════════════════════════════════════
      SECTION 1 — HERO
@@ -1039,7 +1137,91 @@
       <span class="btn-pay-icon">🔒</span>
       <span class="btn-pay-text"><strong>Connectez-vous pour réserver</strong><small>Sélectionnez un hébergement et un transport</small></span>
     </button>
+
+    <!-- ── MENTION FACTURE ── -->
+    <p style="
+      text-align:center; font-size:.82rem; color:var(--green-dark);
+      background:#E6F9EE; border:1px solid rgba(29,185,84,.3);
+      border-radius:10px; padding:10px 16px; margin-top:14px;
+      line-height:1.6; font-weight:600;
+    ">
+      📄 Une facture certifiée vous sera envoyée par <strong>WhatsApp et/ou par e-mail</strong>
+      pour constituer votre dossier de remboursement auprès de votre compagnie aérienne.
+    </p>
+
     <p class="facture-hint">⚡ Confirmation immédiate · Prise en charge à la sortie du terminal</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PACK SOS COMPLET
+     Hébergement + Transport + Réclamation
+══════════════════════════════════════ -->
+<section style="background:linear-gradient(135deg,#003E8A 0%,#0057B8 100%);padding:48px 20px;" id="pack-sos-complet">
+  <div style="max-width:760px;margin:0 auto;text-align:center;">
+
+    <!-- Badge -->
+    <div style="display:inline-block;background:rgba(29,185,84,.2);border:1px solid rgba(29,185,84,.5);color:#4ADE80;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;padding:5px 16px;border-radius:20px;margin-bottom:16px;">
+      🎯 Nouveau · Pack Tout-en-Un
+    </div>
+
+    <h2 style="font-size:clamp(1.3rem,3vw,1.9rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:12px;">
+      Pack SOS Complet<br/>
+      <span style="color:#4ADE80">On gère tout. Ce soir ET demain.</span>
+    </h2>
+
+    <p style="font-size:.92rem;color:rgba(255,255,255,.8);max-width:520px;margin:0 auto 28px;line-height:1.65;">
+      Un seul contact, un seul paiement, tout est géré :<br/>
+      vous dormez, nous réclamons votre argent.
+    </p>
+
+    <!-- 3 colonnes ce que comprend le pack -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;">
+
+      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:18px 14px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">🛏️</div>
+        <div style="font-size:.88rem;font-weight:700;color:#fff;margin-bottom:4px;">Logement</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.7);line-height:1.4;">Résidence partenaire sécurisée près de l'aéroport</div>
+        <div style="margin-top:10px;font-size:.78rem;font-weight:800;color:#4ADE80;">Inclus</div>
+      </div>
+
+      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:18px 14px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">🚗</div>
+        <div style="font-size:.88rem;font-weight:700;color:#fff;margin-bottom:4px;">Transport</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.7);line-height:1.4;">Chauffeur Yango à la sortie du terminal · 10 min</div>
+        <div style="margin-top:10px;font-size:.78rem;font-weight:800;color:#4ADE80;">Tarif réel Yango</div>
+      </div>
+
+      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:18px 14px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">📄</div>
+        <div style="font-size:.88rem;font-weight:700;color:#fff;margin-bottom:4px;">Réclamation</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.7);line-height:1.4;">Dossier complet déposé auprès de la compagnie</div>
+        <div style="margin-top:10px;font-size:.78rem;font-weight:800;color:#4ADE80;">Commission succès uniquement</div>
+      </div>
+
+    </div>
+
+    <!-- Prix -->
+    <div style="background:rgba(255,255,255,.08);border:2px solid rgba(29,185,84,.4);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:inline-block;min-width:280px;">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.6);margin-bottom:6px;">À partir de</div>
+      <div style="font-size:2.2rem;font-weight:900;color:#fff;line-height:1;">25 000 <span style="font-size:1.1rem;font-weight:600;color:rgba(255,255,255,.7)">FCFA</span></div>
+      <div style="font-size:.88rem;color:rgba(255,255,255,.6);margin-top:2px;">≈ 38 € · Logement inclus</div>
+      <div style="font-size:.76rem;color:rgba(255,255,255,.5);margin-top:8px;line-height:1.5;">+ tarif réel Yango · + commission réclamation si succès</div>
+    </div>
+
+    <!-- Bouton activation pack -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <a href="https://wa.me/22505036057255?text=Bonjour%2C%20je%20souhaite%20activer%20le%20Pack%20SOS%20Complet%20(logement%2C%20transport%20et%20r%C3%A9clamation)"
+         target="_blank" rel="noopener"
+         style="display:inline-flex;align-items:center;gap:10px;background:var(--green);color:#fff;text-decoration:none;border-radius:14px;padding:16px 28px;font-size:1rem;font-weight:800;box-shadow:0 6px 24px rgba(29,185,84,.4);transition:background .18s;width:100%;max-width:420px;justify-content:center;"
+         onmouseover="this.style.background='#158A3E'" onmouseout="this.style.background='#1DB954'">
+        🎯 Activer le Pack SOS Complet →
+      </a>
+      <p style="font-size:.74rem;color:rgba(255,255,255,.5);margin:0;">
+        📄 Facture certifiée envoyée par WhatsApp et/ou e-mail · Sans frais de réclamation si échec
+      </p>
+    </div>
+
   </div>
 </section>
 
@@ -1177,6 +1359,63 @@
             </div>
           </div>
         </div>
+
+        <!-- ═══════════════════════════════════════════════════
+             CHECKBOX INDEMNISATION — COCHÉE PAR DÉFAUT
+             Si cochée → redirection vers index.html#reclamer
+             après soumission avec données pré-remplies
+        ════════════════════════════════════════════════════ -->
+        <div style="border-top:1.5px solid var(--gray-2);margin-top:24px;padding-top:20px;">
+          <label for="v-indemnisation" id="indemnisation-label" style="
+            display:flex; align-items:flex-start; gap:14px;
+            background:#E6F9EE; border:2px solid var(--green);
+            border-radius:14px; padding:16px 18px;
+            cursor:pointer; transition:background .18s, box-shadow .18s;
+            user-select:none;
+          ">
+            <!-- Case à cocher masquée — rendue visuellement ci-dessous -->
+            <input type="checkbox" id="v-indemnisation" name="demande_indemnisation"
+                   value="oui" checked
+                   style="position:absolute;opacity:0;width:0;height:0;pointer-events:none;" />
+
+            <!-- Visuel de la coche -->
+            <span id="indemnisation-box" style="
+              flex-shrink:0; margin-top:1px;
+              width:24px; height:24px; border-radius:7px;
+              background:var(--green); border:2px solid var(--green);
+              display:flex; align-items:center; justify-content:center;
+              transition:background .15s, border-color .15s;
+            " aria-hidden="true">
+              <svg id="indemnisation-check" viewBox="0 0 14 14" fill="none" width="14" height="14">
+                <path d="M2.5 7L5.5 10L11.5 4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+
+            <span style="flex:1;">
+              <span style="display:block; font-size:.97rem; font-weight:700; color:#0A4A1E; margin-bottom:4px; line-height:1.35;">
+                Oui, je veux récupérer mon argent
+              </span>
+              <span style="display:block; font-size:.82rem; color:#1A6B30; line-height:1.55;">
+                Déposer automatiquement ma demande d'indemnité auprès de la compagnie aérienne —
+                <strong style="color:#0A4A1E;">jusqu'à 600 € ou plus selon votre vol</strong>,
+                sans frais si échec.
+              </span>
+            </span>
+
+            <span style="
+              flex-shrink:0; background:var(--green); color:#fff;
+              font-size:.68rem; font-weight:800; text-transform:uppercase;
+              letter-spacing:.06em; padding:4px 10px; border-radius:20px;
+              white-space:nowrap; margin-top:1px;
+            ">Recommandé</span>
+          </label>
+
+          <p style="font-size:.74rem;color:var(--gray-text);margin-top:8px;text-align:center;line-height:1.5;">
+            Si coché, votre dossier d'indemnisation sera pré-rempli et ouvert automatiquement après envoi.
+          </p>
+        </div>
+        <!-- ════════════════════════════════════════════════ -->
+
         <button type="submit" class="btn-submit">Valider mon Profil Voyageur &amp; Activer le Pack 🚀</button>
         <div class="form-success" id="successVoyageur" role="alert">✅ Demande envoyée ! Notre équipe vous contacte sous 15 minutes sur WhatsApp &amp; e-mail.</div>
       </form>
@@ -1285,6 +1524,47 @@
   </div>
 </section>
 
+<!-- ══════════════════════════════════════
+     ENCART CROSS-SELL — RÉCLAMATION INDEMNISATION
+     Pousse l'utilisateur vers le formulaire d'indemnisation index.html
+══════════════════════════════════════ -->
+<section class="indemnisation-cta" id="reclamer-indemnite" aria-labelledby="indemnisation-title">
+  <div class="indemnisation-cta-inner">
+
+    <div class="indemnisation-badge">✈️ Votre droit · CE 261/2004 · UEMOA N°03/2003</div>
+
+    <h3 id="indemnisation-title">
+      Votre vol était annulé ou en retard ?<br/>
+      <span>Réclamez votre indemnité — jusqu'à 600 €</span>
+    </h3>
+
+    <div class="indemnisation-montants">
+      <div class="indemnisation-montant">
+        <strong>250 €</strong>
+        <span>Vol court<br/>&lt; 1 500 km</span>
+      </div>
+      <div class="indemnisation-montant">
+        <strong>400 €</strong>
+        <span>Vol moyen<br/>1 500–3 500 km</span>
+      </div>
+      <div class="indemnisation-montant">
+        <strong>600 €</strong>
+        <span>Vol long<br/>&gt; 3 500 km</span>
+      </div>
+    </div>
+
+    <p>Vos informations de vol sont déjà enregistrées. Notre équipe prend en charge votre dossier et négocie directement avec la compagnie aérienne. <strong style="color:#fff">Sans frais si nous ne gagnons pas.</strong></p>
+
+    <a href="index.html#reclamer" class="indemnisation-cta-btn">
+      <span style="font-size:1.3rem">💰</span>
+      <span>Déposer ma réclamation maintenant →</span>
+    </a>
+
+    <p class="indemnisation-cta-sub">⚡ Traitement sous 48h · Aucun frais si pas de résultat · 100% en ligne</p>
+
+  </div>
+</section>
+
 <!-- ══ FOOTER ══ -->
 <footer>
   <div class="footer-brand">SOS <span>Passager</span> Escale Réseau</div>
@@ -1306,7 +1586,7 @@
 
 /* ── Hamburger ── */
 var mb=document.getElementById('menuBtn'),mn=document.getElementById('mobileMenu');
-if(mb&&mn){mb.addEventListener('click',function(){var o=mn.classList.toggle('open');mb.setAttribute('aria-expanded',o.toString());});}
+if(mb&&mn){mb.addEventListener('click',function(){var o=mn.classList.toggle('open');mb.classList.toggle('open',o);mb.setAttribute('aria-expanded',o.toString());});}
 
 /* ── Formspree ── */
 function setupForm(fId,sId){
@@ -1315,10 +1595,35 @@ function setupForm(fId,sId){
   f.addEventListener('submit',function(e){
     e.preventDefault();
     var b=f.querySelector('.btn-submit');if(!b)return;
+    /* Ne pas soumettre si blocage IATA actif */
+    if(b.dataset.volErr==='1'){
+      var errDiv=document.getElementById('volErrMsg');
+      if(errDiv)errDiv.style.display='block';
+      var volFld=document.getElementById('v-vol');
+      if(volFld)volFld.focus();
+      return;
+    }
+    /* Texte original mémorisé avant désactivation */
+    var origText=b.dataset.origText||b.textContent;
+    if(!b.dataset.origText)b.dataset.origText=origText;
     b.disabled=true;b.textContent='Envoi en cours…';
     fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}})
-      .then(function(r){if(r.ok){if(s)s.style.display='block';f.reset();b.textContent='✅ Envoyé';}else{b.disabled=false;b.textContent='Réessayer';}})
-      .catch(function(){b.disabled=false;b.textContent='Réessayer';});
+      .then(function(r){
+        if(r.ok){
+          if(s)s.style.display='block';
+          f.reset();
+          b.textContent='✅ Envoyé';
+          b.style.cssText='';
+          delete b.dataset.volErr;
+        }else{
+          b.disabled=false;
+          b.textContent=origText;
+        }
+      })
+      .catch(function(){
+        b.disabled=false;
+        b.textContent=origText;
+      });
   });
 }
 setupForm('formVoyageur','successVoyageur');
@@ -1717,6 +2022,57 @@ updateRecap();
   menu.querySelectorAll('.wa-bubble-link').forEach(function(link){
     link.addEventListener('click', function(){ setTimeout(closeMenu, 200); });
   });
+})();
+
+/* ══ CHECKBOX INDEMNISATION — TOGGLE VISUEL + REDIRECTION ══ */
+(function(){
+  var lbl   = document.getElementById('indemnisation-label');
+  var cb    = document.getElementById('v-indemnisation');
+  var box   = document.getElementById('indemnisation-box');
+  var check = document.getElementById('indemnisation-check');
+  if(!lbl || !cb || !box) return;
+
+  function applyState(){
+    if(cb.checked){
+      /* État coché — vert */
+      lbl.style.background    = '#E6F9EE';
+      lbl.style.borderColor   = '#1DB954';
+      box.style.background    = '#1DB954';
+      box.style.borderColor   = '#1DB954';
+      if(check) check.style.display = 'block';
+    } else {
+      /* État décoché — neutre */
+      lbl.style.background    = '#F7F9FC';
+      lbl.style.borderColor   = '#C8D5E8';
+      box.style.background    = '#fff';
+      box.style.borderColor   = '#C8D5E8';
+      if(check) check.style.display = 'none';
+    }
+  }
+
+  /* Clic sur le label → toggle */
+  lbl.addEventListener('click', function(e){
+    e.preventDefault();
+    cb.checked = !cb.checked;
+    applyState();
+  });
+
+  /* État initial (coché par défaut) */
+  applyState();
+
+  /* ── Redirection après soumission si case cochée ── */
+  var form = document.getElementById('formVoyageur');
+  if(form){
+    form.addEventListener('submit', function(){
+      if(cb.checked){
+        /* Attendre 3s (temps d'affichage du message succès) puis rediriger */
+        setTimeout(function(){
+          /* Les données sont déjà dans sessionStorage (bloc vague 4) */
+          window.location.href = 'index.html#reclamer';
+        }, 3200);
+      }
+    });
+  }
 })();
 
 /* ══════════════════════════════════════════════════════════════

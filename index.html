@@ -416,9 +416,9 @@ nav{background:#0D5C2E}
   </div>
   <div class="nl" id="navLinks">
    <div class="nit"><div class="nlk" onclick="showPage('home')"><i class="fa-solid fa-house" style="font-size:12px;opacity:.7"></i> SOS</div></div>
-   <div class="nit"><div class="nlk" onclick="showPage('reclamer')"><i class="fa-solid fa-paper-plane" style="font-size:12px;opacity:.7"></i> Réclamez</div></div>
+   <div class="nit"><div class="nlk ncta" onclick="showPage('reclamer')" style="border-bottom-color:var(--green)"><i class="fa-solid fa-paper-plane"></i> Réclamer</div></div>
    <div class="nit">
-    <div class="nlk">Vos droits <i class="fa-solid fa-chevron-down chev"></i></div>
+    <div class="nlk">Mes droits <i class="fa-solid fa-chevron-down chev"></i></div>
     <div class="drop">
      <div class="drop-header">Règlement CE 261/2004</div>
      <div class="dlk" onclick="showPage('droits');setTimeout(function(){setTab('r0');},150)"><i class="fa-solid fa-clock"></i>Vol retardé</div>
@@ -464,9 +464,7 @@ nav{background:#0D5C2E}
     </div>
    </div>
    <div class="nit"><div class="nlk" onclick="showPage('contact')"><i class="fa-solid fa-phone" style="font-size:12px;opacity:.7"></i> Contact</div></div>
-   <!-- ═══ MODIFICATION 1 : ONGLET ESCALE RÉSEAU — NAV DESKTOP ═══ -->
-   <div class="nit"><a class="nlk" href="escale-urgence.html"><i class="fa-solid fa-plane-arrival" style="font-size:12px;opacity:.7"></i> Escale Réseau</a></div>
-   <!-- ═══ FIN MODIFICATION 1 ═══ -->
+   <div class="nit"><a class="nlk" href="escale-urgence.html" style="color:#4ADE80;font-weight:700;"><i class="fa-solid fa-bed" style="font-size:12px"></i> Bloqué ce soir ?</a></div>
    <div class="nit"><div class="nlk ncta" onclick="showPage('reclamer')"><i class="fa-solid fa-paper-plane"></i> Réclamer maintenant</div></div>
    <div class="nit"><div class="nlk ndossier" onclick="showPage('client')"><i class="fa-solid fa-user-circle"></i> Mon dossier</div></div>
   </div>
@@ -493,6 +491,38 @@ nav{background:#0D5C2E}
   </div>
  </div>
 <div class="cw">
+  <!-- ══ BLOC ESCALE DISCRET — entre hero et calculateur ══ -->
+  <div style="
+    background:#F7F9FC; border:1px solid #C8D5E8;
+    border-left:4px solid #1DB954;
+    border-radius:12px; padding:14px 18px;
+    margin:0 0 20px; display:flex;
+    align-items:center; justify-content:space-between;
+    gap:14px; flex-wrap:wrap;
+  ">
+    <div style="display:flex;align-items:center;gap:12px;flex:1;min-width:200px;">
+      <span style="font-size:1.4rem;flex-shrink:0;">🛌</span>
+      <div>
+        <div style="font-size:.88rem;font-weight:700;color:#1A2538;margin-bottom:2px;">
+          Bloqué ce soir à l'aéroport ?
+        </div>
+        <div style="font-size:.78rem;color:#5A6A7E;line-height:1.5;">
+          Commencez par réserver votre logement — votre réclamation sera pré-remplie automatiquement après. Facture certifiée fournie par WhatsApp et/ou e-mail.
+        </div>
+      </div>
+    </div>
+    <a href="escale-urgence.html" style="
+      display:inline-flex;align-items:center;gap:7px;
+      background:#1DB954;color:#fff;text-decoration:none;
+      border-radius:10px;padding:10px 18px;
+      font-size:.82rem;font-weight:800;white-space:nowrap;
+      box-shadow:0 3px 12px rgba(29,185,84,.3);
+      flex-shrink:0;
+    ">
+      Pack Escale Réseau →
+    </a>
+  </div>
+  <!-- ════════════════════════════════════ -->
   <div class="cc">
    <h2><i class="fa-solid fa-calculator" style="color:var(--green)"></i> Calculateur d'indemnisation — Gratuit &amp; Intelligent</h2>
    <div class="ctabs">
@@ -1501,13 +1531,10 @@ window.addEventListener('load',function(){
 <div class="mobile-nav" id="mobileNav">
  <div class="mobile-nav-inner">
   <button class="mnav-btn active" id="mb-home" onclick="mobileNav('home')"><i class="fa-solid fa-house"></i><span>Accueil</span></button>
+  <button class="mnav-btn" id="mb-reclamer" onclick="mobileNav('reclamer')" style="background:#1DB954;border-radius:12px;padding:6px 10px"><i class="fa-solid fa-paper-plane" style="color:#fff;font-size:22px"></i><span style="color:#fff;font-weight:700">Réclamer</span></button>
   <button class="mnav-btn" id="mb-droits" onclick="mobileNav('droits')"><i class="fa-solid fa-scale-balanced"></i><span>Droits</span></button>
-  <button class="mnav-btn" id="mb-reclamer" onclick="mobileNav('reclamer')" style="background:#E8A020;border-radius:12px;padding:6px 10px"><i class="fa-solid fa-paper-plane" style="color:#2a1500;font-size:22px"></i><span style="color:#2a1500;font-weight:700">Réclamer</span></button>
   <button class="mnav-btn" id="mb-client" onclick="mobileNav('client')"><i class="fa-solid fa-user-circle"></i><span>Dossier</span></button>
-  <button class="mnav-btn" id="mb-contact" onclick="mobileNav('contact')"><i class="fa-solid fa-phone"></i><span>Contact</span></button>
-  <!-- ═══ AJOUT MOBILE : ESCALE RÉSEAU ═══ -->
-  <a href="escale-urgence.html" class="mnav-btn" style="text-decoration:none;color:var(--gt)"><i class="fa-solid fa-plane-arrival" style="font-size:22px;color:var(--green)"></i><span>Escale</span></a>
-  <!-- ═══ FIN AJOUT MOBILE ═══ -->
+  <a href="escale-urgence.html" class="mnav-btn" style="text-decoration:none;color:#1DB954"><i class="fa-solid fa-bed" style="font-size:22px;color:#1DB954"></i><span style="color:#1DB954;font-weight:700">Bloqué ?</span></a>
  </div>
 </div>
 
