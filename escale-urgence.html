@@ -1091,7 +1091,9 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
             <span>En validant ce formulaire, votre dossier sera automatiquement déposé auprès de votre compagnie aérienne — <strong>jusqu'à 600 € ou plus selon votre vol</strong>. Commission 25% uniquement si succès. <strong>Sans frais si échec.</strong></span>
           </div>
         </div>
-        <button type="submit" class="btn-submit">Valider mon Profil Voyageur &amp; Activer le Pack 🚀</button>
+        <button type="submit" class="btn-submit" style="background:var(--green);box-shadow:0 4px 16px rgba(29,185,84,.3)">
+          Enregistrer mon profil &amp; Aller au paiement →
+        </button>
         <div class="form-success" id="successVoyageur" role="alert">✅ Demande envoyée ! Notre équipe vous contacte sous 15 minutes sur WhatsApp &amp; e-mail.</div>
       </form>
 
@@ -1835,7 +1837,11 @@ function setupForm(fId,sId){
           if(fId==='formVoyageur'){
             S.formDone=true;
             updatePayBtn();
-            toast('✅ Profil enregistré — vous pouvez maintenant payer !');
+            toast('✅ Profil enregistré — passez au paiement !');
+            /* Scroll précis vers Récapitulatif & Paiement */
+            setTimeout(function(){
+              scrollToSection('facture-selection', 10);
+            }, 800);
           }
         }else{b.disabled=false;b.textContent=origTxt;}
       })
