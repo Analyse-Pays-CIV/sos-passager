@@ -471,10 +471,48 @@
     .presta-card p { font-size:.85rem; color:var(--gray-text); line-height:1.6; flex:1; }
     .presta-commission { display:inline-block; background:#E8F8EE; color:#1B5E20; border:1px solid #A5D6A7; font-size:.73rem; font-weight:700; padding:4px 10px; border-radius:6px; }
     .presta-charte { font-size:.72rem; color:var(--gray-text); line-height:1.5; padding-top:8px; border-top:1px solid var(--gray-2); }
-    .radio-btns { display:flex; flex-direction:column; gap:8px; }
-    .radio-btns label { display:flex; align-items:center; gap:10px; background:var(--gray-1); border:1.5px solid var(--gray-3); border-radius:9px; padding:11px 14px; cursor:pointer; font-size:.88rem; font-weight:600; color:var(--dark); transition:background .15s,border-color .15s; }
-    .radio-btns label:hover,.radio-btns label.selected { background:var(--blue-light); border-color:var(--blue); color:var(--blue-dark); }
-    .radio-btns input[type="radio"] { accent-color:var(--blue); flex-shrink:0; }
+
+    /* ── VAGUE 1 : Cartes type prestation — remplace radio-btns cassés ── */
+    .presta-type-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:4px;
+    }
+    @media(max-width:480px){ .presta-type-grid { grid-template-columns:1fr; } }
+
+    .presta-type-card {
+      position:relative; cursor:pointer;
+    }
+    .presta-type-card input[type="radio"] {
+      position:absolute; opacity:0; width:0; height:0; pointer-events:none;
+    }
+    .presta-type-label {
+      display:flex; align-items:center; gap:10px;
+      background:var(--white); border:2px solid var(--gray-3);
+      border-radius:10px; padding:12px 14px;
+      font-size:.88rem; font-weight:600; color:var(--dark);
+      cursor:pointer; user-select:none;
+      transition:border-color .15s, background .15s, box-shadow .15s;
+      width:100%;
+    }
+    .presta-type-label:hover {
+      border-color:var(--blue-mid);
+      background:var(--blue-light);
+    }
+    .presta-type-card input:checked + .presta-type-label {
+      border-color:var(--blue);
+      background:var(--blue-light);
+      color:var(--blue-dark);
+      box-shadow:0 0 0 3px rgba(0,87,184,.12);
+      font-weight:700;
+    }
+    .presta-type-icon {
+      font-size:1.3rem; flex-shrink:0; line-height:1;
+    }
+    .presta-type-text { line-height:1.3; }
+    .presta-type-text strong { display:block; font-size:.84rem; }
+    .presta-type-text small { font-size:.72rem; color:var(--gray-text); font-weight:500; }
 
     /* ════ FOOTER ════ */
     footer { background:var(--blue-dark); color:rgba(255,255,255,.7); padding:36px 20px; text-align:center; }
@@ -1037,8 +1075,46 @@
             <div class="phone-row">
               <div class="field-indicatif">
                 <select id="v-indicatif" name="indicatif" aria-label="Indicatif pays">
-                  <option value="+33">🇫🇷 +33</option><option value="+32">🇧🇪 +32</option><option value="+41">🇨🇭 +41</option><option value="+49">🇩🇪 +49</option><option value="+44">🇬🇧 +44</option>
-                  <option value="+225">🇨🇮 +225</option><option value="+221">🇸🇳 +221</option><option value="+223">🇲🇱 +223</option><option value="+229">🇧🇯 +229</option><option value="+226">🇧🇫 +226</option><option value="+224">🇬🇳 +224</option><option value="+228">🇹🇬 +228</option><option value="+227">🇳🇪 +227</option><option value="+237">🇨🇲 +237</option><option value="+234">🇳🇬 +234</option>
+                  <optgroup label="🌍 Afrique de l'Ouest">
+                    <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
+                    <option value="+221">🇸🇳 Sénégal (+221)</option>
+                    <option value="+223">🇲🇱 Mali (+223)</option>
+                    <option value="+226">🇧🇫 Burkina Faso (+226)</option>
+                    <option value="+229">🇧🇯 Bénin (+229)</option>
+                    <option value="+224">🇬🇳 Guinée (+224)</option>
+                    <option value="+228">🇹🇬 Togo (+228)</option>
+                    <option value="+227">🇳🇪 Niger (+227)</option>
+                    <option value="+237">🇨🇲 Cameroun (+237)</option>
+                    <option value="+234">🇳🇬 Nigeria (+234)</option>
+                    <option value="+233">🇬🇭 Ghana (+233)</option>
+                    <option value="+242">🇨🇬 Congo-Brazzaville (+242)</option>
+                    <option value="+241">🇬🇦 Gabon (+241)</option>
+                  </optgroup>
+                  <optgroup label="🌍 Afrique du Nord">
+                    <option value="+212">🇲🇦 Maroc (+212)</option>
+                    <option value="+213">🇩🇿 Algérie (+213)</option>
+                    <option value="+216">🇹🇳 Tunisie (+216)</option>
+                    <option value="+20">🇪🇬 Égypte (+20)</option>
+                  </optgroup>
+                  <optgroup label="🌍 Afrique Orientale">
+                    <option value="+251">🇪🇹 Éthiopie (+251)</option>
+                    <option value="+254">🇰🇪 Kenya (+254)</option>
+                  </optgroup>
+                  <optgroup label="🌍 Europe">
+                    <option value="+33">🇫🇷 France (+33)</option>
+                    <option value="+32">🇧🇪 Belgique (+32)</option>
+                    <option value="+41">🇨🇭 Suisse (+41)</option>
+                    <option value="+49">🇩🇪 Allemagne (+49)</option>
+                    <option value="+44">🇬🇧 Royaume-Uni (+44)</option>
+                    <option value="+351">🇵🇹 Portugal (+351)</option>
+                    <option value="+34">🇪🇸 Espagne (+34)</option>
+                    <option value="+39">🇮🇹 Italie (+39)</option>
+                    <option value="+31">🇳🇱 Pays-Bas (+31)</option>
+                  </optgroup>
+                  <optgroup label="🌍 Amériques">
+                    <option value="+1">🇺🇸 États-Unis / Canada (+1)</option>
+                    <option value="+55">🇧🇷 Brésil (+55)</option>
+                  </optgroup>
                 </select>
               </div>
               <div class="field-number"><input type="tel" id="v-phone" name="whatsapp" placeholder="Numéro sans indicatif" required/></div>
@@ -1147,12 +1223,54 @@
             <div class="field"><label for="p-prenom">Prénom</label><input type="text" id="p-prenom" name="prenom" placeholder="Kouamé" required/></div>
             <div class="field"><label for="p-nom">Nom</label><input type="text" id="p-nom" name="nom" placeholder="Assouman" required/></div>
             <div class="field full"><label for="p-societe">Société / Activité</label><input type="text" id="p-societe" name="societe" placeholder="Ex: Résidence Les Palmiers · VTC Confort Abidjan" required/></div>
-            <div class="field full"><label>Type de prestation</label>
-              <div class="radio-btns">
-                <label><input type="radio" name="type_presta" value="Hébergement" required/>🏨 Hébergement</label>
-                <label><input type="radio" name="type_presta" value="Transport VTC"/>🚗 Transport Yango / VTC</label>
-                <label><input type="radio" name="type_presta" value="Les deux"/>🤝 Les deux</label>
-                <label><input type="radio" name="type_presta" value="Agence"/>✈️ Agence / Affiliation</label>
+            <div class="field full">
+              <label>Type de prestation <span style="color:#C0392B">*</span></label>
+              <div class="presta-type-grid" role="radiogroup" aria-label="Type de prestation">
+
+                <div class="presta-type-card">
+                  <input type="radio" id="pt-heb" name="type_presta" value="Hébergement" required />
+                  <label class="presta-type-label" for="pt-heb">
+                    <span class="presta-type-icon">🏨</span>
+                    <span class="presta-type-text">
+                      <strong>Hébergement</strong>
+                      <small>Appartement / Studio / Guesthouse</small>
+                    </span>
+                  </label>
+                </div>
+
+                <div class="presta-type-card">
+                  <input type="radio" id="pt-trp" name="type_presta" value="Transport VTC" />
+                  <label class="presta-type-label" for="pt-trp">
+                    <span class="presta-type-icon">🚗</span>
+                    <span class="presta-type-text">
+                      <strong>Transport Yango / VTC</strong>
+                      <small>Chauffeur privé certifié</small>
+                    </span>
+                  </label>
+                </div>
+
+                <div class="presta-type-card">
+                  <input type="radio" id="pt-both" name="type_presta" value="Les deux" />
+                  <label class="presta-type-label" for="pt-both">
+                    <span class="presta-type-icon">🤝</span>
+                    <span class="presta-type-text">
+                      <strong>Les deux</strong>
+                      <small>Hébergement + Transport</small>
+                    </span>
+                  </label>
+                </div>
+
+                <div class="presta-type-card">
+                  <input type="radio" id="pt-aff" name="type_presta" value="Agence" />
+                  <label class="presta-type-label" for="pt-aff">
+                    <span class="presta-type-icon">✈️</span>
+                    <span class="presta-type-text">
+                      <strong>Agence / Affiliation</strong>
+                      <small>Partenariat commercial</small>
+                    </span>
+                  </label>
+                </div>
+
               </div>
             </div>
             <div class="field full"><label for="p-ville">Ville / Aéroport couvert</label><input type="text" id="p-ville" name="ville" placeholder="Ex: Abidjan (FHB) · Paris (CDG)" required/></div>
@@ -1207,9 +1325,11 @@ setupForm('formVoyageur','successVoyageur');
 setupForm('formPrestataire','successPrestataire');
 
 /* Radios prestataire */
-document.querySelectorAll('.radio-btns label').forEach(function(l){
-  var i=l.querySelector('input');
-  if(i)i.addEventListener('change',function(){document.querySelectorAll('.radio-btns label').forEach(function(x){x.classList.remove('selected');});l.classList.add('selected');});
+/* Cartes type prestation — mise à jour visuelle */
+document.querySelectorAll('.presta-type-card input[type="radio"]').forEach(function(radio){
+  radio.addEventListener('change', function(){
+    /* Pas de classe JS nécessaire — CSS :checked gère l'état visuel */
+  });
 });
 
 /* ══ UTILISATEUR localStorage ══ */
@@ -1596,6 +1716,161 @@ updateRecap();
   /* Les liens ferment le menu après clic */
   menu.querySelectorAll('.wa-bubble-link').forEach(function(link){
     link.addEventListener('click', function(){ setTimeout(closeMenu, 200); });
+  });
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   VAGUE 3 — VÉRIFICATION VOL / COMPAGNIE (cohérence IATA)
+   Table de correspondance : compagnie → préfixe(s) IATA attendu(s)
+══════════════════════════════════════════════════════════════ */
+(function(){
+  var IATA_MAP = {
+    'Air France'         : ['AF'],
+    'Air Côte d\'Ivoire' : ['HF'],
+    'Corsair'            : ['SS'],
+    'Brussels Airlines'  : ['SN'],
+    'Royal Air Maroc'    : ['AT'],
+    'Tunisair'           : ['TU'],
+    'Air Algérie'        : ['AH'],
+    'Ethiopian Airlines' : ['ET'],
+    'Kenya Airways'      : ['KQ'],
+    'Turkish Airlines'   : ['TK']
+  };
+
+  var volInput    = document.getElementById('v-vol');
+  var compSelect  = document.getElementById('v-compagnie');
+  var submitBtn   = document.querySelector('#formVoyageur .btn-submit');
+  var volErrDiv   = document.getElementById('volErrMsg');
+
+  if(!volInput || !compSelect || !submitBtn) return;
+
+  /* Crée le div d'erreur vol s'il n'existe pas */
+  if(!volErrDiv){
+    volErrDiv = document.createElement('div');
+    volErrDiv.id = 'volErrMsg';
+    volErrDiv.style.cssText = [
+      'display:none','background:#FFF0F0','border:1.5px solid #FFBCBC',
+      'border-radius:9px','padding:10px 14px','font-size:.82rem',
+      'color:#C0392B','font-weight:700','margin-top:8px','line-height:1.5'
+    ].join(';');
+    volInput.parentNode.parentNode.appendChild(volErrDiv);
+  }
+
+  var originalBtnText = submitBtn.textContent;
+  var originalBtnStyle = submitBtn.getAttribute('style') || '';
+
+  function checkVolCoherence(){
+    var compagnie = compSelect.value;
+    var vol       = volInput.value.trim().toUpperCase().replace(/\s+/g,'');
+    var prefixes  = IATA_MAP[compagnie];
+
+    /* Pas de compagnie sélectionnée ou compagnie non listée → pas de validation */
+    if(!compagnie || !prefixes) return resetVolErr();
+
+    /* Vol vide ou trop court → attente */
+    if(vol.length < 2) return resetVolErr();
+
+    /* Vérifier si le vol commence par un des préfixes attendus */
+    var prefix2 = vol.substring(0,2);
+    var ok = prefixes.some(function(p){ return prefix2 === p; });
+
+    if(!ok){
+      volErrDiv.style.display = 'block';
+      volErrDiv.textContent = '⚠️ Erreur : Le numéro de vol ne correspond pas à la compagnie sélectionnée. (Attendu : ' + prefixes.join(' ou ') + 'XXXX)';
+      submitBtn.style.cssText = 'background:#C0392B !important;box-shadow:0 4px 16px rgba(192,57,43,.3);cursor:not-allowed';
+      submitBtn.textContent   = '⚠️ Erreur : Vol / Compagnie incohérents';
+      submitBtn.dataset.volErr = '1';
+    } else {
+      resetVolErr();
+    }
+  }
+
+  function resetVolErr(){
+    volErrDiv.style.display = 'none';
+    submitBtn.style.cssText = originalBtnStyle;
+    submitBtn.textContent   = originalBtnText;
+    delete submitBtn.dataset.volErr;
+  }
+
+  volInput.addEventListener('input', checkVolCoherence);
+  compSelect.addEventListener('change', checkVolCoherence);
+
+  /* Bloquer submit si erreur vol */
+  document.getElementById('formVoyageur').addEventListener('submit', function(e){
+    if(submitBtn.dataset.volErr === '1'){
+      e.preventDefault();
+      volInput.focus();
+      volErrDiv.style.display = 'block';
+    }
+  }, true);
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   VAGUE 4 — PASSERELLE DE DONNÉES VOYAGEUR → sessionStorage
+   ─────────────────────────────────────────────────────────────
+   Ces données sont sauvegardées sous des clés standardisées
+   "sos_*" dès que le formulaire voyageur est soumis avec succès.
+
+   COMMENT LES LIRE DEPUIS index.html (formulaire d'indemnisation) :
+   ──────────────────────────────────────────────────────────────────
+   Dans le script de index.html, au chargement de la page, appelez :
+
+     function preFillFromEscale() {
+       var keys = {
+         'sos_prenom'    : 'id-du-champ-prenom',
+         'sos_nom'       : 'id-du-champ-nom',
+         'sos_email'     : 'id-du-champ-email',
+         'sos_whatsapp'  : 'id-du-champ-whatsapp',
+         'sos_aeroport'  : 'id-du-champ-aeroport',
+         'sos_vol'       : 'id-du-champ-vol',
+         'sos_compagnie' : 'id-du-champ-compagnie',
+         'sos_motif'     : 'id-du-champ-motif'
+       };
+       Object.keys(keys).forEach(function(k) {
+         var val = sessionStorage.getItem(k);
+         var el  = document.getElementById(keys[k]);
+         if(val && el) el.value = val;
+       });
+     }
+     document.addEventListener('DOMContentLoaded', preFillFromEscale);
+
+   Les données sont effacées automatiquement à la fermeture du navigateur
+   (sessionStorage) ou conservées 7 jours (localStorage — changer ci-dessous).
+══════════════════════════════════════════════════════════════ */
+(function(){
+  var form = document.getElementById('formVoyageur');
+  if(!form) return;
+
+  form.addEventListener('submit', function(){
+    var get = function(id){ var el=document.getElementById(id); return el?el.value.trim():''; };
+
+    var data = {
+      sos_prenom    : get('v-prenom'),
+      sos_nom       : get('v-nom'),
+      sos_email     : get('voyageur-email'),
+      sos_indicatif : get('v-indicatif'),
+      sos_whatsapp  : get('v-phone'),
+      sos_aeroport  : get('v-aeroport'),
+      sos_vol       : get('v-vol').toUpperCase().replace(/\s+/g,''),
+      sos_compagnie : get('v-compagnie'),
+      sos_motif     : get('v-motif'),
+      sos_adultes   : get('v-adultes'),
+      sos_enfants   : get('v-enfants'),
+      sos_nuits     : get('v-nuits'),
+      sos_source    : 'escale-urgence',
+      sos_timestamp : new Date().toISOString()
+    };
+
+    try {
+      Object.keys(data).forEach(function(k){
+        sessionStorage.setItem(k, data[k]);
+        /* Pour persistance 7j (décommenter la ligne ci-dessous) : */
+        /* localStorage.setItem(k, data[k]); */
+      });
+    } catch(e) {
+      /* sessionStorage indisponible (navigation privée) — on continue silencieusement */
+      console.warn('SOS Passager : sessionStorage indisponible.', e);
+    }
   });
 })();
 
