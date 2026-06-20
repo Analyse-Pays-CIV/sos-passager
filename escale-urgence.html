@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="SOS Passager Escale Réseau — Hébergement & Transport d'Urgence pour voyageurs bloqués en aéroport. Europe & Afrique. Pack clé en main immédiat." />
+  <meta name="description" content="SOS Passager Escale Réseau — Hébergement & Transport d'Urgence pour voyageurs bloqués en aéroport. Pack clé en main immédiat." />
   <meta name="theme-color" content="#0057B8" />
   <title>SOS Passager Escale Réseau — Hébergement & Transport d'Urgence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
+    /* ════ RESET ════ */
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
     :root {
       --blue:#0057B8; --blue-dark:#003E8A; --blue-light:#E8F0FB; --blue-mid:#2979D0;
       --green-wa:#25D366; --green-wa-dk:#1EB857;
+      /* ── VERT OFFICIEL SOS PASSAGER ── */
+      --green:#1DB954; --green-dark:#158A3E; --green-light:#E6F9EE;
+      --green-shadow:rgba(29,185,84,.35);
       --gray-1:#F7F9FC; --gray-2:#EEF2F8; --gray-3:#C8D5E8; --gray-text:#5A6A7E;
       --dark:#1A2538; --white:#FFFFFF; --amber:#F59E0B;
       --radius:12px; --radius-lg:18px;
-      --shadow-sm:0 2px 8px rgba(0,87,184,0.08);
-      --shadow-md:0 4px 20px rgba(0,87,184,0.13);
-      --shadow-lg:0 8px 40px rgba(0,87,184,0.16);
+      --shadow-sm:0 2px 8px rgba(0,87,184,.08);
+      --shadow-md:0 4px 20px rgba(0,87,184,.13);
+      --shadow-lg:0 8px 40px rgba(0,87,184,.18);
     }
     html { scroll-behavior:smooth; }
     body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--white); color:var(--dark); line-height:1.65; font-size:16px; -webkit-font-smoothing:antialiased; }
@@ -27,326 +31,556 @@
     img { max-width:100%; display:block; }
     input,select,textarea,button { font-family:inherit; }
 
-    /* ── NAV ── */
-    .navbar { position:sticky; top:0; z-index:200; background:var(--white); border-bottom:2px solid var(--blue-light); box-shadow:var(--shadow-sm); }
-    .nav-inner { max-width:1100px; margin:0 auto; padding:0 20px; display:flex; align-items:center; justify-content:space-between; height:64px; gap:16px; }
-    .nav-logo { display:flex; align-items:center; gap:10px; flex-shrink:0; text-decoration:none; }
-    .nav-logo-icon { width:42px; height:42px; background:var(--blue); border-radius:10px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:900; font-size:0.82rem; letter-spacing:-0.03em; line-height:1.1; text-align:center; }
-    .nav-logo-text { line-height:1.2; }
-    .nav-logo-text .brand { display:block; font-size:1rem; font-weight:800; color:var(--blue); }
-    .nav-logo-text .sub { display:block; font-size:0.68rem; font-weight:500; color:var(--gray-text); letter-spacing:0.04em; }
-    .nav-links { display:flex; align-items:center; gap:4px; list-style:none; }
-    .nav-links a { display:inline-block; padding:7px 13px; border-radius:8px; font-size:0.88rem; font-weight:600; color:var(--dark); transition:background 0.18s,color 0.18s; }
-    .nav-links a:hover,.nav-links a.active { background:var(--blue-light); color:var(--blue); }
-    .nav-hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:8px; border-radius:8px; }
-    .nav-hamburger span { display:block; width:22px; height:2px; background:var(--dark); border-radius:2px; }
-    .nav-mobile { display:none; flex-direction:column; background:var(--white); border-top:1px solid var(--blue-light); padding:12px 20px 16px; gap:4px; }
+    /* ════ VAGUE 2 — NAV BOOKING STYLE ════ */
+    .navbar {
+      position:sticky; top:0; z-index:300;
+      background:var(--blue-dark);
+      border-bottom:3px solid var(--blue);
+      box-shadow:0 2px 12px rgba(0,30,80,.25);
+    }
+    .nav-inner {
+      max-width:1200px; margin:0 auto; padding:0 20px;
+      display:flex; align-items:center; justify-content:space-between;
+      height:58px; gap:16px;
+    }
+    .nav-brand {
+      display:flex; align-items:center; gap:10px; text-decoration:none;
+    }
+    .nav-brand-icon {
+      width:36px; height:36px; background:var(--white); border-radius:8px;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--blue-dark); font-weight:900; font-size:0.72rem; line-height:1.1; text-align:center;
+    }
+    .nav-brand-name { font-size:1.05rem; font-weight:800; color:#fff; letter-spacing:-0.01em; }
+    .nav-brand-name span { color:#7EC8F8; }
+    .nav-center {
+      display:flex; align-items:center; gap:8px;
+      background:rgba(255,255,255,.12); border-radius:20px; padding:5px 14px;
+      font-size:0.78rem; font-weight:700; color:rgba(255,255,255,.9);
+    }
+    .nav-back-btn {
+      display:flex; align-items:center; gap:8px;
+      background:var(--white); color:var(--blue-dark);
+      border:none; border-radius:8px; padding:8px 16px;
+      font-size:0.82rem; font-weight:700; cursor:pointer;
+      transition:background .15s,transform .15s;
+      text-decoration:none; white-space:nowrap;
+    }
+    .nav-back-btn:hover { background:var(--blue-light); transform:translateY(-1px); }
+    .nav-hamburger {
+      display:none; flex-direction:column; gap:5px;
+      background:none; border:none; cursor:pointer; padding:8px;
+    }
+    .nav-hamburger span { display:block; width:22px; height:2px; background:#fff; border-radius:2px; }
+    .nav-mobile {
+      display:none; flex-direction:column;
+      background:var(--blue-dark); border-top:1px solid rgba(255,255,255,.12);
+      padding:12px 20px 16px; gap:4px;
+    }
     .nav-mobile.open { display:flex; }
-    .nav-mobile a { display:block; padding:10px 14px; border-radius:8px; font-size:0.92rem; font-weight:600; color:var(--dark); transition:background 0.18s; }
-    .nav-mobile a:hover { background:var(--blue-light); color:var(--blue); }
-    @media(max-width:768px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
+    .nav-mobile a {
+      display:block; padding:10px 14px; border-radius:8px;
+      font-size:0.92rem; font-weight:600; color:rgba(255,255,255,.9);
+      transition:background .18s;
+    }
+    .nav-mobile a:hover { background:rgba(255,255,255,.12); }
+    @media(max-width:768px){
+      .nav-center { display:none; }
+      .nav-hamburger { display:flex; }
+    }
 
-    /* ── LAYOUT ── */
-    .container { max-width:1100px; margin:0 auto; padding:0 20px; }
-    .section-tag { display:inline-block; background:var(--blue-light); color:var(--blue); font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:5px 12px; border-radius:20px; margin-bottom:14px; }
+    /* ════ LAYOUT ════ */
+    .container { max-width:1160px; margin:0 auto; padding:0 20px; }
+    .section-tag { display:inline-block; background:var(--blue-light); color:var(--blue); font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:5px 12px; border-radius:20px; margin-bottom:14px; }
     .section-head { text-align:center; margin-bottom:44px; }
     .section-head h2 { font-size:clamp(1.45rem,3.5vw,2.1rem); font-weight:800; color:var(--blue-dark); margin-bottom:10px; }
     .section-head p { color:var(--gray-text); font-size:1rem; max-width:600px; margin:0 auto; }
 
-    /* ── HERO ── */
-    .hero { background:linear-gradient(160deg,var(--blue-light) 0%,var(--white) 60%); padding:64px 0 56px; border-bottom:1px solid var(--gray-2); }
-    .hero-grid { display:grid; grid-template-columns:1fr 420px; gap:48px; align-items:start; }
-    @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:36px;}}
-    .hero-live { display:inline-flex; align-items:center; gap:7px; background:#FFF3CD; border:1px solid #FBBF24; color:#92400E; font-size:0.73rem; font-weight:700; letter-spacing:0.1em; padding:5px 12px; border-radius:20px; margin-bottom:18px; }
-    .hero-live-dot { width:7px; height:7px; background:#F59E0B; border-radius:50%; animation:blink 1.4s ease-in-out infinite; }
-    @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
-    .hero h1 { font-size:clamp(1.9rem,4.5vw,3rem); font-weight:900; color:var(--blue-dark); line-height:1.12; margin-bottom:18px; letter-spacing:-0.02em; }
-    .hero h1 em { font-style:normal; color:var(--blue); }
-    .hero-lead { font-size:1.05rem; color:var(--gray-text); margin-bottom:32px; max-width:540px; }
-    .cas-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px; }
-    @media(max-width:600px){.cas-grid{grid-template-columns:1fr;}}
-    .cas-card { background:var(--white); border:1.5px solid var(--blue-mid); border-radius:var(--radius); padding:20px 18px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; gap:10px; }
-    .cas-card-num { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.78rem; font-weight:800; flex-shrink:0; }
-    .cas-card-num.blue{background:var(--blue);color:#fff;} .cas-card-num.amber{background:var(--amber);color:#fff;}
-    .cas-card h3 { font-size:0.92rem; font-weight:700; color:var(--blue-dark); margin-top:2px; }
-    .cas-card p { font-size:0.83rem; color:var(--gray-text); line-height:1.55; }
-    .cas-badge { display:inline-block; font-size:0.71rem; font-weight:700; padding:3px 9px; border-radius:5px; margin-top:4px; align-self:flex-start; }
-    .cas-badge.blue{background:var(--blue-light);color:var(--blue);} .cas-badge.amber{background:#FEF3C7;color:#92400E;}
-    .wa-btns { display:flex; flex-direction:column; gap:14px; }
-    .btn-wa { display:flex; align-items:center; gap:14px; background:var(--green-wa); color:#fff; border:none; border-radius:var(--radius); padding:17px 22px; font-size:0.97rem; font-weight:800; cursor:pointer; text-decoration:none; box-shadow:0 4px 16px rgba(37,211,102,0.3); transition:background 0.18s,transform 0.15s; }
-    .btn-wa:hover { background:var(--green-wa-dk); transform:translateY(-2px); color:#fff; }
-    .btn-wa-icon { font-size:1.6rem; flex-shrink:0; }
-    .btn-wa-text strong { display:block; font-size:0.73rem; font-weight:700; opacity:0.85; letter-spacing:0.05em; text-transform:uppercase; margin-bottom:1px; }
-    .hero-panel { background:var(--blue); border-radius:var(--radius-lg); padding:30px 26px; color:#fff; box-shadow:var(--shadow-lg); }
-    .hero-panel h2 { font-size:1.15rem; font-weight:800; margin-bottom:8px; }
-    .hero-panel > p { font-size:0.84rem; opacity:0.85; margin-bottom:24px; }
-    .panel-steps { display:flex; flex-direction:column; gap:14px; margin-bottom:24px; }
-    .panel-step { display:flex; align-items:flex-start; gap:12px; }
-    .panel-step-num { width:28px; height:28px; background:rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.78rem; font-weight:800; flex-shrink:0; }
-    .panel-step-text { font-size:0.85rem; opacity:0.9; padding-top:4px; }
-    .panel-wa-cta { display:flex; align-items:center; gap:10px; background:#fff; color:var(--blue-dark); font-size:0.88rem; font-weight:800; padding:14px 18px; border-radius:10px; text-decoration:none; transition:opacity 0.18s; }
-    .panel-wa-cta:hover { opacity:0.9; color:var(--blue-dark); }
-
-    /* ── SMOOTH SCROLL BANNER ── */
-    .scroll-cta-banner {
-      background:var(--blue-dark); color:#fff; text-align:center;
-      padding:14px 20px; font-size:0.88rem; font-weight:700;
-      border-bottom:2px solid var(--blue);
+    /* ════ HERO ════ */
+    .hero {
+      background:linear-gradient(135deg, var(--blue-dark) 0%, #0065D1 50%, var(--blue-light) 100%);
+      padding:56px 0 48px; border-bottom:3px solid var(--blue);
+      position:relative; overflow:hidden;
     }
-    .scroll-cta-banner a { color:#7EC8F8; text-decoration:underline; cursor:pointer; }
+    .hero::before {
+      content:''; position:absolute; inset:0;
+      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='35' fill='none' stroke='rgba(255,255,255,.04)' stroke-width='1'/%3E%3C/svg%3E") center/80px;
+      pointer-events:none;
+    }
+    .hero-grid { display:grid; grid-template-columns:1fr 400px; gap:48px; align-items:start; position:relative; z-index:1; }
+    @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:36px;}}
+    .hero-live {
+      display:inline-flex; align-items:center; gap:7px;
+      background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3);
+      color:#fff; font-size:.73rem; font-weight:700; letter-spacing:.1em;
+      padding:5px 14px; border-radius:20px; margin-bottom:16px;
+    }
+    .hero-live-dot { width:7px; height:7px; background:#4ADE80; border-radius:50%; animation:blink 1.4s ease-in-out infinite; }
+    @keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+    .hero h1 { font-size:clamp(1.8rem,4vw,2.8rem); font-weight:900; color:#fff; line-height:1.12; margin-bottom:16px; letter-spacing:-.02em; }
+    .hero h1 em { font-style:normal; color:#7EC8F8; }
+    .hero-lead { font-size:1rem; color:rgba(255,255,255,.85); margin-bottom:28px; max-width:520px; line-height:1.7; }
+    .cas-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:28px; }
+    @media(max-width:600px){.cas-grid{grid-template-columns:1fr;}}
+    .cas-card {
+      background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2);
+      border-radius:var(--radius); padding:18px 16px;
+      backdrop-filter:blur(8px); display:flex; flex-direction:column; gap:8px;
+    }
+    .cas-card-num { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:800; flex-shrink:0; }
+    .cas-card-num.blue{background:var(--blue);color:#fff;}
+    .cas-card-num.amber{background:var(--amber);color:#fff;}
+    .cas-card h3 { font-size:.88rem; font-weight:700; color:#fff; margin-top:2px; }
+    .cas-card p { font-size:.8rem; color:rgba(255,255,255,.8); line-height:1.5; }
+    .cas-badge { display:inline-block; font-size:.68rem; font-weight:700; padding:2px 8px; border-radius:4px; margin-top:2px; align-self:flex-start; }
+    .cas-badge.blue{background:rgba(255,255,255,.2);color:#fff;}
+    .cas-badge.amber{background:rgba(245,158,11,.2);color:#FDE68A;}
 
-    /* ── SECTION CATALOGUE (hébergement + transport) ── */
-    .choix-section { background:var(--white); padding:64px 0 72px; border-top:2px solid var(--blue-light); }
-    .choix-block { margin-bottom:52px; }
-    .choix-block--transport { margin-bottom:36px; }
-    .choix-block-title { display:flex; align-items:flex-start; gap:16px; margin-bottom:28px; }
-    .choix-num { flex-shrink:0; width:42px; height:42px; background:var(--blue); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.15rem; font-weight:800; margin-top:2px; }
-    .choix-block-title h3 { font-size:1.2rem; font-weight:800; color:var(--blue-dark); margin-bottom:3px; line-height:1.3; }
-    .choix-block-sub { font-size:0.86rem; color:var(--gray-text); margin:0; }
+    /* VAGUE 2 — CTA scroll — VERT OFFICIEL SOS PASSAGER */
+    .hero-cta-scroll {
+      display:inline-flex; align-items:center; gap:10px;
+      background:var(--green); color:#fff; text-decoration:none;
+      border-radius:var(--radius); padding:15px 26px;
+      font-size:1rem; font-weight:800;
+      box-shadow:0 4px 22px var(--green-shadow);
+      transition:background .18s,transform .15s,box-shadow .18s;
+      cursor:pointer; border:none; letter-spacing:-.01em;
+      position:relative; overflow:hidden;
+    }
+    .hero-cta-scroll::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%);
+      pointer-events:none;
+    }
+    .hero-cta-scroll:hover {
+      background:var(--green-dark);
+      transform:translateY(-2px) scale(1.02);
+      box-shadow:0 8px 32px var(--green-shadow);
+    }
+    .hero-cta-scroll:active { transform:translateY(0) scale(1); }
 
-    /* Grille hôtel */
+    /* Panel hero */
+    .hero-panel {
+      background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25);
+      border-radius:var(--radius-lg); padding:28px 24px; color:#fff;
+      backdrop-filter:blur(10px);
+    }
+    .hero-panel h2 { font-size:1.08rem; font-weight:800; margin-bottom:6px; }
+    .hero-panel > p { font-size:.82rem; opacity:.8; margin-bottom:20px; }
+    .panel-steps { display:flex; flex-direction:column; gap:12px; margin-bottom:20px; }
+    .panel-step { display:flex; align-items:flex-start; gap:10px; }
+    .panel-step-num { width:26px; height:26px; background:rgba(255,255,255,.2); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:800; flex-shrink:0; }
+    .panel-step-text { font-size:.82rem; opacity:.9; padding-top:3px; }
+
+    /* ════ BULLE WA UNIQUE FLOTTANTE ════ */
+    .wa-bubble-wrap {
+      position:fixed; bottom:20px; right:20px; z-index:9999;
+      display:flex; flex-direction:column; align-items:flex-end; gap:8px;
+    }
+    /* Menu pop-up */
+    .wa-bubble-menu {
+      display:flex; flex-direction:column; gap:7px;
+      opacity:0; pointer-events:none;
+      transform:translateY(10px) scale(.96);
+      transition:opacity .2s ease, transform .2s cubic-bezier(.34,1.56,.64,1);
+    }
+    .wa-bubble-menu.open {
+      opacity:1; pointer-events:auto;
+      transform:translateY(0) scale(1);
+    }
+    .wa-bubble-link {
+      display:flex; align-items:center; gap:10px;
+      background:#fff; color:var(--dark); text-decoration:none;
+      border-radius:50px; padding:9px 16px 9px 9px;
+      font-size:.8rem; font-weight:700; white-space:nowrap;
+      box-shadow:0 4px 18px rgba(0,0,0,.14);
+      border:1.5px solid #E6F9EE;
+      transition:background .15s, transform .15s, box-shadow .15s;
+    }
+    .wa-bubble-link:hover {
+      background:#E6F9EE; transform:translateX(-3px);
+      box-shadow:0 6px 24px rgba(0,0,0,.18);
+    }
+    .wa-bubble-link-dot {
+      width:32px; height:32px; background:#25D366; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+    }
+    .wa-bubble-link-dot svg { width:18px; height:18px; fill:#fff; }
+    .wa-bubble-link-text { line-height:1.25; }
+    .wa-bubble-link-text strong { display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--gray-text); font-weight:700; }
+    .wa-bubble-link-text span { font-size:.82rem; font-weight:800; color:var(--dark); }
+    /* Bulle principale */
+    .wa-bubble-btn {
+      width:60px; height:60px; border-radius:50%;
+      background:#25D366; border:none; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 4px 20px rgba(37,211,102,.45);
+      transition:background .18s, transform .18s, box-shadow .18s;
+      flex-shrink:0;
+    }
+    .wa-bubble-btn:hover {
+      background:#1EB857;
+      transform:scale(1.08);
+      box-shadow:0 8px 32px rgba(37,211,102,.55);
+    }
+    .wa-bubble-btn.active {
+      background:#158A3E;
+      transform:scale(.96);
+    }
+    .wa-bubble-btn svg { width:32px; height:32px; fill:#fff; }
+
+    /* ════ SECTION CATALOGUE / LOGEMENTS — Vague 3 ════ */
+    .catalogue-section { background:var(--white); padding:64px 0 56px; border-top:2px solid var(--blue-light); }
+    .steps-progress {
+      display:flex; align-items:center; justify-content:center; gap:0;
+      margin-bottom:48px; flex-wrap:wrap;
+    }
+    .step-item {
+      display:flex; align-items:center; gap:8px;
+      font-size:.8rem; font-weight:700; color:var(--gray-text);
+    }
+    .step-item.active { color:var(--blue); }
+    .step-item.done { color:var(--green-wa-dk); }
+    .step-circle {
+      width:30px; height:30px; border-radius:50%;
+      background:var(--gray-2); color:var(--gray-text);
+      display:flex; align-items:center; justify-content:center;
+      font-size:.78rem; font-weight:800; flex-shrink:0;
+      border:2px solid var(--gray-3);
+    }
+    .step-item.active .step-circle { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .step-item.done .step-circle { background:var(--green-wa-dk); color:#fff; border-color:var(--green-wa-dk); }
+    .step-sep { width:40px; height:2px; background:var(--gray-3); margin:0 4px; flex-shrink:0; }
+    @media(max-width:500px){.step-sep{width:16px;}.step-item{font-size:.7rem;}}
+
+    /* Grille logements */
     .hotel-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
     @media(max-width:900px){.hotel-grid{grid-template-columns:1fr 1fr;}}
-    @media(max-width:600px){.hotel-grid{grid-template-columns:1fr;}}
-    .hotel-card { position:relative; background:var(--white); border:1.5px solid var(--gray-3); border-radius:16px; overflow:hidden; cursor:pointer; transition:border-color 0.2s,box-shadow 0.2s,transform 0.18s; display:flex; flex-direction:column; box-shadow:var(--shadow-sm); }
+    @media(max-width:580px){.hotel-grid{grid-template-columns:1fr;}}
+
+    .hotel-card {
+      position:relative; background:var(--white);
+      border:2px solid var(--gray-3); border-radius:16px; overflow:hidden;
+      cursor:pointer; display:flex; flex-direction:column;
+      box-shadow:var(--shadow-sm);
+      transition:border-color .2s,box-shadow .2s,transform .18s;
+    }
     .hotel-card:hover { border-color:var(--blue-mid); box-shadow:var(--shadow-md); transform:translateY(-3px); }
     .hotel-card input[type="radio"] { position:absolute; opacity:0; width:0; height:0; pointer-events:none; }
-    .hotel-card.is-selected { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,87,184,0.18),0 6px 28px rgba(0,87,184,0.16); }
-    .hotel-card.is-selected .hotel-select-btn { background:var(--blue); color:#fff; }
-    .hotel-card.is-selected .hotel-name { color:var(--blue); }
-    .hotel-card.is-selected .hcheck svg circle { fill:var(--blue); stroke:var(--blue); }
-    .hotel-card.is-selected .hcheck .ck { stroke:#fff; }
-    .hotel-img-wrap { position:relative; width:100%; height:180px; overflow:hidden; border-radius:8px 8px 0 0; flex-shrink:0; }
-    .hotel-img-wrap img { width:100%; height:180px; object-fit:cover; border-radius:8px 8px 0 0; display:block; transition:transform 0.4s ease; }
-    .hotel-card:hover .hotel-img-wrap img { transform:scale(1.04); }
-    .hotel-img-badge { position:absolute; top:10px; right:10px; background:rgba(255,255,255,0.94); color:var(--dark); font-size:0.72rem; font-weight:700; padding:3px 9px; border-radius:20px; backdrop-filter:blur(4px); }
-    .hotel-img-tag { position:absolute; top:10px; left:10px; background:var(--blue); color:#fff; font-size:0.65rem; font-weight:800; padding:3px 9px; border-radius:20px; text-transform:uppercase; letter-spacing:0.06em; }
-    .hcheck { position:absolute; top:10px; left:10px; width:24px; height:24px; background:rgba(255,255,255,0.95); border-radius:50%; padding:2px; box-shadow:0 1px 4px rgba(0,0,0,0.15); z-index:2; }
-    .hcheck svg { width:100%; height:100%; }
-    .hotel-body { padding:16px 16px 14px; flex:1; display:flex; flex-direction:column; gap:10px; }
-    .hotel-name { font-size:0.95rem; font-weight:800; color:var(--dark); line-height:1.25; transition:color 0.18s; }
-    .hotel-specs { display:flex; flex-direction:column; gap:4px; }
-    .hotel-spec-item { font-size:0.75rem; color:var(--gray-text); line-height:1.4; }
-    .hotel-badges { display:flex; flex-wrap:wrap; gap:5px; }
-    .eq-badge { display:inline-flex; align-items:center; gap:3px; background:var(--blue-light); color:var(--blue-dark); font-size:0.68rem; font-weight:600; padding:3px 8px; border-radius:20px; white-space:nowrap; }
-    .hotel-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:auto; padding-top:10px; border-top:1px solid var(--gray-2); flex-wrap:wrap; }
-    .hotel-prix { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px; }
-    .hotel-prix-amount { font-size:1.05rem; font-weight:800; color:var(--blue-dark); }
-    .hotel-prix-unit { font-size:0.75rem; color:var(--gray-text); font-weight:500; }
-    .hotel-prix-eur { font-size:0.7rem; color:var(--gray-text); padding:1px 7px; background:var(--gray-2); border-radius:10px; font-weight:500; }
-    .hotel-select-btn { font-size:0.75rem; font-weight:700; color:var(--blue); border:1.5px solid var(--blue); border-radius:8px; padding:5px 13px; transition:background 0.18s,color 0.18s; white-space:nowrap; flex-shrink:0; }
-    .choix-note { font-size:0.78rem; color:var(--gray-text); background:var(--gray-1); border-left:3px solid var(--blue); border-radius:0 8px 8px 0; padding:10px 14px; margin-top:16px; line-height:1.55; }
+    .hotel-card.is-selected {
+      border-color:var(--green);
+      box-shadow:0 0 0 3px rgba(29,185,84,.2),var(--shadow-md);
+    }
+    .hotel-card.is-selected .h-select-btn {
+      background:var(--green); color:#fff;
+      border-color:var(--green);
+      box-shadow:0 2px 10px rgba(29,185,84,.3);
+    }
+    .hotel-card.is-selected .h-name { color:var(--green-dark); }
+    .hotel-card.is-selected .hcring svg circle { fill:var(--green); stroke:var(--green); }
+    .hotel-card.is-selected .hcring .ck { stroke:#fff; }
 
-    /* Grille transport */
-    .transport-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; align-items:stretch; }
+    /* Image logement */
+    .h-img-wrap { position:relative; width:100%; height:180px; overflow:hidden; flex-shrink:0; }
+    .h-img-wrap img { width:100%; height:180px; object-fit:cover; display:block; transition:transform .4s; }
+    .hotel-card:hover .h-img-wrap img { transform:scale(1.05); }
+    .h-badge-stars { position:absolute; top:10px; right:10px; background:rgba(255,255,255,.94); color:var(--dark); font-size:.7rem; font-weight:700; padding:3px 9px; border-radius:20px; backdrop-filter:blur(4px); }
+    .h-badge-flag { position:absolute; top:10px; left:10px; background:var(--blue); color:#fff; font-size:.62rem; font-weight:800; padding:3px 9px; border-radius:20px; text-transform:uppercase; letter-spacing:.06em; }
+
+    /* Badge gamme (Standard / Confort / Luxe) */
+    .h-badge-tier {
+      position:absolute; bottom:10px; left:10px;
+      font-size:.65rem; font-weight:800; padding:3px 10px; border-radius:20px;
+      text-transform:uppercase; letter-spacing:.06em;
+    }
+    .h-badge-tier.std { background:#E0F2FE; color:#0369A1; }
+    .h-badge-tier.mid { background:#FEF3C7; color:#92400E; }
+    .h-badge-tier.lux { background:#F3E8FF; color:#6B21A8; }
+
+    .hcring { position:absolute; top:10px; left:10px; width:24px; height:24px; background:rgba(255,255,255,.95); border-radius:50%; padding:2px; box-shadow:0 1px 4px rgba(0,0,0,.15); z-index:2; }
+    .hcring svg { width:100%; height:100%; }
+
+    /* Corps carte logement */
+    .h-body { padding:14px 16px; flex:1; display:flex; flex-direction:column; gap:9px; }
+    .h-name { font-size:.93rem; font-weight:800; color:var(--dark); line-height:1.25; transition:color .18s; }
+    .h-specs { display:flex; flex-direction:column; gap:3px; }
+    .h-spec { font-size:.74rem; color:var(--gray-text); line-height:1.4; }
+    .h-eq { display:flex; flex-wrap:wrap; gap:4px; }
+    .eq { display:inline-flex; align-items:center; gap:3px; background:var(--blue-light); color:var(--blue-dark); font-size:.66rem; font-weight:600; padding:2px 7px; border-radius:20px; white-space:nowrap; }
+    .h-footer { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:auto; padding-top:10px; border-top:1px solid var(--gray-2); flex-wrap:wrap; }
+    .h-prix { display:flex; align-items:baseline; gap:4px; flex-wrap:wrap; }
+    .h-prix-val { font-size:1.05rem; font-weight:800; color:var(--blue-dark); }
+    .h-prix-unit { font-size:.74rem; color:var(--gray-text); }
+    .h-prix-sub { font-size:.68rem; color:var(--gray-text); background:var(--gray-2); padding:1px 6px; border-radius:8px; }
+    .h-select-btn {
+      font-size:.73rem; font-weight:700; color:var(--blue);
+      border:1.5px solid var(--blue); border-radius:8px; padding:5px 12px;
+      white-space:nowrap; flex-shrink:0;
+      transition:background .18s,color .18s,border-color .18s,box-shadow .18s;
+      cursor:pointer;
+    }
+    .hotel-card:hover .h-select-btn { background:var(--blue); color:#fff; }
+    .choix-note { font-size:.78rem; color:var(--gray-text); background:var(--gray-1); border-left:3px solid var(--blue); border-radius:0 8px 8px 0; padding:10px 14px; margin-top:18px; line-height:1.55; }
+
+    /* ════ VAGUE 4 — TRANSPORT YANGO STYLE ════ */
+    .transport-section { background:var(--gray-1); padding:64px 0 56px; border-top:2px solid var(--blue-light); }
+    .transport-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
     @media(max-width:900px){.transport-grid{grid-template-columns:1fr 1fr;}}
-    @media(max-width:600px){.transport-grid{grid-template-columns:1fr;}}
-    .transport-card { position:relative; background:var(--white); border:1.5px solid var(--gray-3); border-radius:16px; overflow:hidden; cursor:pointer; transition:border-color 0.2s,box-shadow 0.2s,transform 0.18s; display:flex; flex-direction:column; box-shadow:var(--shadow-sm); }
+    @media(max-width:580px){.transport-grid{grid-template-columns:1fr;}}
+
+    .transport-card {
+      position:relative; background:var(--white);
+      border:2px solid var(--gray-3); border-radius:16px; overflow:hidden;
+      cursor:pointer; display:flex; flex-direction:column;
+      box-shadow:var(--shadow-sm);
+      transition:border-color .2s,box-shadow .2s,transform .18s;
+    }
     .transport-card:hover { border-color:var(--blue-mid); box-shadow:var(--shadow-md); transform:translateY(-3px); }
     .transport-card input[type="radio"] { position:absolute; opacity:0; width:0; height:0; pointer-events:none; }
-    .transport-card.is-selected { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,87,184,0.18); }
-    .transport-card.is-selected .transport-name { color:var(--blue); }
-    .transport-card.is-selected .tcheck svg circle { fill:var(--blue); stroke:var(--blue); }
-    .transport-card.is-selected .tcheck .ck { stroke:#fff; }
-    .transport-img-wrap { position:relative; width:100%; height:160px; overflow:hidden; border-radius:8px 8px 0 0; flex-shrink:0; }
-    .transport-img-wrap img { width:100%; height:160px; object-fit:cover; border-radius:8px 8px 0 0; display:block; transition:transform 0.4s ease; }
-    .transport-card:hover .transport-img-wrap img { transform:scale(1.04); }
-    .t-badge-pop { position:absolute; top:10px; left:50%; transform:translateX(-50%); background:var(--amber); color:#7a4500; font-size:0.68rem; font-weight:700; padding:3px 12px; border-radius:20px; white-space:nowrap; z-index:5; }
-    .tcheck { position:absolute; top:10px; right:10px; width:24px; height:24px; background:rgba(255,255,255,0.95); border-radius:50%; padding:2px; box-shadow:0 1px 4px rgba(0,0,0,0.12); z-index:5; }
-    .tcheck svg { width:100%; height:100%; }
-    .transport-body { padding:14px 16px; flex:1; display:flex; flex-direction:column; gap:9px; }
-    .transport-name { font-size:0.95rem; font-weight:800; color:var(--dark); transition:color 0.18s; }
-    .transport-specs { list-style:none; padding:9px 12px; margin:0; background:var(--gray-1); border-radius:9px; display:flex; flex-direction:column; gap:4px; }
-    .transport-specs li { font-size:0.76rem; color:var(--dark); display:flex; align-items:center; gap:5px; }
-    .transport-prix { margin-top:auto; padding:9px 13px; border-radius:10px; display:flex; flex-direction:column; gap:2px; text-align:center; }
-    .transport-prix.inc { background:#E6F8EF; }
-    .transport-prix.ext { background:var(--blue-light); }
-    .transport-prix-lbl { font-size:0.67rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--gray-text); }
-    .transport-prix.inc .transport-prix-lbl { color:#1A7A4A; }
-    .transport-prix.ext .transport-prix-lbl { color:var(--blue); }
-    .transport-prix-val { font-size:0.92rem; font-weight:800; color:var(--dark); }
-    .transport-prix.inc .transport-prix-val { color:#1A7A4A; }
-    .transport-prix.ext .transport-prix-val { color:var(--blue-dark); }
-    .transport-prix-val small { font-size:0.73rem; font-weight:500; color:var(--gray-text); }
+    .transport-card.is-selected {
+      border-color:var(--green);
+      box-shadow:0 0 0 3px rgba(29,185,84,.2),var(--shadow-sm);
+    }
+    .transport-card.is-selected .t-name { color:var(--green-dark); }
+    .transport-card.is-selected .tcring svg circle { fill:var(--green); stroke:var(--green); }
+    .transport-card.is-selected .tcring .ck { stroke:#fff; }
 
-    /* ── PANIER DYNAMIQUE ── */
-    .recap-box { background:var(--blue-light); border:1.5px solid var(--blue); border-radius:14px; padding:20px 24px; margin:36px 0 0; }
-    .recap-title { font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--blue-dark); margin-bottom:14px; }
+    .t-img-wrap { position:relative; width:100%; height:160px; overflow:hidden; flex-shrink:0; }
+    .t-img-wrap img { width:100%; height:160px; object-fit:cover; display:block; transition:transform .4s; }
+    .transport-card:hover .t-img-wrap img { transform:scale(1.05); }
+    .t-badge-pop { position:absolute; top:10px; left:50%; transform:translateX(-50%); background:var(--amber); color:#7a4500; font-size:.68rem; font-weight:700; padding:3px 12px; border-radius:20px; white-space:nowrap; z-index:5; }
+    .t-badge-eco { position:absolute; top:10px; left:10px; background:#DCFCE7; color:#166534; font-size:.65rem; font-weight:700; padding:2px 8px; border-radius:20px; z-index:5; }
+    .tcring { position:absolute; top:10px; right:10px; width:24px; height:24px; background:rgba(255,255,255,.95); border-radius:50%; padding:2px; box-shadow:0 1px 4px rgba(0,0,0,.12); z-index:5; }
+    .tcring svg { width:100%; height:100%; }
+
+    .t-body { padding:14px 16px; flex:1; display:flex; flex-direction:column; gap:9px; }
+    .t-name { font-size:.93rem; font-weight:800; color:var(--dark); transition:color .18s; }
+    .t-partner { font-size:.7rem; color:var(--gray-text); font-weight:600; }
+    .t-specs { list-style:none; padding:9px 12px; margin:0; background:var(--gray-1); border-radius:9px; display:flex; flex-direction:column; gap:3px; }
+    .t-specs li { font-size:.75rem; color:var(--dark); display:flex; align-items:center; gap:5px; }
+    .t-prix { margin-top:auto; padding:9px 13px; border-radius:10px; display:flex; flex-direction:column; gap:2px; text-align:center; }
+    .t-prix.inc { background:#E6F8EF; }
+    .t-prix.ext { background:var(--blue-light); }
+    .t-prix-lbl { font-size:.66rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; }
+    .t-prix.inc .t-prix-lbl { color:#1A7A4A; }
+    .t-prix.ext .t-prix-lbl { color:var(--blue); }
+    .t-prix-val { font-size:.92rem; font-weight:800; }
+    .t-prix.inc .t-prix-val { color:#1A7A4A; }
+    .t-prix.ext .t-prix-val { color:var(--blue-dark); }
+    .t-prix-val small { font-size:.72rem; font-weight:500; color:var(--gray-text); }
+
+    /* ════ PANIER / FACTURE SÉLECTION ════ */
+    .facture-section { background:var(--white); padding:52px 0; border-top:2px solid var(--blue-light); }
+    .recap-box {
+      background:var(--green-light); border:2px solid var(--green);
+      border-radius:16px; padding:24px 28px; max-width:700px; margin:0 auto;
+    }
+    .recap-title { font-size:.82rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--green-dark); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
     .recap-rows { display:flex; flex-direction:column; gap:10px; }
-    .recap-row { display:flex; align-items:flex-start; gap:12px; font-size:0.88rem; }
-    .recap-label { font-weight:700; color:var(--blue-dark); white-space:nowrap; flex-shrink:0; min-width:120px; }
-    .recap-val { color:var(--gray-text); font-style:italic; }
+    .recap-row { display:flex; align-items:flex-start; gap:12px; font-size:.88rem; }
+    .recap-label { font-weight:700; color:var(--green-dark); white-space:nowrap; flex-shrink:0; min-width:110px; }
+    .recap-val { color:var(--gray-text); font-style:italic; transition:color .2s; }
     .recap-val.filled { color:var(--dark); font-style:normal; font-weight:600; }
-    .recap-total-row { display:flex; align-items:center; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:2px solid var(--blue); flex-wrap:wrap; gap:8px; }
-    .recap-total-label { font-size:0.88rem; font-weight:700; color:var(--blue-dark); text-transform:uppercase; letter-spacing:0.05em; }
-    .recap-total-amount { font-size:1.6rem; font-weight:900; color:var(--blue-dark); line-height:1; }
-    .total-eur { font-size:0.8rem; font-weight:500; color:var(--gray-text); display:block; text-align:right; margin-top:2px; }
-    .recap-nuits-row { font-size:0.78rem; color:var(--gray-text); margin-top:6px; padding-top:6px; border-top:1px solid var(--gray-2); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:4px; }
+    .recap-total-row { display:flex; align-items:center; justify-content:space-between; margin-top:16px; padding-top:16px; border-top:2px solid var(--green); flex-wrap:wrap; gap:8px; }
+    .recap-total-label { font-size:.88rem; font-weight:700; color:var(--green-dark); text-transform:uppercase; letter-spacing:.05em; }
+    .recap-total-amt { font-size:1.7rem; font-weight:900; color:var(--green-dark); line-height:1; }
+    .recap-total-eur { font-size:.8rem; font-weight:500; color:var(--gray-text); display:block; text-align:right; margin-top:2px; }
+    .recap-nuits-row { font-size:.78rem; color:var(--gray-text); margin-top:8px; padding-top:8px; border-top:1px solid rgba(29,185,84,.25); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:4px; }
 
-    /* ── BOUTON PAIEMENT ── */
-    .btn-pay { display:flex; align-items:center; justify-content:center; gap:12px; width:100%; max-width:520px; margin:0 auto; background:var(--blue); color:#fff; border:none; border-radius:14px; padding:18px 28px; font-size:1.05rem; font-weight:800; cursor:pointer; transition:background 0.18s,transform 0.15s,box-shadow 0.18s; box-shadow:0 6px 24px rgba(0,87,184,0.3); }
-    .btn-pay:hover { background:var(--blue-dark); transform:translateY(-2px); box-shadow:0 10px 32px rgba(0,87,184,0.38); }
-    .btn-pay:disabled { background:var(--gray-3); box-shadow:none; cursor:not-allowed; transform:none; }
-    .btn-pay-icon { font-size:1.4rem; }
-    .btn-pay-text { display:flex; flex-direction:column; align-items:flex-start; gap:1px; }
-    .btn-pay-text strong { font-size:1rem; line-height:1.2; }
-    .btn-pay-text small { font-size:0.72rem; font-weight:500; opacity:0.85; }
-    .wa-confirm-hint { margin-top:12px; font-size:0.78rem; color:var(--gray-text); text-align:center; }
+    /* ── BOUTON PAIEMENT — VERT OFFICIEL SOS PASSAGER ── */
+    .btn-pay {
+      display:flex; align-items:center; justify-content:center; gap:12px;
+      width:100%; max-width:560px; margin:24px auto 0;
+      background:var(--green); color:#fff; border:none; border-radius:16px;
+      padding:20px 32px; font-size:1.1rem; font-weight:900;
+      cursor:pointer; transition:background .18s,transform .15s,box-shadow .18s;
+      box-shadow:0 6px 28px var(--green-shadow);
+      letter-spacing:-.01em; position:relative; overflow:hidden;
+    }
+    .btn-pay::before {
+      content:''; position:absolute; top:0; left:-100%;
+      width:60%; height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+      transition:left .5s ease;
+    }
+    .btn-pay:hover::before { left:150%; }
+    .btn-pay:hover {
+      background:var(--green-dark);
+      transform:translateY(-3px) scale(1.01);
+      box-shadow:0 12px 40px var(--green-shadow);
+    }
+    .btn-pay:active { transform:translateY(-1px) scale(1); }
+    .btn-pay:disabled {
+      background:var(--gray-3); box-shadow:none;
+      cursor:not-allowed; transform:none;
+    }
+    .btn-pay:disabled::before { display:none; }
+    .btn-pay-icon { font-size:1.5rem; }
+    .btn-pay-text { display:flex; flex-direction:column; align-items:flex-start; gap:2px; }
+    .btn-pay-text strong { font-size:1.05rem; line-height:1.2; }
+    .btn-pay-text small { font-size:.73rem; font-weight:500; opacity:.88; }
+    .facture-hint { text-align:center; font-size:.78rem; color:var(--gray-text); margin-top:12px; }
 
-    /* ── FORMULAIRE VOYAGEUR ── */
+    /* ════ FORMULAIRE VOYAGEUR ════ */
     .form-section { padding:72px 0; background:var(--gray-1); border-top:2px solid var(--blue-light); }
-    .form-card { background:var(--white); border:1.5px solid var(--gray-3); border-radius:var(--radius-lg); box-shadow:var(--shadow-md); padding:36px 32px; max-width:740px; margin:0 auto; }
+    .form-card { background:var(--white); border:1.5px solid var(--gray-3); border-radius:var(--radius-lg); box-shadow:var(--shadow-md); padding:36px 32px; max-width:760px; margin:0 auto; }
     @media(max-width:560px){.form-card{padding:24px 18px;}}
     .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
     @media(max-width:580px){.form-grid{grid-template-columns:1fr;}}
     .field { display:flex; flex-direction:column; gap:6px; }
     .field.full { grid-column:1/-1; }
-    .field label { font-size:0.78rem; font-weight:700; color:var(--blue-dark); letter-spacing:0.05em; text-transform:uppercase; }
-    .field input,.field select { background:var(--white); border:1.5px solid var(--gray-3); color:var(--dark); border-radius:9px; padding:11px 14px; width:100%; font-size:0.93rem; transition:border-color 0.2s,box-shadow 0.2s; -webkit-appearance:none; }
-    .field input:focus,.field select:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,87,184,0.12); }
+    .field label { font-size:.78rem; font-weight:700; color:var(--blue-dark); letter-spacing:.05em; text-transform:uppercase; }
+    .field input,.field select {
+      background:var(--white); border:1.5px solid var(--gray-3); color:var(--dark);
+      border-radius:9px; padding:11px 14px; width:100%; font-size:.93rem;
+      transition:border-color .2s,box-shadow .2s; -webkit-appearance:none;
+    }
+    .field input:focus,.field select:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,87,184,.12); }
     .field input::placeholder { color:#AAB8CC; }
     .field select { cursor:pointer; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230057B8' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:36px; }
     .phone-row { display:flex; gap:8px; }
-    .phone-row .field-indicatif { width:136px; flex-shrink:0; }
+    .phone-row .field-indicatif { width:130px; flex-shrink:0; }
     .phone-row .field-number { flex:1; }
     .pax-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
     @media(max-width:480px){.pax-row{grid-template-columns:1fr;}}
-    .btn-submit { width:100%; background:var(--blue); color:#fff; border:none; border-radius:var(--radius); padding:16px; font-size:1rem; font-weight:800; cursor:pointer; margin-top:24px; transition:background 0.18s,transform 0.15s; box-shadow:0 4px 16px rgba(0,87,184,0.25); }
+    .btn-submit { width:100%; background:var(--blue); color:#fff; border:none; border-radius:var(--radius); padding:16px; font-size:1rem; font-weight:800; cursor:pointer; margin-top:24px; transition:background .18s,transform .15s; box-shadow:0 4px 16px rgba(0,87,184,.25); }
     .btn-submit:hover { background:var(--blue-dark); transform:translateY(-1px); }
-    .form-success { display:none; background:#E8F8EE; border:1.5px solid #4CAF50; border-radius:var(--radius); padding:18px 20px; text-align:center; color:#1B5E20; font-weight:700; margin-top:16px; font-size:0.95rem; }
+    .form-success { display:none; background:#E8F8EE; border:1.5px solid #4CAF50; border-radius:var(--radius); padding:18px 20px; text-align:center; color:#1B5E20; font-weight:700; margin-top:16px; font-size:.95rem; }
 
-    /* ── PAIEMENTS ── */
-    .pay-section { padding:72px 0; background:var(--white); border-top:1px solid var(--gray-2); border-bottom:1px solid var(--gray-2); }
+    /* ════ PAIEMENTS ════ */
+    .pay-section { padding:64px 0; background:var(--white); border-top:1px solid var(--gray-2); }
     .pay-zones { display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:800px; margin:0 auto; }
     @media(max-width:640px){.pay-zones{grid-template-columns:1fr;}}
     .pay-zone-card { background:var(--white); border:1.5px solid var(--gray-3); border-radius:var(--radius); padding:26px 22px; box-shadow:var(--shadow-sm); }
-    .pay-zone-head { display:flex; align-items:center; gap:10px; margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid var(--gray-2); }
-    .pay-zone-head h3 { font-size:0.95rem; font-weight:700; color:var(--blue-dark); }
-    .pay-zone-flag { font-size:1.4rem; }
+    .pay-zone-head { display:flex; align-items:center; gap:10px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--gray-2); }
+    .pay-zone-head h3 { font-size:.95rem; font-weight:700; color:var(--blue-dark); }
+    .pay-zone-flag { font-size:1.3rem; }
     .pay-badges { display:flex; flex-wrap:wrap; gap:8px; }
-    .pay-badge { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; background:var(--gray-1); border:1.5px solid var(--gray-2); border-radius:8px; font-size:0.8rem; font-weight:700; color:var(--dark); white-space:nowrap; }
+    .pay-badge { display:inline-flex; align-items:center; gap:6px; padding:6px 13px; background:var(--gray-1); border:1.5px solid var(--gray-2); border-radius:8px; font-size:.78rem; font-weight:700; color:var(--dark); white-space:nowrap; }
     .pay-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
 
-    /* ── PRESTATAIRES ── */
-    .presta-section { padding:72px 0; background:var(--gray-1); }
-    .presta-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; align-items:stretch; }
+    /* ════ PRESTATAIRES ════ */
+    .presta-section { padding:64px 0; background:var(--gray-1); }
+    .presta-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
     @media(max-width:768px){.presta-grid{grid-template-columns:1fr;}}
-    .presta-card { background:var(--white); border:1.5px solid var(--gray-3); border-radius:var(--radius); padding:28px 22px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; gap:12px; transition:box-shadow 0.2s,transform 0.2s,border-color 0.2s; }
+    .presta-card { background:var(--white); border:1.5px solid var(--gray-3); border-radius:var(--radius); padding:26px 22px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; gap:10px; transition:box-shadow .2s,transform .2s,border-color .2s; }
     .presta-card:hover { box-shadow:var(--shadow-md); transform:translateY(-3px); border-color:var(--blue); }
-    .presta-icon { font-size:2.2rem; margin-bottom:4px; }
-    .presta-card h3 { font-size:1.02rem; font-weight:800; color:var(--blue-dark); }
-    .presta-card p { font-size:0.86rem; color:var(--gray-text); line-height:1.6; flex:1; }
-    .presta-commission { display:inline-block; background:#E8F8EE; color:#1B5E20; border:1px solid #A5D6A7; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; }
-    .presta-charte { font-size:0.74rem; color:var(--gray-text); line-height:1.5; padding-top:10px; border-top:1px solid var(--gray-2); }
-    .radio-btns { display:flex; flex-direction:column; gap:9px; }
-    .radio-btns label { display:flex; align-items:center; gap:11px; background:var(--gray-1); border:1.5px solid var(--gray-3); border-radius:9px; padding:12px 14px; cursor:pointer; font-size:0.9rem; font-weight:600; color:var(--dark); transition:background 0.15s,border-color 0.15s; }
+    .presta-icon { font-size:2rem; }
+    .presta-card h3 { font-size:1rem; font-weight:800; color:var(--blue-dark); }
+    .presta-card p { font-size:.85rem; color:var(--gray-text); line-height:1.6; flex:1; }
+    .presta-commission { display:inline-block; background:#E8F8EE; color:#1B5E20; border:1px solid #A5D6A7; font-size:.73rem; font-weight:700; padding:4px 10px; border-radius:6px; }
+    .presta-charte { font-size:.72rem; color:var(--gray-text); line-height:1.5; padding-top:8px; border-top:1px solid var(--gray-2); }
+    .radio-btns { display:flex; flex-direction:column; gap:8px; }
+    .radio-btns label { display:flex; align-items:center; gap:10px; background:var(--gray-1); border:1.5px solid var(--gray-3); border-radius:9px; padding:11px 14px; cursor:pointer; font-size:.88rem; font-weight:600; color:var(--dark); transition:background .15s,border-color .15s; }
     .radio-btns label:hover,.radio-btns label.selected { background:var(--blue-light); border-color:var(--blue); color:var(--blue-dark); }
     .radio-btns input[type="radio"] { accent-color:var(--blue); flex-shrink:0; }
 
-    /* ── FOOTER ── */
-    footer { background:var(--blue-dark); color:rgba(255,255,255,0.7); padding:36px 20px; text-align:center; }
+    /* ════ FOOTER ════ */
+    footer { background:var(--blue-dark); color:rgba(255,255,255,.7); padding:36px 20px; text-align:center; }
     .footer-brand { font-size:1rem; font-weight:800; color:#fff; margin-bottom:6px; }
     .footer-brand span { color:#7EC8F8; }
-    .footer-sub { font-size:0.78rem; margin-bottom:18px; }
-    .footer-links { display:flex; justify-content:center; flex-wrap:wrap; gap:18px; font-size:0.78rem; }
-    .footer-links a { color:rgba(255,255,255,0.6); transition:color 0.18s; }
+    .footer-sub { font-size:.78rem; margin-bottom:18px; }
+    .footer-links { display:flex; justify-content:center; flex-wrap:wrap; gap:18px; font-size:.78rem; }
+    .footer-links a { color:rgba(255,255,255,.6); transition:color .18s; }
     .footer-links a:hover { color:#fff; }
 
-    /* ── TOPBAR UTILISATEUR ── */
-    .user-topbar { display:none; background:var(--blue-light); border-bottom:1.5px solid var(--blue); padding:8px 20px; font-size:0.82rem; color:var(--blue-dark); font-weight:600; }
+    /* ════ TOPBAR UTILISATEUR ════ */
+    .user-topbar { display:none; background:var(--blue-light); border-bottom:1.5px solid var(--blue); padding:7px 20px; font-size:.82rem; color:var(--blue-dark); font-weight:600; }
     .user-topbar.visible { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
     .user-topbar-left { display:flex; align-items:center; gap:8px; }
-    .user-topbar-avatar { width:30px; height:30px; background:var(--blue); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.8rem; font-weight:800; }
-    .btn-logout { background:none; border:1.5px solid var(--blue); color:var(--blue); border-radius:8px; padding:4px 12px; font-size:0.76rem; font-weight:700; cursor:pointer; transition:all 0.15s; }
+    .user-topbar-avatar { width:28px; height:28px; background:var(--blue); border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:.78rem; font-weight:800; }
+    .btn-logout { background:none; border:1.5px solid var(--blue); color:var(--blue); border-radius:8px; padding:3px 12px; font-size:.74rem; font-weight:700; cursor:pointer; transition:all .15s; }
     .btn-logout:hover { background:var(--blue); color:#fff; }
 
-    /* ── VERROUS ── */
-    .lock-overlay { position:absolute; inset:0; z-index:10; background:rgba(255,255,255,0.78); backdrop-filter:blur(2px); border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; cursor:pointer; transition:background 0.2s; }
-    .lock-overlay:hover { background:rgba(232,240,251,0.9); }
-    .lock-overlay-icon { font-size:1.8rem; }
-    .lock-overlay-text { font-size:0.75rem; font-weight:700; color:var(--blue-dark); text-align:center; padding:0 10px; }
+    /* ════ VERROUS AUTH ════ */
+    .lock-overlay { position:absolute; inset:0; z-index:10; background:rgba(255,255,255,.8); backdrop-filter:blur(3px); border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; cursor:pointer; transition:background .2s; }
+    .lock-overlay:hover { background:rgba(232,240,251,.9); }
+    .lock-icon { font-size:1.7rem; }
+    .lock-txt { font-size:.73rem; font-weight:700; color:var(--blue-dark); text-align:center; padding:0 10px; }
     .hotel-card,.transport-card { position:relative; }
     body.authenticated .lock-overlay { display:none !important; }
 
-    /* ── MODALS ── */
-    .modal-backdrop { position:fixed; inset:0; z-index:9000; background:rgba(10,20,40,0.62); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:16px; opacity:0; pointer-events:none; transition:opacity 0.22s; }
+    /* ════ MODAL GÉNÉRIQUE ════ */
+    .modal-backdrop { position:fixed; inset:0; z-index:9000; background:rgba(10,20,40,.65); backdrop-filter:blur(5px); display:flex; align-items:center; justify-content:center; padding:16px; opacity:0; pointer-events:none; transition:opacity .22s; }
     .modal-backdrop.open { opacity:1; pointer-events:auto; }
-    .modal-box { background:var(--white); border-radius:20px; box-shadow:0 24px 80px rgba(0,60,150,0.22); width:100%; max-width:460px; max-height:92vh; overflow-y:auto; transform:translateY(24px) scale(0.97); transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    .modal-box { background:var(--white); border-radius:20px; box-shadow:0 24px 80px rgba(0,60,150,.22); width:100%; max-width:460px; max-height:92vh; overflow-y:auto; transform:translateY(24px) scale(.97); transition:transform .25s cubic-bezier(.34,1.56,.64,1); }
     .modal-backdrop.open .modal-box { transform:translateY(0) scale(1); }
-    .modal-head { padding:28px 28px 0; display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
-    .modal-head-text h2 { font-size:1.25rem; font-weight:800; color:var(--blue-dark); margin-bottom:4px; }
-    .modal-head-text p { font-size:0.82rem; color:var(--gray-text); }
-    .modal-close { background:var(--gray-2); border:none; border-radius:50%; width:34px; height:34px; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--dark); transition:background 0.15s; }
+    .modal-head { padding:26px 26px 0; display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .modal-head-text h2 { font-size:1.2rem; font-weight:800; color:var(--blue-dark); margin-bottom:4px; }
+    .modal-head-text p { font-size:.82rem; color:var(--gray-text); }
+    .modal-close { background:var(--gray-2); border:none; border-radius:50%; width:32px; height:32px; font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--dark); transition:background .15s; }
     .modal-close:hover { background:var(--gray-3); }
-    .modal-body { padding:20px 28px 28px; }
-    .modal-tabs { display:flex; border-bottom:2px solid var(--gray-2); margin-bottom:22px; }
-    .modal-tab { flex:1; text-align:center; padding:10px 8px; font-size:0.88rem; font-weight:700; color:var(--gray-text); cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:all 0.15s; }
+    .modal-body { padding:18px 26px 26px; }
+    .modal-tabs { display:flex; border-bottom:2px solid var(--gray-2); margin-bottom:20px; }
+    .modal-tab { flex:1; text-align:center; padding:9px 8px; font-size:.87rem; font-weight:700; color:var(--gray-text); cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:all .15s; }
     .modal-tab.active { color:var(--blue); border-bottom-color:var(--blue); }
     .modal-panel { display:none; }
     .modal-panel.active { display:block; }
-    .mfield { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
-    .mfield label { font-size:0.78rem; font-weight:700; color:var(--dark); text-transform:uppercase; letter-spacing:0.04em; }
-    .mfield input { border:1.5px solid var(--gray-3); border-radius:10px; padding:11px 14px; font-size:0.9rem; outline:none; transition:border-color 0.18s,box-shadow 0.18s; width:100%; background:var(--white); color:var(--dark); }
-    .mfield input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,87,184,0.12); }
+    .mfield { display:flex; flex-direction:column; gap:5px; margin-bottom:13px; }
+    .mfield label { font-size:.77rem; font-weight:700; color:var(--dark); text-transform:uppercase; letter-spacing:.04em; }
+    .mfield input { border:1.5px solid var(--gray-3); border-radius:10px; padding:10px 13px; font-size:.9rem; outline:none; transition:border-color .18s,box-shadow .18s; width:100%; background:var(--white); color:var(--dark); }
+    .mfield input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(0,87,184,.12); }
     .mfield-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    .btn-modal-submit { width:100%; background:var(--blue); color:#fff; border:none; border-radius:12px; padding:14px; font-size:0.95rem; font-weight:800; cursor:pointer; margin-top:6px; transition:background 0.18s,transform 0.15s; display:flex; align-items:center; justify-content:center; gap:8px; }
+    .btn-modal-submit { width:100%; background:var(--blue); color:#fff; border:none; border-radius:12px; padding:13px; font-size:.94rem; font-weight:800; cursor:pointer; margin-top:5px; transition:background .18s,transform .15s; display:flex; align-items:center; justify-content:center; gap:8px; }
     .btn-modal-submit:hover { background:var(--blue-dark); transform:translateY(-1px); }
-    .modal-divider { text-align:center; font-size:0.78rem; color:var(--gray-text); margin:14px 0; }
-    .modal-error { background:#FFF0F0; border:1.5px solid #FFBCBC; border-radius:9px; padding:10px 14px; font-size:0.8rem; color:#C0392B; font-weight:600; margin-bottom:12px; display:none; }
+    .modal-divider { text-align:center; font-size:.78rem; color:var(--gray-text); margin:13px 0; }
+    .modal-error { background:#FFF0F0; border:1.5px solid #FFBCBC; border-radius:9px; padding:10px 13px; font-size:.79rem; color:#C0392B; font-weight:600; margin-bottom:12px; display:none; }
     .modal-success-msg { text-align:center; padding:10px 0 4px; }
     .modal-success-msg .big-check { font-size:2.8rem; display:block; margin-bottom:8px; }
     .modal-success-msg h3 { font-size:1.1rem; font-weight:800; color:var(--blue-dark); margin-bottom:4px; }
-    .modal-success-msg p { font-size:0.83rem; color:var(--gray-text); }
-    .switch-link { color:var(--blue); font-weight:700; cursor:pointer; text-decoration:underline; font-size:0.82rem; }
+    .modal-success-msg p { font-size:.82rem; color:var(--gray-text); }
+    .switch-link { color:var(--blue); font-weight:700; cursor:pointer; text-decoration:underline; font-size:.81rem; }
     .pwd-wrap { position:relative; }
-    .pwd-toggle { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; font-size:1rem; color:var(--gray-text); padding:4px; }
+    .pwd-toggle { position:absolute; right:11px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; font-size:.95rem; color:var(--gray-text); padding:4px; }
 
-    /* ── MODAL PAIEMENT ── */
+    /* ════ MODAL PAIEMENT ════ */
     .pay-modal-box { max-width:500px; }
-    .pay-amount-display { background:var(--blue-light); border-radius:12px; padding:16px 20px; text-align:center; margin-bottom:20px; }
-    .pay-lbl { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--blue-dark); margin-bottom:4px; }
-    .pay-big { font-size:2rem; font-weight:900; color:var(--blue-dark); }
-    .pay-sub { font-size:0.78rem; color:var(--gray-text); margin-top:2px; }
-    .pay-method-title { font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--gray-text); margin-bottom:12px; }
-    .pay-methods-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
-    .pay-method-card { border:2px solid var(--gray-3); border-radius:12px; padding:14px 12px; cursor:pointer; transition:all 0.18s; display:flex; flex-direction:column; align-items:center; gap:7px; text-align:center; background:var(--white); }
+    .pay-amt-display { background:var(--blue-light); border-radius:12px; padding:16px 20px; text-align:center; margin-bottom:18px; }
+    .pay-lbl { font-size:.73rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--blue-dark); margin-bottom:4px; }
+    .pay-big { font-size:1.9rem; font-weight:900; color:var(--blue-dark); }
+    .pay-sub { font-size:.77rem; color:var(--gray-text); margin-top:2px; }
+    .pay-method-title { font-size:.77rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--gray-text); margin-bottom:11px; }
+    .pay-methods-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:18px; }
+    .pay-method-card { border:2px solid var(--gray-3); border-radius:12px; padding:13px 11px; cursor:pointer; transition:all .18s; display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; background:var(--white); }
     .pay-method-card:hover { border-color:var(--blue-mid); background:var(--blue-light); }
-    .pay-method-card.selected { border-color:var(--blue); background:var(--blue-light); box-shadow:0 0 0 3px rgba(0,87,184,0.15); }
+    .pay-method-card.selected { border-color:var(--blue); background:var(--blue-light); box-shadow:0 0 0 3px rgba(0,87,184,.14); }
     .pay-method-card input { display:none; }
-    .pay-method-icon { font-size:1.8rem; line-height:1; }
-    .pay-method-name { font-size:0.8rem; font-weight:700; color:var(--dark); }
-    .pay-method-sub { font-size:0.7rem; color:var(--gray-text); }
-    .pay-mm-detail { display:none; background:var(--gray-1); border-radius:10px; padding:14px; margin-bottom:16px; }
+    .pay-method-icon { font-size:1.7rem; line-height:1; }
+    .pay-method-name { font-size:.79rem; font-weight:700; color:var(--dark); }
+    .pay-method-sub { font-size:.68rem; color:var(--gray-text); }
+    .pay-mm-detail { display:none; background:var(--gray-1); border-radius:10px; padding:13px; margin-bottom:14px; }
     .pay-mm-detail.visible { display:block; }
-    .pay-mm-options { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
-    .pay-mm-btn { border:1.5px solid var(--gray-3); background:var(--white); border-radius:8px; padding:8px 14px; font-size:0.78rem; font-weight:700; cursor:pointer; transition:all 0.15s; display:flex; align-items:center; gap:6px; }
+    .pay-mm-opts { display:flex; flex-wrap:wrap; gap:8px; margin-top:9px; }
+    .pay-mm-btn { border:1.5px solid var(--gray-3); background:var(--white); border-radius:8px; padding:7px 13px; font-size:.77rem; font-weight:700; cursor:pointer; transition:all .15s; display:flex; align-items:center; gap:5px; }
     .pay-mm-btn:hover,.pay-mm-btn.active { border-color:var(--blue); background:var(--blue-light); color:var(--blue-dark); }
-    .pay-card-detail { display:none; background:var(--gray-1); border-radius:10px; padding:14px; margin-bottom:16px; }
+    .pay-card-detail { display:none; background:var(--gray-1); border-radius:10px; padding:13px; margin-bottom:14px; }
     .pay-card-detail.visible { display:block; }
-    .card-input-fake { border:1.5px solid var(--gray-3); border-radius:9px; padding:11px 14px; font-size:0.88rem; background:var(--white); color:var(--dark); width:100%; margin-bottom:10px; outline:none; transition:border-color 0.18s; }
+    .card-input-fake { border:1.5px solid var(--gray-3); border-radius:9px; padding:10px 13px; font-size:.87rem; background:var(--white); color:var(--dark); width:100%; margin-bottom:9px; outline:none; transition:border-color .18s; }
     .card-input-fake:focus { border-color:var(--blue); }
-    .card-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .btn-pay-now { width:100%; background:var(--blue); color:#fff; border:none; border-radius:12px; padding:15px; font-size:0.95rem; font-weight:800; cursor:pointer; transition:background 0.18s,transform 0.15s; display:flex; align-items:center; justify-content:center; gap:8px; }
+    .card-row { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+    .btn-pay-now { width:100%; background:var(--blue); color:#fff; border:none; border-radius:12px; padding:14px; font-size:.94rem; font-weight:800; cursor:pointer; transition:background .18s,transform .15s; display:flex; align-items:center; justify-content:center; gap:8px; }
     .btn-pay-now:hover { background:var(--blue-dark); transform:translateY(-1px); }
     .btn-pay-now:disabled { background:var(--gray-3); cursor:not-allowed; transform:none; }
-    .pay-security-note { text-align:center; font-size:0.72rem; color:var(--gray-text); margin-top:10px; }
-    .pay-success-screen { display:none; text-align:center; padding:10px 0 16px; }
-    .pay-success-screen .success-anim { font-size:4rem; display:block; margin-bottom:14px; animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
-    @keyframes popIn{from{transform:scale(0.4);opacity:0;}to{transform:scale(1);opacity:1;}}
-    .pay-success-screen h3 { font-size:1.2rem; font-weight:800; color:var(--blue-dark); margin-bottom:8px; }
-    .pay-success-screen p { font-size:0.85rem; color:var(--gray-text); line-height:1.6; margin-bottom:14px; }
-    .pay-success-details { background:var(--blue-light); border-radius:12px; padding:14px 18px; text-align:left; margin-bottom:16px; }
-    .pay-success-details .sdt { font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--blue-dark); margin-bottom:10px; }
-    .pay-success-detail-row { font-size:0.82rem; color:var(--dark); margin-bottom:6px; display:flex; gap:8px; }
-    .pay-success-detail-row span:first-child { font-weight:700; flex-shrink:0; }
-    .pay-ref { font-size:0.72rem; color:var(--gray-text); }
-    .btn-close-success { background:var(--blue); color:#fff; border:none; border-radius:10px; padding:12px 28px; font-size:0.9rem; font-weight:700; cursor:pointer; transition:background 0.15s; }
-    .btn-close-success:hover { background:var(--blue-dark); }
+    .pay-security-note { text-align:center; font-size:.71rem; color:var(--gray-text); margin-top:9px; }
+    .pay-success-screen { display:none; text-align:center; padding:10px 0 14px; }
+    .pay-success-screen .success-anim { font-size:3.8rem; display:block; margin-bottom:12px; animation:popIn .5s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes popIn{from{transform:scale(.4);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .pay-success-screen h3 { font-size:1.15rem; font-weight:800; color:var(--blue-dark); margin-bottom:7px; }
+    .pay-success-screen p { font-size:.83rem; color:var(--gray-text); line-height:1.6; margin-bottom:13px; }
+    .pay-success-details { background:var(--blue-light); border-radius:12px; padding:13px 17px; text-align:left; margin-bottom:14px; }
+    .pay-success-details .sdt { font-size:.76rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--blue-dark); margin-bottom:9px; }
+    .sdr { font-size:.81rem; color:var(--dark); margin-bottom:5px; display:flex; gap:7px; }
+    .sdr span:first-child { font-weight:700; flex-shrink:0; }
+    .pay-ref { font-size:.71rem; color:var(--gray-text); }
+    .btn-close-succ { background:var(--blue); color:#fff; border:none; border-radius:10px; padding:11px 26px; font-size:.88rem; font-weight:700; cursor:pointer; transition:background .15s; }
+    .btn-close-succ:hover { background:var(--blue-dark); }
     .pay-processing { display:none; text-align:center; padding:30px 0; }
-    .pay-processing .spin { width:48px; height:48px; border:4px solid var(--gray-2); border-top-color:var(--blue); border-radius:50%; animation:spin 0.7s linear infinite; margin:0 auto 14px; }
+    .pay-processing .spin { width:46px; height:46px; border:4px solid var(--gray-2); border-top-color:var(--blue); border-radius:50%; animation:spin .7s linear infinite; margin:0 auto 13px; }
     @keyframes spin{to{transform:rotate(360deg);}}
-    .pay-processing p { font-size:0.9rem; font-weight:600; color:var(--blue-dark); }
+    .pay-processing p { font-size:.88rem; font-weight:600; color:var(--blue-dark); }
 
+    @media(max-width:500px){.modal-body{padding:14px 16px 22px;}.modal-head{padding:18px 16px 0;}.mfield-row{grid-template-columns:1fr;}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
   </style>
 </head>
@@ -376,8 +610,8 @@
       <!-- Connexion -->
       <div class="modal-panel active" id="panelLogin">
         <div class="modal-error" id="loginErr"></div>
-        <div class="mfield"><label for="loginEmail">E-mail</label><input type="email" id="loginEmail" placeholder="votre@email.com" autocomplete="email" /></div>
-        <div class="mfield"><label for="loginPwd">Mot de passe</label><div class="pwd-wrap"><input type="password" id="loginPwd" placeholder="••••••••" /><button type="button" class="pwd-toggle" data-t="loginPwd">👁</button></div></div>
+        <div class="mfield"><label for="loginEmail">E-mail</label><input type="email" id="loginEmail" placeholder="votre@email.com" autocomplete="email"/></div>
+        <div class="mfield"><label for="loginPwd">Mot de passe</label><div class="pwd-wrap"><input type="password" id="loginPwd" placeholder="••••••••"/><button type="button" class="pwd-toggle" data-t="loginPwd">👁</button></div></div>
         <button class="btn-modal-submit" id="btnLogin">🔓 Se connecter</button>
         <p class="modal-divider">Pas encore de compte ? <span class="switch-link" data-tab="tabRegister">Créer un compte →</span></p>
       </div>
@@ -386,12 +620,12 @@
         <div class="modal-error" id="registerErr"></div>
         <div id="regForm">
           <div class="mfield-row">
-            <div class="mfield"><label for="regPrenom">Prénom</label><input type="text" id="regPrenom" placeholder="Jean-Paul" /></div>
-            <div class="mfield"><label for="regNom">Nom</label><input type="text" id="regNom" placeholder="Dupont" /></div>
+            <div class="mfield"><label for="regPrenom">Prénom</label><input type="text" id="regPrenom" placeholder="Jean-Paul"/></div>
+            <div class="mfield"><label for="regNom">Nom</label><input type="text" id="regNom" placeholder="Dupont"/></div>
           </div>
-          <div class="mfield"><label for="regEmail">E-mail</label><input type="email" id="regEmail" placeholder="votre@email.com" /></div>
-          <div class="mfield"><label for="regWa">WhatsApp</label><input type="tel" id="regWa" placeholder="+225 05 03 60 57 25" /></div>
-          <div class="mfield"><label for="regPwd">Mot de passe (min. 6 car.)</label><div class="pwd-wrap"><input type="password" id="regPwd" placeholder="••••••••" /><button type="button" class="pwd-toggle" data-t="regPwd">👁</button></div></div>
+          <div class="mfield"><label for="regEmail">E-mail</label><input type="email" id="regEmail" placeholder="votre@email.com"/></div>
+          <div class="mfield"><label for="regWa">WhatsApp</label><input type="tel" id="regWa" placeholder="+225 05 03 60 57 25"/></div>
+          <div class="mfield"><label for="regPwd">Mot de passe (min. 6 car.)</label><div class="pwd-wrap"><input type="password" id="regPwd" placeholder="••••••••"/><button type="button" class="pwd-toggle" data-t="regPwd">👁</button></div></div>
           <button class="btn-modal-submit" id="btnRegister">✈️ Créer mon compte &amp; Réserver</button>
           <p class="modal-divider">Déjà un compte ? <span class="switch-link" data-tab="tabLogin">Se connecter →</span></p>
         </div>
@@ -405,12 +639,12 @@
 <div class="modal-backdrop" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
   <div class="modal-box pay-modal-box">
     <div class="modal-head">
-      <div class="modal-head-text"><h2 id="payTitle">💳 Paiement sécurisé</h2><p>Votre réservation confirmée immédiatement</p></div>
+      <div class="modal-head-text"><h2 id="payTitle">💳 Paiement sécurisé</h2><p>Réservation confirmée immédiatement</p></div>
       <button class="modal-close" id="payClose" aria-label="Fermer">✕</button>
     </div>
     <div class="modal-body">
       <div id="payScreen">
-        <div class="pay-amount-display"><div class="pay-lbl">Total à régler</div><div class="pay-big" id="payTotal">—</div><div class="pay-sub" id="paySub">Hébergement + Transport</div></div>
+        <div class="pay-amt-display"><div class="pay-lbl">Total à régler</div><div class="pay-big" id="payTotal">—</div><div class="pay-sub" id="paySub">Hébergement + Transport</div></div>
         <div class="pay-method-title">Mode de paiement</div>
         <div class="pay-methods-grid">
           <label class="pay-method-card" id="pmM"><input type="radio" name="pm" value="mobile"/><span class="pay-method-icon">📱</span><span class="pay-method-name">Mobile Money</span><span class="pay-method-sub">Wave · Orange · MTN · Moov</span></label>
@@ -418,319 +652,386 @@
         </div>
         <div class="pay-mm-detail" id="payMm">
           <div class="pay-method-title" style="margin-bottom:8px">Votre opérateur</div>
-          <div class="pay-mm-options">
+          <div class="pay-mm-opts">
             <button type="button" class="pay-mm-btn" data-op="Wave">🔵 Wave</button>
             <button type="button" class="pay-mm-btn" data-op="Orange Money">🟠 Orange Money</button>
             <button type="button" class="pay-mm-btn" data-op="MTN MoMo">🟡 MTN MoMo</button>
             <button type="button" class="pay-mm-btn" data-op="Moov Money">🟢 Moov Money</button>
           </div>
-          <div class="mfield" style="margin-top:12px;margin-bottom:0"><label for="mmNum">Numéro Mobile Money</label><input type="tel" id="mmNum" class="card-input-fake" placeholder="+225 05 XX XX XX XX" /></div>
+          <div class="mfield" style="margin-top:11px;margin-bottom:0"><label for="mmNum">Numéro Mobile Money</label><input type="tel" id="mmNum" class="card-input-fake" placeholder="+225 05 XX XX XX XX"/></div>
         </div>
         <div class="pay-card-detail" id="payCard">
-          <div class="mfield" style="margin-bottom:10px"><label style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--dark)">Numéro de carte</label><input type="text" class="card-input-fake" id="cardNum" placeholder="1234 5678 9012 3456" maxlength="19"/></div>
+          <div class="mfield" style="margin-bottom:9px"><label style="font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--dark)">Numéro de carte</label><input type="text" class="card-input-fake" id="cardNum" placeholder="1234 5678 9012 3456" maxlength="19"/></div>
           <div class="card-row">
-            <div class="mfield" style="margin-bottom:0"><label style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--dark)">Expiration</label><input type="text" class="card-input-fake" placeholder="MM/AA" maxlength="5"/></div>
-            <div class="mfield" style="margin-bottom:0"><label style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--dark)">CVV</label><input type="text" class="card-input-fake" placeholder="123" maxlength="3"/></div>
+            <div class="mfield" style="margin-bottom:0"><label style="font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--dark)">Expiration</label><input type="text" class="card-input-fake" placeholder="MM/AA" maxlength="5"/></div>
+            <div class="mfield" style="margin-bottom:0"><label style="font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--dark)">CVV</label><input type="text" class="card-input-fake" placeholder="123" maxlength="3"/></div>
           </div>
         </div>
         <button class="btn-pay-now" id="btnPayNow" disabled>🔒 Valider le paiement</button>
-        <p class="pay-security-note">🔒 Paiement crypté SSL · Aucun frais caché</p>
+        <p class="pay-security-note">🔒 Paiement crypté SSL · Données sécurisées · Aucun frais caché</p>
       </div>
-      <div class="pay-processing" id="payProc"><div class="spin"></div><p>Validation en cours…</p></div>
+      <div class="pay-processing" id="payProc"><div class="spin"></div><p>Validation du paiement en cours…</p></div>
       <div class="pay-success-screen" id="paySucc">
         <span class="success-anim">✅</span>
         <h3>Réservation confirmée !</h3>
         <p>Vos détails ont été envoyés au chauffeur et à l'hébergeur.<br>Confirmation WhatsApp dans quelques minutes.</p>
         <div class="pay-success-details">
           <div class="sdt">📋 Récapitulatif</div>
-          <div class="pay-success-detail-row"><span>🏨 Hébergement</span><span id="sHotel">—</span></div>
-          <div class="pay-success-detail-row"><span>🚗 Transport</span><span id="sTransport">—</span></div>
-          <div class="pay-success-detail-row"><span>💰 Montant</span><span id="sAmount">—</span></div>
-          <div class="pay-success-detail-row"><span>👤 Client</span><span id="sClient">—</span></div>
+          <div class="sdr"><span>🏨 Hébergement</span><span id="sHotel">—</span></div>
+          <div class="sdr"><span>🚗 Transport</span><span id="sTransport">—</span></div>
+          <div class="sdr"><span>💰 Montant</span><span id="sAmount">—</span></div>
+          <div class="sdr"><span>👤 Client</span><span id="sClient">—</span></div>
         </div>
         <p class="pay-ref" id="payRef"></p>
-        <button class="btn-close-success" id="btnCloseSucc">Retour à l'accueil ✈️</button>
+        <button class="btn-close-succ" id="btnCloseSucc">Retour à l'accueil ✈️</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ NAVIGATION ══ -->
+<!-- ══ BULLE WHATSAPP UNIQUE FLOTTANTE ══ -->
+<div class="wa-bubble-wrap" id="waBubbleWrap">
+
+  <!-- Menu pop-up (s'ouvre au-dessus) -->
+  <div class="wa-bubble-menu" id="waBubbleMenu" role="menu">
+    <a class="wa-bubble-link" href="https://wa.me/4917734314460" target="_blank" rel="noopener" role="menuitem" aria-label="WhatsApp Urgence Europe">
+      <span class="wa-bubble-link-dot">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.374 0 0 5.373 0 12c0 2.116.549 4.107 1.508 5.838L0 24l6.335-1.48A11.933 11.933 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.37l-.36-.214-3.727.977.996-3.645-.235-.374A9.817 9.817 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+      </span>
+      <span class="wa-bubble-link-text">
+        <strong>🇩🇪 Urgence Europe</strong>
+        <span>+49 177 343 14 60</span>
+      </span>
+    </a>
+    <a class="wa-bubble-link" href="https://wa.me/22505036057255" target="_blank" rel="noopener" role="menuitem" aria-label="WhatsApp Urgence Afrique">
+      <span class="wa-bubble-link-dot">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.374 0 0 5.373 0 12c0 2.116.549 4.107 1.508 5.838L0 24l6.335-1.48A11.933 11.933 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.37l-.36-.214-3.727.977.996-3.645-.235-.374A9.817 9.817 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+      </span>
+      <span class="wa-bubble-link-text">
+        <strong>🌍 Urgence Afrique</strong>
+        <span>+225 05 03 60 57 25</span>
+      </span>
+    </a>
+  </div>
+
+  <!-- Bulle principale -->
+  <button class="wa-bubble-btn" id="waBubbleBtn" aria-label="Contacter SOS Passager sur WhatsApp" aria-expanded="false" aria-controls="waBubbleMenu">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M12 0C5.374 0 0 5.373 0 12c0 2.116.549 4.107 1.508 5.838L0 24l6.335-1.48A11.933 11.933 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.37l-.36-.214-3.727.977.996-3.645-.235-.374A9.817 9.817 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/>
+    </svg>
+  </button>
+
+</div>
+
+
+<!-- ══ VAGUE 2 — NAVIGATION BOOKING STYLE ══ -->
 <header class="navbar">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
-      <div class="nav-logo-icon">SOS<br/>✈</div>
-      <div class="nav-logo-text"><span class="brand">SOS Passager</span><span class="sub">Indemnisation &amp; Droits des passagers</span></div>
+    <a href="index.html" class="nav-brand">
+      <div class="nav-brand-icon">SOS<br/>✈</div>
+      <div class="nav-brand-name">SOS <span>Passager</span></div>
     </a>
-    <ul class="nav-links">
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="index.html#droits">Droits</a></li>
-      <li><a href="index.html#reclamer">Réclamer</a></li>
-      <li><a href="escale-urgence.html" class="active">Escale Réseau</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
-    </ul>
+    <div class="nav-center">🌐 Écosystème Escale Réseau</div>
+    <a href="index.html" class="nav-back-btn">Retour au site principal ✈</a>
     <button class="nav-hamburger" id="menuBtn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
   <nav class="nav-mobile" id="mobileMenu">
-    <a href="index.html">Accueil</a><a href="index.html#droits">Droits</a><a href="index.html#reclamer">Réclamer</a>
-    <a href="escale-urgence.html">Escale Réseau</a><a href="index.html#contact">Contact</a>
+    <a href="index.html">🏠 Accueil SOS Passager</a>
+    <a href="#catalogue-logements">🏨 Hébergements</a>
+    <a href="#section-transport">🚗 Transport Yango</a>
+    <a href="#facture-selection">📋 Mon Panier</a>
+    <a href="#demande">📝 Formulaire Vol</a>
   </nav>
 </header>
 
-<!-- ══════════════════════════════════════════════════
+<!-- ══════════════════════════════════════
      SECTION 1 — HERO
-══════════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 <section class="hero" id="urgence">
   <div class="container">
     <div class="hero-grid">
       <div>
         <div class="hero-live"><span class="hero-live-dot"></span>RÉSEAU ACTIF — EUROPE &amp; AFRIQUE</div>
-        <div class="section-tag">SOS Passager Escale Réseau · Hébergement &amp; Transport d'Urgence</div>
-        <h1>Vol annulé ou<br/>correspondance manquée ?<br/><em>Ne dormez pas à l'aéroport !</em></h1>
-        <p class="hero-lead"><strong>SOS Passager Escale Réseau</strong> vous propose un Pack d'Urgence Clé en Main : Logement résidentiel sécurisé + Chauffeur privé professionnel, activé en moins de 20 minutes.</p>
+        <div class="section-tag" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2)">SOS Passager Escale Réseau · Pack Urgence Clé en Main</div>
+        <h1>Vol annulé ou correspondance<br/>manquée ? <em>Ne dormez pas<br/>à l'aéroport !</em></h1>
+        <p class="hero-lead"><strong style="color:#7EC8F8">SOS Passager Escale Réseau</strong> : Logement résidentiel sécurisé + Chauffeur Yango privé, activé en moins de 20 minutes. Pack certifié CE 261/2004 / UEMOA N°03/2003.</p>
         <div class="cas-grid">
-          <div class="cas-card"><div style="display:flex;align-items:flex-start;gap:10px"><div class="cas-card-num blue">01</div><h3>Faute de la compagnie</h3></div><p>Vol annulé, surbooking, retard &gt; 3h ? Nous vous fournissons une <strong>facture certifiée</strong> CE 261/2004 / UEMOA N°03/2003 pour le remboursement intégral.</p><span class="cas-badge blue">Indemnité jusqu'à 600 € / 1 219 €</span></div>
-          <div class="cas-card"><div style="display:flex;align-items:flex-start;gap:10px"><div class="cas-card-num amber">02</div><h3>Retard personnel</h3></div><p>Plus de prise en charge ? Accédez à notre <strong>réseau résidentiel négocié</strong> — jusqu'à <strong>3× moins cher</strong> qu'un hôtel d'aéroport.</p><span class="cas-badge amber">Tarifs préférentiels réseau</span></div>
+          <div class="cas-card"><div style="display:flex;align-items:flex-start;gap:10px"><div class="cas-card-num blue">01</div><h3>Faute de la compagnie</h3></div><p>Vol annulé, surbooking, retard &gt; 3h ? Facture certifiée fournie pour remboursement intégral.</p><span class="cas-badge blue">Indemnité jusqu'à 600 € / 1 219 €</span></div>
+          <div class="cas-card"><div style="display:flex;align-items:flex-start;gap:10px"><div class="cas-card-num amber">02</div><h3>Retard personnel</h3></div><p>Accédez à notre réseau résidentiel négocié — jusqu'à <strong>3× moins cher</strong> qu'un hôtel d'aéroport.</p><span class="cas-badge amber">Tarifs préférentiels réseau</span></div>
         </div>
-        <div class="wa-btns">
-          <a href="https://wa.me/4917734314460" class="btn-wa" target="_blank" rel="noopener"><span class="btn-wa-icon">🟢</span><span class="btn-wa-text"><strong>Urgence WhatsApp · Europe</strong>+49 177 343 14 60</span></a>
-          <a href="https://wa.me/22505036057255" class="btn-wa" target="_blank" rel="noopener"><span class="btn-wa-icon">🟢</span><span class="btn-wa-text"><strong>Urgence WhatsApp · Afrique</strong>+225 05 03 60 57 25</span></a>
-        </div>
+        <!-- VAGUE 2 : bouton scroll vers catalogue, pas de lien WA -->
+        <button class="hero-cta-scroll" onclick="document.getElementById('catalogue-logements').scrollIntoView({behavior:'smooth'})">
+          🏨 Choisir mon logement &amp; transport →
+        </button>
       </div>
       <div class="hero-panel">
         <h2>Comment ça marche ?</h2>
-        <p>Pack activé en moins de 20 minutes chrono</p>
+        <p>Pack activé en moins de 20 minutes</p>
         <div class="panel-steps">
-          <div class="panel-step"><div class="panel-step-num">1</div><div class="panel-step-text">Choisissez votre logement et votre transport dans le catalogue ci-dessous.</div></div>
-          <div class="panel-step"><div class="panel-step-num">2</div><div class="panel-step-text">Remplissez le formulaire de vol pour personnaliser votre prise en charge.</div></div>
-          <div class="panel-step"><div class="panel-step-num">3</div><div class="panel-step-text">Payez en ligne (Mobile Money ou Carte) — confirmation immédiate.</div></div>
-          <div class="panel-step"><div class="panel-step-num">4</div><div class="panel-step-text">Votre chauffeur vous attend à la sortie du terminal. Votre logement est prêt.</div></div>
+          <div class="panel-step"><div class="panel-step-num">1</div><div class="panel-step-text">Choisissez votre logement (Standard / Confort / Luxe) dans le catalogue.</div></div>
+          <div class="panel-step"><div class="panel-step-num">2</div><div class="panel-step-text">Sélectionnez votre véhicule Yango — prise en charge en 10 min.</div></div>
+          <div class="panel-step"><div class="panel-step-num">3</div><div class="panel-step-text">Validez votre vol dans le formulaire &amp; payez (Mobile Money / Carte).</div></div>
+          <div class="panel-step"><div class="panel-step-num">4</div><div class="panel-step-text">Chauffeur à la sortie du terminal. Facture certifiée envoyée par e-mail.</div></div>
         </div>
-        <a href="https://wa.me/4917734314460" class="panel-wa-cta" target="_blank" rel="noopener"><span style="font-size:1.4rem">💬</span>Activer mon Pack maintenant</a>
+        <button class="hero-cta-scroll" style="width:100%;justify-content:center" onclick="document.getElementById('catalogue-logements').scrollIntoView({behavior:'smooth'})">
+          🚀 Activer mon Pack maintenant
+        </button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════
-     SECTION 2 — CATALOGUE VISUEL (HÉBERGEMENT + TRANSPORT)
-     Vague 1 : déplacée immédiatement après le Hero
-══════════════════════════════════════════════════ -->
-<section class="choix-section" id="choix-pack">
+<!-- ══════════════════════════════════════
+     SECTION 2 — CATALOGUE LOGEMENTS (Vague 3)
+     id="catalogue-logements" — Style Booking
+══════════════════════════════════════ -->
+<section class="catalogue-section" id="catalogue-logements">
   <div class="container">
-    <div class="section-head">
-      <div class="section-tag">Pack Escale Réseau · Composez votre séjour</div>
-      <h2>Choisissez votre hébergement &amp; transport</h2>
-      <p>Sélectionnez vos options — notre équipe confirme la disponibilité en moins de 15 minutes.</p>
+
+    <!-- Barre de progression -->
+    <div class="steps-progress">
+      <div class="step-item active"><div class="step-circle">1</div>Hébergement</div>
+      <div class="step-sep"></div>
+      <div class="step-item" id="step2"><div class="step-circle">2</div>Transport</div>
+      <div class="step-sep"></div>
+      <div class="step-item" id="step3"><div class="step-circle">3</div>Formulaire vol</div>
+      <div class="step-sep"></div>
+      <div class="step-item" id="step4"><div class="step-circle">4</div>Paiement</div>
     </div>
 
-    <!-- ─── HÉBERGEMENT — Vague 2 : 3 logements résidentiels haut de gamme ─── -->
-    <div class="choix-block">
-      <div class="choix-block-title">
-        <span class="choix-num">1</span>
-        <div><h3>Choisissez votre logement résidentiel partenaire</h3><p class="choix-block-sub">Appartements &amp; Suites climatisés, vérifiés et sécurisés — proches des aéroports</p></div>
-      </div>
-      <div class="hotel-grid" id="hotelGroup">
+    <div class="section-head">
+      <div class="section-tag">Étape 1 · Votre logement résidentiel</div>
+      <h2>Choisissez votre formule d'hébergement</h2>
+      <p>3 gammes disponibles — Confirmées par notre réseau partenaire dans les 15 minutes.</p>
+    </div>
 
-        <!-- CARTE 1 — Côte d'Ivoire / Cocody -->
-        <label class="hotel-card" for="h1">
-          <input type="radio" name="heb" id="h1" value="Appartement de Luxe Cocody — Abidjan, 2 Chambres climatisées" data-fcfa="45000" data-eur="69" />
-          <div class="lock-overlay" role="button" tabindex="0"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous pour réserver</span></div>
-          <div class="hotel-img-wrap">
-            <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80&fit=crop" alt="Appartement Luxe Cocody Abidjan" loading="lazy" />
-            <span class="hotel-img-badge">⭐ 4,9 / 5</span>
-            <span class="hotel-img-tag">🇨🇮 Abidjan</span>
-          </div>
-          <div class="hcheck"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="hotel-body">
-            <div class="hotel-name">Appartement de Luxe Cocody — 2 Chambres (Climatisé)</div>
-            <div class="hotel-specs">
-              <div class="hotel-spec-item">📍 Abidjan - Cocody Les Deux Plateaux &nbsp;|&nbsp; 🚗 25 min de l'aéroport FHB</div>
-              <div class="hotel-spec-item">❄️ Climatisé &nbsp;|&nbsp; 🛏️ 2 Chambres + Grand Salon</div>
-              <div class="hotel-spec-item">📶 Wi-Fi Fibre &nbsp;|&nbsp; 🔒 Gardiennage 24h/24</div>
-            </div>
-            <div class="hotel-badges"><span class="eq-badge">❄️ Climatisé</span><span class="eq-badge">🛏️ 2 Chambres</span><span class="eq-badge">📶 Fibre</span><span class="eq-badge">🔒 Gardiennage 24h</span></div>
-            <div class="hotel-footer">
-              <div class="hotel-prix"><span class="hotel-prix-amount">45 000 FCFA</span><span class="hotel-prix-unit">/ nuit</span><span class="hotel-prix-eur">≈ 69 €</span></div>
-              <div class="hotel-select-btn">Sélectionner</div>
-            </div>
-          </div>
-        </label>
+    <div class="hotel-grid" id="hotelGroup">
 
-        <!-- CARTE 2 — Sénégal / Almadies -->
-        <label class="hotel-card" for="h2">
-          <input type="radio" name="heb" id="h2" value="Appartement Résidentiel Almadies — Dakar, 1 Chambre Premium" data-fcfa="55000" data-eur="84" />
-          <div class="lock-overlay" role="button" tabindex="0"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous pour réserver</span></div>
-          <div class="hotel-img-wrap">
-            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=80&fit=crop" alt="Appartement Résidentiel Almadies Dakar" loading="lazy" />
-            <span class="hotel-img-badge">⭐ 4,8 / 5</span>
-            <span class="hotel-img-tag">🇸🇳 Dakar</span>
+      <!-- CARTE 1 — Standard 15 000 FCFA -->
+      <label class="hotel-card" for="h1">
+        <input type="radio" name="heb" id="h1" value="Logement Standard — Résidence partenaire proche aéroport" data-fcfa="15000" data-eur="23"/>
+        <div class="lock-overlay" role="button" tabindex="0"><span class="lock-icon">🔒</span><span class="lock-txt">Connectez-vous pour réserver</span></div>
+        <div class="h-img-wrap">
+          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80&fit=crop" alt="Logement Standard" loading="lazy"/>
+          <span class="h-badge-stars">⭐ 4,5 / 5</span>
+          <span class="h-badge-tier std">Standard</span>
+        </div>
+        <div class="hcring"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="h-body">
+          <div class="h-name">Studio Confort — 1 Chambre Climatisée</div>
+          <div class="h-specs">
+            <div class="h-spec">📍 Proche aéroport &nbsp;|&nbsp; 🚗 10–15 min (navette)</div>
+            <div class="h-spec">❄️ Climatisé &nbsp;|&nbsp; 🛏️ 1 Chambre &nbsp;|&nbsp; 📶 Wi-Fi inclus</div>
           </div>
-          <div class="hcheck"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="hotel-body">
-            <div class="hotel-name">Appartement Résidentiel Almadies — 1 Chambre Premium</div>
-            <div class="hotel-specs">
-              <div class="hotel-spec-item">📍 Dakar - Les Almadies &nbsp;|&nbsp; 🚗 45 min de l'aéroport AIBD</div>
-              <div class="hotel-spec-item">❄️ Climatisation totale &nbsp;|&nbsp; 🛏️ 1 Chambre + Cuisine équipée</div>
-              <div class="hotel-spec-item">🌊 Proche Mer &nbsp;|&nbsp; 📶 Wi-Fi Fibre</div>
-            </div>
-            <div class="hotel-badges"><span class="eq-badge">❄️ Clim totale</span><span class="eq-badge">🌊 Proche Mer</span><span class="eq-badge">🍳 Cuisine</span><span class="eq-badge">📶 Fibre</span></div>
-            <div class="hotel-footer">
-              <div class="hotel-prix"><span class="hotel-prix-amount">55 000 FCFA</span><span class="hotel-prix-unit">/ nuit</span><span class="hotel-prix-eur">≈ 84 €</span></div>
-              <div class="hotel-select-btn">Sélectionner</div>
-            </div>
+          <div class="h-eq"><span class="eq">❄️ Clim</span><span class="eq">📶 Wi-Fi</span><span class="eq">🔒 Sécurisé</span><span class="eq">🛁 SDB privée</span></div>
+          <div class="h-footer">
+            <div class="h-prix"><span class="h-prix-val">15 000 FCFA</span><span class="h-prix-unit">/ nuit</span><span class="h-prix-sub">≈ 23 €</span></div>
+            <div class="h-select-btn">Choisir</div>
           </div>
-        </label>
+        </div>
+      </label>
 
-        <!-- CARTE 3 — France / Roissy CDG -->
-        <label class="hotel-card" for="h3">
-          <input type="radio" name="heb" id="h3" value="Suite Confort Roissy — 1 Chambre, proximité immédiate CDG" data-fcfa="58500" data-eur="89" />
-          <div class="lock-overlay" role="button" tabindex="0"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous pour réserver</span></div>
-          <div class="hotel-img-wrap">
-            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80&fit=crop" alt="Suite Confort Roissy CDG" loading="lazy" />
-            <span class="hotel-img-badge">⭐ 4,9 / 5</span>
-            <span class="hotel-img-tag">🇫🇷 Roissy CDG</span>
+      <!-- CARTE 2 — Moyen 25 000 FCFA -->
+      <label class="hotel-card" for="h2">
+        <input type="radio" name="heb" id="h2" value="Appartement Confort — 2 Chambres climatisées, résidence partenaire" data-fcfa="25000" data-eur="38"/>
+        <div class="lock-overlay" role="button" tabindex="0"><span class="lock-icon">🔒</span><span class="lock-txt">Connectez-vous pour réserver</span></div>
+        <div class="h-img-wrap">
+          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=80&fit=crop" alt="Appartement Confort" loading="lazy"/>
+          <span class="h-badge-stars">⭐ 4,7 / 5</span>
+          <span class="h-badge-tier mid">Confort</span>
+        </div>
+        <div class="hcring"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="h-body">
+          <div class="h-name">Appartement Confort — 2 Chambres (Climatisé)</div>
+          <div class="h-specs">
+            <div class="h-spec">📍 Résidence partenaire &nbsp;|&nbsp; 🚗 8–12 min (chauffeur)</div>
+            <div class="h-spec">❄️ Clim réversible &nbsp;|&nbsp; 🛏️ 2 Chambres &nbsp;|&nbsp; 🍳 Cuisine</div>
           </div>
-          <div class="hcheck"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="hotel-body">
-            <div class="hotel-name">Suite Confort Roissy — 1 Chambre (Proximité immédiate CDG)</div>
-            <div class="hotel-specs">
-              <div class="hotel-spec-item">📍 Roissy-en-France &nbsp;|&nbsp; 🚗 5 min des terminaux CDG (Navette dédiée)</div>
-              <div class="hotel-spec-item">❄️ Clim réversible &nbsp;|&nbsp; 🛏️ 1 Chambre confort</div>
-              <div class="hotel-spec-item">☕ Machine Nespresso &nbsp;|&nbsp; 🤫 Isolation phonique</div>
-            </div>
-            <div class="hotel-badges"><span class="eq-badge">❄️ Clim réversible</span><span class="eq-badge">☕ Nespresso</span><span class="eq-badge">🤫 Anti-bruit</span><span class="eq-badge">🚐 Navette dédiée</span></div>
-            <div class="hotel-footer">
-              <div class="hotel-prix"><span class="hotel-prix-amount">89 €</span><span class="hotel-prix-unit">/ nuit</span><span class="hotel-prix-eur">≈ 58 500 FCFA</span></div>
-              <div class="hotel-select-btn">Sélectionner</div>
-            </div>
+          <div class="h-eq"><span class="eq">❄️ Clim réversible</span><span class="eq">🍳 Cuisine</span><span class="eq">📶 Fibre</span><span class="eq">🔒 Gardiennage</span></div>
+          <div class="h-footer">
+            <div class="h-prix"><span class="h-prix-val">25 000 FCFA</span><span class="h-prix-unit">/ nuit</span><span class="h-prix-sub">≈ 38 €</span></div>
+            <div class="h-select-btn">Choisir</div>
           </div>
-        </label>
+        </div>
+      </label>
 
-      </div><!-- /hotel-grid -->
-      <p class="choix-note">💡 D'autres logements disponibles selon votre aéroport — confirmation et alternatives envoyées sur WhatsApp dans les 15 minutes.</p>
-    </div><!-- /hébergement -->
-
-    <!-- ─── TRANSPORT — Vague 3 : photos professionnelles ─── -->
-    <div class="choix-block choix-block--transport">
-      <div class="choix-block-title">
-        <span class="choix-num">2</span>
-        <div><h3>Sélectionnez votre transport partenaire</h3><p class="choix-block-sub">Chauffeur professionnel certifié — prise en charge à la sortie du terminal en 10 min</p></div>
-      </div>
-      <div class="transport-grid" id="transportGroup">
-
-        <!-- Berline Standard -->
-        <label class="transport-card" for="t1">
-          <input type="radio" name="trp" id="t1" value="Berline Partenaire Yango Éco / UberX (1-2 passagers)" data-fcfa="0" data-eur="0" />
-          <div class="lock-overlay" role="button" tabindex="0"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous</span></div>
-          <div class="transport-img-wrap">
-            <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80&fit=crop" alt="Berline Standard climatisée" loading="lazy" />
+      <!-- CARTE 3 — Luxe 45 000 FCFA -->
+      <label class="hotel-card" for="h3">
+        <input type="radio" name="heb" id="h3" value="Suite Luxe — 3 Chambres climatisées, résidence haut de gamme" data-fcfa="45000" data-eur="69"/>
+        <div class="lock-overlay" role="button" tabindex="0"><span class="lock-icon">🔒</span><span class="lock-txt">Connectez-vous pour réserver</span></div>
+        <div class="h-img-wrap">
+          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80&fit=crop" alt="Suite Luxe" loading="lazy"/>
+          <span class="h-badge-stars">⭐ 4,9 / 5</span>
+          <span class="h-badge-tier lux">Luxe</span>
+        </div>
+        <div class="hcring"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="h-body">
+          <div class="h-name">Suite Luxe — 3 Chambres (Climatisation totale)</div>
+          <div class="h-specs">
+            <div class="h-spec">📍 Résidence premium &nbsp;|&nbsp; 🚗 5–10 min (chauffeur dédié)</div>
+            <div class="h-spec">❄️ Clim totale &nbsp;|&nbsp; 🛏️ 3 Chambres &nbsp;|&nbsp; 👥 Jusqu'à 6 pers.</div>
           </div>
-          <div class="tcheck"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="transport-body">
-            <div class="transport-name">🚖 Berline Partenaire (Yango Éco / UberX)</div>
-            <ul class="transport-specs">
-              <li>👥 1 – 2 passagers</li>
-              <li>🧳 2 valises max</li>
-              <li>❄️ Véhicule climatisé</li>
-              <li>⏱️ Prise en charge en 10 min</li>
-            </ul>
-            <div class="transport-prix inc"><span class="transport-prix-lbl">Prix</span><span class="transport-prix-val">Inclus dans le pack</span></div>
+          <div class="h-eq"><span class="eq">❄️ Clim totale</span><span class="eq">👥 6 pers.</span><span class="eq">📶 Fibre 1Gb</span><span class="eq">🔒 Sécu 24h</span></div>
+          <div class="h-footer">
+            <div class="h-prix"><span class="h-prix-val">45 000 FCFA</span><span class="h-prix-unit">/ nuit</span><span class="h-prix-sub">≈ 69 €</span></div>
+            <div class="h-select-btn">Choisir</div>
           </div>
-        </label>
+        </div>
+      </label>
 
-        <!-- SUV Confort -->
-        <label class="transport-card" for="t2">
-          <input type="radio" name="trp" id="t2" value="SUV Premium Yango Confort / Uber Comfort (3-4 passagers)" data-fcfa="5000" data-eur="8" />
-          <div class="lock-overlay" role="button" tabindex="0"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous</span></div>
-          <div class="transport-img-wrap">
-            <span class="t-badge-pop">⭐ Populaire</span>
-            <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&q=80&fit=crop" alt="SUV Confort professionnel" loading="lazy" />
-          </div>
-          <div class="tcheck"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="transport-body">
-            <div class="transport-name">🚘 SUV Premium (Yango Confort / Uber Comfort)</div>
-            <ul class="transport-specs">
-              <li>👥 3 – 4 passagers</li>
-              <li>🧳 4 grosses valises</li>
-              <li>❄️ Climatisation renforcée</li>
-              <li>🥤 Eau fraîche à bord</li>
-            </ul>
-            <div class="transport-prix ext"><span class="transport-prix-lbl">Supplément</span><span class="transport-prix-val">+5 000 FCFA <small>/ +8 €</small></span></div>
-          </div>
-        </label>
+    </div><!-- /hotel-grid -->
+    <p class="choix-note">💡 Disponibilité confirmée en 15 min sur WhatsApp · Facturation certifiée CE 261/2004 / UEMOA N°03/2003 pour remboursement compagnie aérienne.</p>
+  </div>
+</section>
 
-        <!-- Van Navette -->
-        <label class="transport-card" for="t3">
-          <input type="radio" name="trp" id="t3" value="Van Navette Yango Max / UberVAN (jusqu'à 7 passagers)" data-fcfa="10000" data-eur="15" />
-          <div class="lock-overlay" role="button" tabindex="0"><span class="lock-overlay-icon">🔒</span><span class="lock-overlay-text">Connectez-vous</span></div>
-          <div class="transport-img-wrap">
-            <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fit=crop" alt="Van navette groupe professionnel" loading="lazy" />
-          </div>
-          <div class="tcheck"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="transport-body">
-            <div class="transport-name">🚐 Van Navette (Yango Max / UberVAN)</div>
-            <ul class="transport-specs">
-              <li>👨‍👩‍👧‍👦 Jusqu'à 7 passagers</li>
-              <li>🧳 +6 grosses valises</li>
-              <li>❄️ Climatisé · Idéal Familles &amp; Groupes</li>
-              <li>♿ Accès PMR possible</li>
-            </ul>
-            <div class="transport-prix ext"><span class="transport-prix-lbl">Supplément</span><span class="transport-prix-val">+10 000 FCFA <small>/ +15 €</small></span></div>
-          </div>
-        </label>
+<!-- ══════════════════════════════════════
+     SECTION 3 — TRANSPORT YANGO (Vague 4)
+     id="section-transport"
+══════════════════════════════════════ -->
+<section class="transport-section" id="section-transport">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Étape 2 · Transport partenaire Yango</div>
+      <h2>Votre véhicule professionnel</h2>
+      <p>Chauffeur certifié — prise en charge à la sortie du terminal en 10 min maximum.</p>
+    </div>
 
-      </div><!-- /transport-grid -->
-    </div><!-- /transport -->
+    <div class="transport-grid" id="transportGroup">
 
-    <!-- ─── PANIER DYNAMIQUE ─── -->
+      <!-- Standard / Éco -->
+      <label class="transport-card" for="t1">
+        <input type="radio" name="trp" id="t1" value="Yango Éco / UberX — Berline Standard (1-2 passagers)" data-fcfa="0" data-eur="0"/>
+        <div class="lock-overlay" role="button" tabindex="0"><span class="lock-icon">🔒</span><span class="lock-txt">Connectez-vous</span></div>
+        <div class="t-img-wrap">
+          <span class="t-badge-eco">🌿 Éco</span>
+          <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80&fit=crop" alt="Yango Éco Berline" loading="lazy"/>
+        </div>
+        <div class="tcring"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="t-body">
+          <div class="t-name">🚖 Yango Éco / UberX</div>
+          <div class="t-partner">Berline Standard Climatisée</div>
+          <ul class="t-specs">
+            <li>👥 1 – 2 passagers</li>
+            <li>🧳 2 valises max (cabine)</li>
+            <li>❄️ Véhicule climatisé</li>
+            <li>⏱️ Prise en charge : 10 min</li>
+          </ul>
+          <div class="t-prix inc"><span class="t-prix-lbl">Inclus dans le pack</span><span class="t-prix-val">0 FCFA</span></div>
+        </div>
+      </label>
+
+      <!-- Confort / Berline -->
+      <label class="transport-card" for="t2">
+        <input type="radio" name="trp" id="t2" value="Yango Confort / Uber Comfort — SUV Premium (3-4 passagers)" data-fcfa="5000" data-eur="8"/>
+        <div class="lock-overlay" role="button" tabindex="0"><span class="lock-icon">🔒</span><span class="lock-txt">Connectez-vous</span></div>
+        <div class="t-img-wrap">
+          <span class="t-badge-pop">⭐ Le plus choisi</span>
+          <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&q=80&fit=crop" alt="Yango Confort SUV" loading="lazy"/>
+        </div>
+        <div class="tcring"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="t-body">
+          <div class="t-name">🚘 Yango Confort / Uber Comfort</div>
+          <div class="t-partner">SUV Premium Climatisé</div>
+          <ul class="t-specs">
+            <li>👥 3 – 4 passagers</li>
+            <li>🧳 4 grosses valises</li>
+            <li>❄️ Climatisation renforcée</li>
+            <li>🥤 Eau fraîche à bord</li>
+          </ul>
+          <div class="t-prix ext"><span class="t-prix-lbl">Supplément</span><span class="t-prix-val">+5 000 FCFA <small>/ +8 €</small></span></div>
+        </div>
+      </label>
+
+      <!-- Van / Groupe -->
+      <label class="transport-card" for="t3">
+        <input type="radio" name="trp" id="t3" value="Yango Max / UberVAN — Van Navette Groupe (jusqu'à 7 pass.)" data-fcfa="10000" data-eur="15"/>
+        <div class="lock-overlay" role="button" tabindex="0"><span class="lock-icon">🔒</span><span class="lock-txt">Connectez-vous</span></div>
+        <div class="t-img-wrap">
+          <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80&fit=crop" alt="Yango Max Van Navette" loading="lazy"/>
+        </div>
+        <div class="tcring"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#C8D5E8" stroke-width="2"/><path class="ck" d="M5.5 10.5l3 3 6-6" stroke="#C8D5E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="t-body">
+          <div class="t-name">🚐 Yango Max / UberVAN</div>
+          <div class="t-partner">Van Navette Groupe Climatisé</div>
+          <ul class="t-specs">
+            <li>👨‍👩‍👧‍👦 Jusqu'à 7 passagers</li>
+            <li>🧳 +6 grosses valises</li>
+            <li>❄️ Climatisé · Idéal familles</li>
+            <li>♿ Accès PMR possible</li>
+          </ul>
+          <div class="t-prix ext"><span class="t-prix-lbl">Supplément</span><span class="t-prix-val">+10 000 FCFA <small>/ +15 €</small></span></div>
+        </div>
+      </label>
+
+    </div><!-- /transport-grid -->
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SECTION 4 — PANIER / FACTURE SÉLECTION
+     id="facture-selection"
+══════════════════════════════════════ -->
+<section class="facture-section" id="facture-selection">
+  <div class="container">
+    <div class="section-head" style="margin-bottom:28px">
+      <div class="section-tag">Étape 3 · Votre sélection</div>
+      <h2>Récapitulatif &amp; Paiement</h2>
+      <p>Vérifiez votre pack avant de procéder au paiement sécurisé.</p>
+    </div>
     <div class="recap-box" id="recapBox" aria-live="polite">
-      <div class="recap-title">📋 Votre sélection</div>
+      <div class="recap-title">📋 Facture de sélection</div>
       <div class="recap-rows">
         <div class="recap-row"><span class="recap-label">🏨 Hébergement</span><span class="recap-val" id="recapH">Aucun sélectionné</span></div>
         <div class="recap-row"><span class="recap-label">🚗 Transport</span><span class="recap-val" id="recapT">Aucun sélectionné</span></div>
       </div>
       <div class="recap-total-row" id="recapTotRow" style="display:none">
         <span class="recap-total-label">💰 Total estimé</span>
-        <div><div class="recap-total-amount" id="recapFcfa">—</div><span class="total-eur" id="recapEur"></span></div>
+        <div>
+          <div class="recap-total-amt" id="recapFcfa">—</div>
+          <span class="recap-total-eur" id="recapEur"></span>
+        </div>
       </div>
       <div class="recap-nuits-row" id="recapNR" style="display:none">
         <span>Calcul basé sur <strong id="recapNV">1</strong> nuit(s)</span>
         <span id="recapDet" style="font-style:italic"></span>
       </div>
     </div>
-
-    <!-- ─── BOUTON PAIEMENT ─── -->
-    <div style="margin-top:28px;text-align:center">
-      <button class="btn-pay" id="btnPay" disabled>
-        <span class="btn-pay-icon">🔒</span>
-        <span class="btn-pay-text"><strong>Connectez-vous pour réserver</strong><small>Sélectionnez un hébergement et un transport</small></span>
-      </button>
-      <p class="wa-confirm-hint">⚡ Confirmation immédiate · Prise en charge à la sortie du terminal</p>
-    </div>
-
+    <button class="btn-pay" id="btnPay" disabled>
+      <span class="btn-pay-icon">🔒</span>
+      <span class="btn-pay-text"><strong>Connectez-vous pour réserver</strong><small>Sélectionnez un hébergement et un transport</small></span>
+    </button>
+    <p class="facture-hint">⚡ Confirmation immédiate · Prise en charge à la sortie du terminal</p>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════
-     SECTION 3 — FORMULAIRE VOYAGEUR
-     Vague 1 : déplacé sous le catalogue
-     Vague 4 : menus déroulants intelligents
-══════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     SECTION 5 — FORMULAIRE VOYAGEUR
+     Vague 1 : champ e-mail ajouté
+     Vague 5 : select aéroport + compagnie
+══════════════════════════════════════ -->
 <section class="form-section" id="demande">
   <div class="container">
     <div class="section-head">
-      <div class="section-tag">Étape 3 · Validation de votre identité &amp; vol</div>
-      <h2>Formulaire de demande d'assistance voyageur</h2>
-      <p>Renseignez votre vol et vos coordonnées — notre équipe vous contacte sous <strong>15 minutes</strong> pour confirmer votre pack.</p>
+      <div class="section-tag">Étape 4 · Votre profil voyageur</div>
+      <h2>Formulaire de demande d'assistance</h2>
+      <p>Renseignez votre vol — notre équipe vous contacte sous <strong>15 minutes</strong> pour confirmer votre pack et envoyer la facture.</p>
     </div>
     <div class="form-card">
       <form id="formVoyageur" action="https://formspree.io/f/xpwdjrkb" method="POST" novalidate>
         <input type="hidden" name="_subject" value="[SOS Passager Escale] Demande d'assistance voyageur" />
+        <input type="hidden" name="_replyto" value="franckvanie@yahoo.de" />
         <input type="hidden" name="type_formulaire" value="voyageur" />
         <div class="form-grid">
-          <div class="field"><label for="v-prenom">Prénom</label><input type="text" id="v-prenom" name="prenom" placeholder="Ex : Jean-Paul" required autocomplete="given-name" /></div>
-          <div class="field"><label for="v-nom">Nom</label><input type="text" id="v-nom" name="nom" placeholder="Ex : Dupont" required autocomplete="family-name" /></div>
+          <div class="field"><label for="v-prenom">Prénom</label><input type="text" id="v-prenom" name="prenom" placeholder="Jean-Paul" required autocomplete="given-name"/></div>
+          <div class="field"><label for="v-nom">Nom</label><input type="text" id="v-nom" name="nom" placeholder="Dupont" required autocomplete="family-name"/></div>
+
+          <!-- VAGUE 1 : champ e-mail obligatoire -->
+          <div class="field full">
+            <label for="voyageur-email">Adresse e-mail <span style="color:#C0392B">*</span></label>
+            <input type="email" id="voyageur-email" name="email" placeholder="votre@email.com" required autocomplete="email" />
+          </div>
+
           <div class="field full">
             <label for="v-phone">Numéro WhatsApp</label>
             <div class="phone-row">
@@ -740,11 +1041,11 @@
                   <option value="+225">🇨🇮 +225</option><option value="+221">🇸🇳 +221</option><option value="+223">🇲🇱 +223</option><option value="+229">🇧🇯 +229</option><option value="+226">🇧🇫 +226</option><option value="+224">🇬🇳 +224</option><option value="+228">🇹🇬 +228</option><option value="+227">🇳🇪 +227</option><option value="+237">🇨🇲 +237</option><option value="+234">🇳🇬 +234</option>
                 </select>
               </div>
-              <div class="field-number"><input type="tel" id="v-phone" name="whatsapp" placeholder="Numéro sans indicatif" required /></div>
+              <div class="field-number"><input type="tel" id="v-phone" name="whatsapp" placeholder="Numéro sans indicatif" required/></div>
             </div>
           </div>
 
-          <!-- Vague 4 : menu déroulant aéroport -->
+          <!-- VAGUE 5 : select aéroport -->
           <div class="field full">
             <label for="v-aeroport">Aéroport actuel où vous êtes bloqué</label>
             <select id="v-aeroport" name="aeroport" required>
@@ -762,10 +1063,10 @@
 
           <div class="field">
             <label for="v-vol">Numéro de vol</label>
-            <input type="text" id="v-vol" name="num_vol" placeholder="Ex: AF 471" required />
+            <input type="text" id="v-vol" name="num_vol" placeholder="Ex: AF 471" required/>
           </div>
 
-          <!-- Vague 4 : menu déroulant compagnie -->
+          <!-- VAGUE 5 : select compagnie -->
           <div class="field">
             <label for="v-compagnie">Compagnie aérienne</label>
             <select id="v-compagnie" name="compagnie" required>
@@ -794,75 +1095,71 @@
           <div class="field full">
             <label>Passagers &amp; durée estimée</label>
             <div class="pax-row">
-              <div class="field"><label for="v-adultes" style="font-size:.73rem">Adultes</label><input type="number" id="v-adultes" name="nb_adultes" min="1" value="1" /></div>
-              <div class="field"><label for="v-enfants" style="font-size:.73rem">Enfants</label><input type="number" id="v-enfants" name="nb_enfants" min="0" value="0" /></div>
-              <div class="field"><label for="v-nuits" style="font-size:.73rem">Nombre de nuits</label><input type="number" id="v-nuits" name="nb_nuits" min="1" value="1" /></div>
+              <div class="field"><label for="v-adultes" style="font-size:.73rem">Adultes</label><input type="number" id="v-adultes" name="nb_adultes" min="1" value="1"/></div>
+              <div class="field"><label for="v-enfants" style="font-size:.73rem">Enfants</label><input type="number" id="v-enfants" name="nb_enfants" min="0" value="0"/></div>
+              <div class="field"><label for="v-nuits" style="font-size:.73rem">Nombre de nuits</label><input type="number" id="v-nuits" name="nb_nuits" min="1" value="1"/></div>
             </div>
           </div>
         </div>
         <button type="submit" class="btn-submit">Valider mon Profil Voyageur &amp; Activer le Pack 🚀</button>
-        <div class="form-success" id="successVoyageur" role="alert">✅ Demande envoyée ! Notre équipe vous contacte sous 15 minutes sur WhatsApp.</div>
+        <div class="form-success" id="successVoyageur" role="alert">✅ Demande envoyée ! Notre équipe vous contacte sous 15 minutes sur WhatsApp &amp; e-mail.</div>
       </form>
-      <p style="text-align:center;font-size:.78rem;color:var(--gray-text);margin-top:16px">📲 Ou écrivez-nous directement sur WhatsApp pour une réponse immédiate.</p>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════
-     SECTION 4 — PAIEMENTS MULTI-DEVISES
-══════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     SECTION 6 — PAIEMENTS
+══════════════════════════════════════ -->
 <section class="pay-section" id="paiements">
   <div class="container">
     <div class="section-head">
-      <div class="section-tag">Paiements sécurisés multi-devises</div>
-      <h2>Payez comme vous voulez, où que vous soyez</h2>
-      <p>SOS Passager accepte toutes les solutions de paiement locales — Europe &amp; Afrique de l'Ouest.</p>
+      <div class="section-tag">Paiements multi-devises sécurisés</div>
+      <h2>Payez comme vous voulez</h2>
+      <p>Europe &amp; Afrique de l'Ouest — toutes les solutions de paiement acceptées.</p>
     </div>
     <div class="pay-zones">
       <div class="pay-zone-card"><div class="pay-zone-head"><span class="pay-zone-flag">🌍</span><h3>Zone Europe</h3></div><div class="pay-badges"><span class="pay-badge"><span class="pay-dot" style="background:#1A73E8"></span>Visa</span><span class="pay-badge"><span class="pay-dot" style="background:#EB001B"></span>Mastercard</span><span class="pay-badge">🍎 Apple Pay</span><span class="pay-badge"><span class="pay-dot" style="background:#003087"></span>PayPal</span></div></div>
-      <div class="pay-zone-card"><div class="pay-zone-head"><span class="pay-zone-flag">🌍</span><h3>Zone Afrique / UEMOA</h3></div><div class="pay-badges"><span class="pay-badge"><span class="pay-dot" style="background:#0070E0"></span>Wave</span><span class="pay-badge"><span class="pay-dot" style="background:#FF6900"></span>Orange Money</span><span class="pay-badge"><span class="pay-dot" style="background:#FFD700"></span>MTN MoMo</span><span class="pay-badge"><span class="pay-dot" style="background:#00B14F"></span>Moov Money</span></div></div>
+      <div class="pay-zone-card"><div class="pay-zone-head"><span class="pay-zone-flag">🌍</span><h3>Zone Afrique</h3></div><div class="pay-badges"><span class="pay-badge"><span class="pay-dot" style="background:#0070E0"></span>Wave</span><span class="pay-badge"><span class="pay-dot" style="background:#FF6900"></span>Orange Money</span><span class="pay-badge"><span class="pay-dot" style="background:#FFD700"></span>MTN MoMo</span><span class="pay-badge"><span class="pay-dot" style="background:#00B14F"></span>Moov Money</span></div></div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════
-     SECTION 5 — PRESTATAIRES
-══════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     SECTION 7 — PRESTATAIRES
+══════════════════════════════════════ -->
 <section class="presta-section" id="prestataires">
   <div class="container">
-    <div class="section-head">
-      <div class="section-tag">Réseau Partenaire</div>
-      <h2>Intégrer SOS Passager Escale Réseau</h2>
-      <p>Hôtelier, propriétaire ou transporteur ? Rejoignez notre réseau et accédez à des voyageurs qualifiés 24h/24.</p>
-    </div>
+    <div class="section-head"><div class="section-tag">Réseau Partenaire</div><h2>Rejoindre l'Escale Réseau</h2><p>Hôtelier, propriétaire ou chauffeur Yango ? Accédez à des voyageurs qualifiés 24h/24.</p></div>
     <div class="presta-grid">
-      <div class="presta-card"><div class="presta-icon">🏨</div><h3>Hébergeurs</h3><p>Appartements, studios, guesthouses résidentiels proches des aéroports. Remplissage garanti en cas de perturbations aériennes.</p><span class="presta-commission">Commission 12% / réservation</span><p class="presta-charte">Charte qualité SOS Passager · Paiement sous 48h</p></div>
-      <div class="presta-card"><div class="presta-icon">🚗</div><h3>Chauffeurs privés</h3><p>VTC certifiés, véhicules récents et climatisés. Intervention rapide dès validation de la réservation voyageur.</p><span class="presta-commission">Commission 10% / course</span><p class="presta-charte">Disponibilité 24h/24 · 7j/7 · Assurance couverte</p></div>
-      <div class="presta-card"><div class="presta-icon">🤝</div><h3>Agences de voyage</h3><p>Proposez le Pack Escale à vos clients. Programme d'affiliation avec commission sur chaque pack activé.</p><span class="presta-commission">Commission 8% / pack</span><p class="presta-charte">Tableau de bord dédié · Support prioritaire</p></div>
+      <div class="presta-card"><div class="presta-icon">🏨</div><h3>Hébergeurs</h3><p>Appartements, studios, guesthouses résidentiels. Remplissage garanti en cas de perturbations aériennes.</p><span class="presta-commission">Commission 12% / réservation</span><p class="presta-charte">Charte qualité · Paiement sous 48h</p></div>
+      <div class="presta-card"><div class="presta-icon">🚗</div><h3>Chauffeurs Yango / Uber</h3><p>VTC certifiés, véhicules récents et climatisés. Missions déclenchées automatiquement à la validation.</p><span class="presta-commission">Commission 10% / course</span><p class="presta-charte">24h/24 · 7j/7 · Assurance couverte</p></div>
+      <div class="presta-card"><div class="presta-icon">🤝</div><h3>Agences &amp; Affiliation</h3><p>Proposez le Pack Escale à vos clients. Commission sur chaque pack activé via votre lien.</p><span class="presta-commission">Commission 8% / pack</span><p class="presta-charte">Dashboard dédié · Support prioritaire</p></div>
     </div>
-    <div style="margin-top:48px">
-      <div class="section-head" style="margin-bottom:32px"><h2>Formulaire d'inscription prestataire</h2><p>Notre équipe vous contacte sous 24h pour finaliser le partenariat.</p></div>
+    <div style="margin-top:44px">
+      <div class="section-head" style="margin-bottom:28px"><h2>Formulaire d'inscription prestataire</h2><p>Notre équipe vous contacte sous 24h.</p></div>
       <div class="form-card">
         <form id="formPrestataire" action="https://formspree.io/f/xpwdjrkb" method="POST" novalidate>
-          <input type="hidden" name="_subject" value="[SOS Passager Escale] Inscription prestataire" />
-          <input type="hidden" name="type_formulaire" value="prestataire" />
+          <input type="hidden" name="_subject" value="[SOS Passager Escale] Inscription prestataire"/>
+          <input type="hidden" name="_replyto" value="franckvanie@yahoo.de"/>
+          <input type="hidden" name="type_formulaire" value="prestataire"/>
           <div class="form-grid">
-            <div class="field"><label for="p-prenom">Prénom</label><input type="text" id="p-prenom" name="prenom" placeholder="Ex : Kouamé" required /></div>
-            <div class="field"><label for="p-nom">Nom</label><input type="text" id="p-nom" name="nom" placeholder="Ex : Assouman" required /></div>
-            <div class="field full"><label for="p-societe">Nom de la société / Activité</label><input type="text" id="p-societe" name="societe" placeholder="Ex: Résidence Les Palmiers · VTC Confort Abidjan" required /></div>
+            <div class="field"><label for="p-prenom">Prénom</label><input type="text" id="p-prenom" name="prenom" placeholder="Kouamé" required/></div>
+            <div class="field"><label for="p-nom">Nom</label><input type="text" id="p-nom" name="nom" placeholder="Assouman" required/></div>
+            <div class="field full"><label for="p-societe">Société / Activité</label><input type="text" id="p-societe" name="societe" placeholder="Ex: Résidence Les Palmiers · VTC Confort Abidjan" required/></div>
             <div class="field full"><label>Type de prestation</label>
               <div class="radio-btns">
-                <label><input type="radio" name="type_presta" value="Hébergement" required />🏨 Hébergement (Appartement / Studio / Guesthouse)</label>
-                <label><input type="radio" name="type_presta" value="Transport VTC" />🚗 Transport privé (VTC / Chauffeur)</label>
-                <label><input type="radio" name="type_presta" value="Les deux" />🤝 Les deux</label>
-                <label><input type="radio" name="type_presta" value="Agence" />✈️ Agence de voyage / Affiliation</label>
+                <label><input type="radio" name="type_presta" value="Hébergement" required/>🏨 Hébergement</label>
+                <label><input type="radio" name="type_presta" value="Transport VTC"/>🚗 Transport Yango / VTC</label>
+                <label><input type="radio" name="type_presta" value="Les deux"/>🤝 Les deux</label>
+                <label><input type="radio" name="type_presta" value="Agence"/>✈️ Agence / Affiliation</label>
               </div>
             </div>
-            <div class="field full"><label for="p-ville">Ville / Aéroport couvert</label><input type="text" id="p-ville" name="ville" placeholder="Ex: Abidjan (FHB) · Paris (CDG) · Dakar (AIBD)" required /></div>
-            <div class="field"><label for="p-email">E-mail professionnel</label><input type="email" id="p-email" name="email" placeholder="contact@votresociete.com" required /></div>
-            <div class="field"><label for="p-wa">WhatsApp professionnel</label><input type="tel" id="p-wa" name="whatsapp" placeholder="+225 07 XX XX XX XX" required /></div>
+            <div class="field full"><label for="p-ville">Ville / Aéroport couvert</label><input type="text" id="p-ville" name="ville" placeholder="Ex: Abidjan (FHB) · Paris (CDG)" required/></div>
+            <div class="field"><label for="p-email">E-mail pro</label><input type="email" id="p-email" name="email" placeholder="contact@societe.com" required/></div>
+            <div class="field"><label for="p-wa">WhatsApp pro</label><input type="tel" id="p-wa" name="whatsapp" placeholder="+225 07 XX XX XX XX" required/></div>
           </div>
-          <button type="submit" class="btn-submit">Intégrer SOS Passager Escale Réseau 🤝</button>
+          <button type="submit" class="btn-submit">Rejoindre SOS Passager Escale Réseau 🤝</button>
           <div class="form-success" id="successPrestataire" role="alert">✅ Inscription reçue ! Notre équipe vous contacte sous 24h.</div>
         </form>
       </div>
@@ -873,7 +1170,7 @@
 <!-- ══ FOOTER ══ -->
 <footer>
   <div class="footer-brand">SOS <span>Passager</span> Escale Réseau</div>
-  <p class="footer-sub">Hébergement &amp; Transport d'Urgence · Europe &amp; Afrique · CE 261/2004 · UEMOA N°03/2003</p>
+  <p class="footer-sub">Hébergement &amp; Transport d'Urgence · Europe &amp; Afrique · CE 261/2004 · UEMOA N°03/2003<br/>Contact : <a href="mailto:franckvanie@yahoo.de" style="color:#7EC8F8">franckvanie@yahoo.de</a></p>
   <nav class="footer-links">
     <a href="index.html">Accueil</a><a href="index.html">Droits passagers</a>
     <a href="index.html">Mentions légales</a><a href="index.html">Confidentialité</a>
@@ -881,10 +1178,10 @@
   </nav>
 </footer>
 
-<!-- ══════════════════════════════════════════════════
-     JAVASCRIPT COMPLET — VAGUE 5
-     Auth · Panier multi-devises · Paiement · Smooth Scroll
-══════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     JAVASCRIPT COMPLET
+     Auth · Panier · Paiement · Smooth Scroll (Vague 5)
+══════════════════════════════════════ -->
 <script>
 (function(){
 'use strict';
@@ -909,7 +1206,7 @@ function setupForm(fId,sId){
 setupForm('formVoyageur','successVoyageur');
 setupForm('formPrestataire','successPrestataire');
 
-/* ── Radios prestataire ── */
+/* Radios prestataire */
 document.querySelectorAll('.radio-btns label').forEach(function(l){
   var i=l.querySelector('input');
   if(i)i.addEventListener('change',function(){document.querySelectorAll('.radio-btns label').forEach(function(x){x.classList.remove('selected');});l.classList.add('selected');});
@@ -930,30 +1227,31 @@ var S={user:getU(),hotel:null,transport:null,nuits:1,pm:null,mmOp:null};
 
 /* ══ TOPBAR ══ */
 var topbar=document.getElementById('userTopbar');
-var avatar=document.getElementById('userAvatar');
-var greet=document.getElementById('userGreeting');
-var logoutBtn=document.getElementById('btnLogout');
+var uAvatar=document.getElementById('userAvatar');
+var uGreet=document.getElementById('userGreeting');
+var btnLogout=document.getElementById('btnLogout');
 
 function applyAuth(){
   if(S.user){
     document.body.classList.add('authenticated');
     if(topbar)topbar.classList.add('visible');
     var ini=((S.user.prenom||'?')[0]+(S.user.nom||'?')[0]).toUpperCase();
-    if(avatar)avatar.textContent=ini;
-    if(greet)greet.textContent='Bonjour '+S.user.prenom+' · Compte actif ✅';
+    if(uAvatar)uAvatar.textContent=ini;
+    if(uGreet)uGreet.textContent='Bonjour '+S.user.prenom+' · Compte actif ✅';
   }else{
     document.body.classList.remove('authenticated');
     if(topbar)topbar.classList.remove('visible');
   }
   updatePayBtn();
+  updateSteps();
 }
 
-if(logoutBtn)logoutBtn.addEventListener('click',function(){
+if(btnLogout)btnLogout.addEventListener('click',function(){
   S.user=null;remU();S.hotel=null;S.transport=null;
   resetCards();updateRecap();applyAuth();
 });
 
-/* Verrous → ouvrir modal auth */
+/* Verrous */
 document.querySelectorAll('.lock-overlay').forEach(function(ov){
   ov.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();openM('authModal');});
   ov.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openM('authModal');}});
@@ -976,26 +1274,20 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeM('aut
 var tL=document.getElementById('tabLogin'),tR=document.getElementById('tabRegister');
 function switchTab(aid){
   [tL,tR].forEach(function(t){
-    if(!t)return;
-    var on=t.id===aid;
-    t.classList.toggle('active',on);
+    if(!t)return;var on=t.id===aid;t.classList.toggle('active',on);
     var p=document.getElementById(t.id==='tabLogin'?'panelLogin':'panelRegister');
     if(p)p.classList.toggle('active',on);
   });
 }
 if(tL)tL.addEventListener('click',function(){switchTab('tabLogin');});
 if(tR)tR.addEventListener('click',function(){switchTab('tabRegister');});
-document.querySelectorAll('.switch-link').forEach(function(l){
-  l.addEventListener('click',function(){switchTab(l.getAttribute('data-tab'));});
-});
+document.querySelectorAll('.switch-link').forEach(function(l){l.addEventListener('click',function(){switchTab(l.getAttribute('data-tab'));});});
 
 /* Toggle pwd */
 document.querySelectorAll('.pwd-toggle').forEach(function(btn){
   btn.addEventListener('click',function(){
     var inp=document.getElementById(btn.getAttribute('data-t'));
-    if(!inp)return;
-    inp.type=inp.type==='text'?'password':'text';
-    btn.textContent=inp.type==='text'?'🙈':'👁';
+    if(!inp)return;inp.type=inp.type==='text'?'password':'text';btn.textContent=inp.type==='text'?'🙈':'👁';
   });
 });
 
@@ -1037,7 +1329,16 @@ if(bR)bR.addEventListener('click',function(){
   setTimeout(function(){closeM('authModal');if(rf)rf.style.display='';if(rs)rs.style.display='none';toast('Compte créé ! Bienvenue '+prenom+' 🎉');},2200);
 });
 
-/* ══ CARTES — SÉLECTION ══ */
+/* ══ SMOOTH SCROLL UTILITAIRE (Vague 5) ══ */
+function smoothTo(targetId, offsetExtra){
+  var tgt=document.getElementById(targetId);
+  if(!tgt)return;
+  var offset=70+(offsetExtra||0);
+  var top=tgt.getBoundingClientRect().top+window.pageYOffset-offset;
+  window.scrollTo({top:top,behavior:'smooth'});
+}
+
+/* ══ CARTES HÔTEL ══ */
 function setupHotelCards(){
   var cards=document.querySelectorAll('.hotel-card');
   cards.forEach(function(card){
@@ -1047,13 +1348,14 @@ function setupHotelCards(){
       cards.forEach(function(c){c.classList.remove('is-selected');});
       card.classList.add('is-selected');radio.checked=true;
       S.hotel={label:radio.value,fcfa:parseInt(radio.getAttribute('data-fcfa')||'0',10),eur:parseInt(radio.getAttribute('data-eur')||'0',10)};
-      updateRecap();
-      /* Smooth scroll vers formulaire si transport aussi sélectionné */
-      if(S.transport)smoothScrollToForm();
+      updateRecap();updateSteps();
+      /* VAGUE 5 — Scroll vers section transport après sélection logement */
+      setTimeout(function(){smoothTo('section-transport',0);toast('🏨 Logement sélectionné ! Choisissez maintenant votre transport 🚗');},300);
     });
   });
 }
 
+/* ══ CARTES TRANSPORT ══ */
 function setupTransportCards(){
   var cards=document.querySelectorAll('.transport-card');
   cards.forEach(function(card){
@@ -1063,23 +1365,22 @@ function setupTransportCards(){
       cards.forEach(function(c){c.classList.remove('is-selected');});
       card.classList.add('is-selected');radio.checked=true;
       S.transport={label:radio.value,fcfa:parseInt(radio.getAttribute('data-fcfa')||'0',10),eur:parseInt(radio.getAttribute('data-eur')||'0',10)};
-      updateRecap();
-      /* Vague 1 : Smooth Scroll vers formulaire si hébergement aussi sélectionné */
-      if(S.hotel)smoothScrollToForm();
+      updateRecap();updateSteps();
+      /* VAGUE 5 — Scroll vers #facture-selection et focus formulaire */
+      setTimeout(function(){
+        smoothTo('facture-selection',0);
+        toast('🚗 Transport sélectionné ! Vérifiez votre récapitulatif 📋');
+        /* Focus vers champ e-mail du formulaire voyageur (facture) */
+        setTimeout(function(){
+          var emailField=document.getElementById('voyageur-email');
+          if(emailField){
+            smoothTo('demande',10);
+            emailField.focus();
+          }
+        },1200);
+      },300);
     });
   });
-}
-
-/* Vague 1 — Smooth Scroll vers section formulaire */
-function smoothScrollToForm(){
-  setTimeout(function(){
-    var target=document.getElementById('demande');
-    if(!target)return;
-    var offset=80; /* hauteur navbar sticky */
-    var top=target.getBoundingClientRect().top+window.pageYOffset-offset;
-    window.scrollTo({top:top,behavior:'smooth'});
-    toast('✅ Sélection complète ! Renseignez maintenant votre vol 👇');
-  },350);
 }
 
 function resetCards(){
@@ -1089,12 +1390,14 @@ function resetCards(){
   });
 }
 
+/* Nuits */
 function getNuits(){var i=document.getElementById('v-nuits');var n=i?parseInt(i.value,10):1;return(isNaN(n)||n<1)?1:n;}
 var vn=document.getElementById('v-nuits');
 if(vn)vn.addEventListener('input',function(){S.nuits=getNuits();updateRecap();});
 
 function fmtF(n){if(n===0)return'Inclus';return n.toLocaleString('fr-FR')+' FCFA';}
 
+/* ══ MISE À JOUR PANIER ══ */
 function updateRecap(){
   S.nuits=getNuits();
   var rH=document.getElementById('recapH');
@@ -1121,7 +1424,15 @@ function updateRecap(){
   updatePayBtn();
 }
 
-/* Bouton paiement */
+/* Barre de progression étapes */
+function updateSteps(){
+  var s2=document.getElementById('step2'),s3=document.getElementById('step3'),s4=document.getElementById('step4');
+  if(S.hotel&&s2)s2.classList.add('active');
+  if(S.transport&&s3)s3.classList.add('active');
+  if(S.hotel&&S.transport&&s4)s4.classList.add('active');
+}
+
+/* ══ BOUTON PAIEMENT ══ */
 var btnPay=document.getElementById('btnPay');
 function updatePayBtn(){
   if(!btnPay)return;
@@ -1137,7 +1448,7 @@ function updatePayBtn(){
   }else if(!S.hotel||!S.transport){
     if(icon)icon.textContent='🛒';
     if(strong)strong.textContent='Complétez votre sélection';
-    if(small)small.textContent='Choisissez un hébergement et un transport';
+    if(small)small.textContent='Étape 1 : Hébergement · Étape 2 : Transport';
   }else{
     var n=getNuits();
     var tF=(S.hotel.fcfa*n)+S.transport.fcfa;
@@ -1171,7 +1482,6 @@ function openPayM(){
   var bpn=document.getElementById('btnPayNow');if(bpn)bpn.disabled=true;
   openM('payModal');
 }
-
 function showPS(w){
   var map={main:'payScreen',processing:'payProc',success:'paySucc'};
   Object.keys(map).forEach(function(k){var el=document.getElementById(map[k]);if(el)el.style.display=(k===w)?'block':'none';});
@@ -1179,8 +1489,7 @@ function showPS(w){
 
 var pmM=document.getElementById('pmM'),pmC=document.getElementById('pmC');
 function onPM(m){
-  S.pm=m;
-  var mm=document.getElementById('payMm'),cd=document.getElementById('payCard');
+  S.pm=m;var mm=document.getElementById('payMm'),cd=document.getElementById('payCard');
   [pmM,pmC].forEach(function(c){if(c)c.classList.remove('selected');});
   if(m==='mobile'){if(pmM)pmM.classList.add('selected');if(mm)mm.classList.add('visible');if(cd)cd.classList.remove('visible');}
   else{if(pmC)pmC.classList.add('selected');if(cd)cd.classList.add('visible');if(mm)mm.classList.remove('visible');}
@@ -1195,7 +1504,6 @@ document.querySelectorAll('.pay-mm-btn').forEach(function(btn){
     btn.classList.add('active');S.mmOp=btn.getAttribute('data-op');chkPay();
   });
 });
-
 var cnum=document.getElementById('cardNum');
 if(cnum)cnum.addEventListener('input',function(){
   var v=this.value.replace(/\D/g,'').substring(0,16);
@@ -1203,7 +1511,6 @@ if(cnum)cnum.addEventListener('input',function(){
 });
 var mmn=document.getElementById('mmNum');
 if(mmn)mmn.addEventListener('input',chkPay);
-
 function chkPay(){
   var bpn=document.getElementById('btnPayNow');if(!bpn)return;
   var ok=false;
@@ -1233,24 +1540,64 @@ var bcs=document.getElementById('btnCloseSucc');
 if(bcs)bcs.addEventListener('click',function(){
   closeM('payModal');
   S.hotel=null;S.transport=null;resetCards();updateRecap();
-  toast('Réservation confirmée ✅ Notre équipe vous contacte sur WhatsApp.');
-  setTimeout(function(){var s=document.getElementById('choix-pack');if(s)s.scrollIntoView({behavior:'smooth'});},300);
+  toast('Réservation confirmée ✅ Notre équipe vous contacte sur WhatsApp &amp; e-mail.');
+  setTimeout(function(){smoothTo('catalogue-logements',0);},300);
 });
 
-/* Toast */
+/* ══ TOAST ══ */
 function toast(msg){
   var t=document.createElement('div');
-  t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1A2538;color:#fff;padding:13px 22px;border-radius:12px;font-size:.88rem;font-weight:700;z-index:99999;max-width:90vw;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.25);transition:transform .3s cubic-bezier(.34,1.56,.64,1)';
+  t.style.cssText='position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(80px);background:#1A2538;color:#fff;padding:12px 22px;border-radius:12px;font-size:.86rem;font-weight:700;z-index:99999;max-width:90vw;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.28);transition:transform .3s cubic-bezier(.34,1.56,.64,1)';
   t.textContent=msg;document.body.appendChild(t);
   requestAnimationFrame(function(){requestAnimationFrame(function(){t.style.transform='translateX(-50%) translateY(0)';});});
   setTimeout(function(){t.style.transform='translateX(-50%) translateY(80px)';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},400);},3800);
 }
 
-/* INIT */
+/* ══ INIT ══ */
 setupHotelCards();
 setupTransportCards();
 applyAuth();
 updateRecap();
+
+/* ══ BULLE WHATSAPP — MENU POP-UP ══ */
+(function(){
+  var btn  = document.getElementById('waBubbleBtn');
+  var menu = document.getElementById('waBubbleMenu');
+  if(!btn || !menu) return;
+
+  function openMenu(){
+    menu.classList.add('open');
+    btn.classList.add('active');
+    btn.setAttribute('aria-expanded','true');
+  }
+  function closeMenu(){
+    menu.classList.remove('open');
+    btn.classList.remove('active');
+    btn.setAttribute('aria-expanded','false');
+  }
+  function toggleMenu(e){
+    e.stopPropagation();
+    menu.classList.contains('open') ? closeMenu() : openMenu();
+  }
+
+  btn.addEventListener('click', toggleMenu);
+
+  /* Fermeture au clic en dehors */
+  document.addEventListener('click', function(e){
+    var wrap = document.getElementById('waBubbleWrap');
+    if(wrap && !wrap.contains(e.target)) closeMenu();
+  });
+
+  /* Fermeture touche Échap */
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeMenu();
+  });
+
+  /* Les liens ferment le menu après clic */
+  menu.querySelectorAll('.wa-bubble-link').forEach(function(link){
+    link.addEventListener('click', function(){ setTimeout(closeMenu, 200); });
+  });
+})();
 
 })();
 </script>
