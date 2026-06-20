@@ -51,7 +51,7 @@ input,select,textarea,button{font-family:inherit}
 .nav-hamburger.open span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
 .nav-mobile{display:none;flex-direction:column;background:var(--navy);border-top:1px solid rgba(255,255,255,.1);padding:12px 20px 16px;gap:4px}
 .nav-mobile.open{display:flex}
-.nav-mobile a{display:block;padding:10px 14px;border-radius:8px;font-size:.92rem;font-weight:600;color:rgba(255,255,255,.9);transition:background .18s}
+.nav-mobile a{display:block;padding:10px 14px;border-radius:8px;font-size:.92rem;font-weight:600;color:rgba(255,255,255,.9);transition:background .18s;cursor:pointer}
 .nav-mobile a:hover{background:rgba(255,255,255,.1)}
 @media(max-width:900px){.nav-links{display:none}.nav-tel{display:none}.nav-hamburger{display:flex}}
 
@@ -159,8 +159,7 @@ body.authenticated .lock-overlay{display:none!important}
 .trp-note{font-size:.75rem;color:var(--gray-t);margin-top:12px;font-style:italic}
 
 /* ══ SECTION TRANSPORT ══ */
-.transport-section{background:var(--gray-1);padding:64px 0 56px;border-top:2px solid var(--blue-lt);display:none}
-.transport-section.visible{display:block}
+.transport-section{background:var(--gray-1);padding:64px 0 56px;border-top:2px solid var(--blue-lt);display:block}
 .transport-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 @media(max-width:900px){.transport-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:580px){.transport-grid{grid-template-columns:1fr}}
@@ -452,6 +451,38 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
 .wa-btn.active{background:var(--green-dk);transform:scale(.96)}
 .wa-btn svg{width:32px;height:32px;fill:#fff}
 
+
+
+/* ══ SECTION PARTENAIRES ══ */
+.partners-section{background:var(--navy);padding:56px 20px;border-top:3px solid var(--green)}
+.partners-section h2{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:900;color:#fff;text-align:center;margin-bottom:8px}
+.partners-section>div>p{font-size:.88rem;color:rgba(255,255,255,.7);text-align:center;margin-bottom:36px}
+.partners-cat{margin-bottom:32px}
+.partners-cat-title{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.5);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.partners-cat-title::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
+.partners-grid{display:flex;flex-wrap:wrap;gap:12px}
+.partner-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;transition:background .18s,border-color .18s,transform .15s;cursor:default;flex:1;min-width:140px;max-width:200px}
+.partner-card:hover{background:rgba(255,255,255,.14);border-color:rgba(29,185,84,.4);transform:translateY(-2px)}
+.partner-card.coming{opacity:.55;cursor:default}
+.partner-icon{font-size:1.8rem;flex-shrink:0;line-height:1}
+.partner-name{font-size:.88rem;font-weight:700;color:#fff;line-height:1.2}
+.partner-zone{font-size:.68rem;color:rgba(255,255,255,.55);margin-top:2px}
+.partner-badge{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:10px;margin-top:4px;display:inline-block}
+.partner-badge.active{background:rgba(29,185,84,.25);color:#4ADE80;border:1px solid rgba(29,185,84,.3)}
+.partner-badge.soon{background:rgba(245,158,11,.15);color:#FCD34D;border:1px solid rgba(245,158,11,.2)}
+.partners-note{text-align:center;font-size:.78rem;color:rgba(255,255,255,.45);margin-top:24px;line-height:1.6}
+@media(max-width:600px){.partner-card{min-width:130px}}
+
+/* ══ TUNNEL GUIDÉ — Continuer / Revenir ══ */
+.tunnel-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:24px;flex-wrap:wrap}
+.tunnel-nav.center{justify-content:center}
+.btn-continuer{display:inline-flex;align-items:center;gap:10px;background:var(--green);color:#fff;border:none;border-radius:12px;padding:14px 24px;font-size:.95rem;font-weight:800;cursor:pointer;transition:background .18s,transform .15s,box-shadow .18s;box-shadow:0 4px 18px rgba(29,185,84,.35);text-decoration:none;white-space:nowrap}
+.btn-continuer:hover{background:var(--green-dk);transform:translateY(-2px);box-shadow:0 8px 28px rgba(29,185,84,.45)}
+.btn-continuer:disabled{background:var(--gray-3);box-shadow:none;cursor:not-allowed;transform:none}
+.btn-revenir{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--gray-t);border:1.5px solid var(--gray-3);border-radius:12px;padding:12px 20px;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .18s;text-decoration:none;white-space:nowrap}
+.btn-revenir:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-lt)}
+.etape-hint{font-size:.78rem;color:var(--gray-t);text-align:center;margin-top:10px;font-style:italic}
+
 /* Reduced motion */
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -591,12 +622,13 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
       <div class="nav-brand-name">SOS <span>Passager</span></div>
     </a>
     <nav class="nav-links">
-      <a href="#pack-sos-complet">🎯 Pack Complet</a>
-      <a href="#catalogue-logements">🏨 Logement</a>
-      <a href="#section-transport">🚗 Transport</a>
-      <a href="#facture-selection">📋 Panier</a>
-      <a href="#demande">📝 Mon Vol</a>
-      <a href="#reclamer-indemnite">💰 Réclamation</a>
+      <a href="#pack-sos-complet" onclick="scrollToSection('pack-sos-complet');return false">🎯 Pack Complet</a>
+      <a href="#catalogue-logements" onclick="scrollToSection('catalogue-logements');return false">🏨 Logement</a>
+      <a href="#section-transport" onclick="var ts=document.getElementById('section-transport');if(ts)ts.style.display='block';scrollToSection('section-transport');return false">🚗 Transport</a>
+      <a href="#facture-selection" onclick="scrollToSection('facture-selection');return false">📋 Panier</a>
+      <a href="#demande" onclick="scrollToSection('demande');return false">📝 Mon Vol</a>
+      <a href="#reclamer-indemnite" onclick="scrollToSection('reclamer-indemnite');return false">💰 Réclamation</a>
+      <a href="#partenaires-officiels" onclick="scrollToSection('partenaires-officiels');return false">🤝 Partenaires</a>
     </nav>
     <div class="nav-right">
       <a href="https://wa.me/22505036057255" class="nav-tel" target="_blank" rel="noopener">📞 +225 05 03 60 57 25</a>
@@ -606,13 +638,14 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
   </div>
   <nav class="nav-mobile" id="mobileMenu">
     <a href="index.html#reclamer" style="color:#4ADE80;font-weight:800;">💰 Réclamer mon indemnité</a>
-    <a href="#pack-sos-complet">🎯 Pack SOS Complet</a>
-    <a href="#catalogue-logements">🏨 Hébergements</a>
-    <a href="#section-transport">🚗 Transport Yango</a>
-    <a href="#facture-selection">📋 Mon Panier</a>
-    <a href="#demande">📝 Formulaire Vol</a>
-    <a href="#reclamer-indemnite">💰 Réclamation</a>
-    <a href="#cgu-pack">⚖️ CGU</a>
+    <a href="#pack-sos-complet" onclick="scrollToSection('pack-sos-complet')">🎯 Pack SOS Complet</a>
+    <a href="#catalogue-logements" onclick="scrollToSection('catalogue-logements')">🏨 Hébergements</a>
+    <a href="#section-transport" onclick="var ts=document.getElementById('section-transport');if(ts)ts.style.display='block';scrollToSection('section-transport')">🚗 Transport Yango</a>
+    <a href="#facture-selection" onclick="scrollToSection('facture-selection')">📋 Mon Panier</a>
+    <a href="#demande" onclick="scrollToSection('demande')">📝 Formulaire Vol</a>
+    <a href="#reclamer-indemnite" onclick="scrollToSection('reclamer-indemnite')">💰 Réclamation</a>
+    <a href="#partenaires-officiels" onclick="scrollToSection('partenaires-officiels')">🤝 Partenaires</a>
+    <a href="#cgu-pack" onclick="scrollToSection('cgu-pack')">⚖️ CGU</a>
     <a href="index.html">← Retour SOS Passager</a>
   </nav>
 </header>
@@ -711,13 +744,13 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
 <section class="catalogue-section" id="catalogue-logements">
   <div class="container">
     <div class="steps-bar">
-      <div class="step-item active"><div class="step-circle">1</div>Hébergement</div>
+      <div class="step-item active"><div class="step-circle">1</div>Logement</div>
       <div class="step-sep"></div>
       <div class="step-item" id="step2"><div class="step-circle">2</div>Transport</div>
       <div class="step-sep"></div>
-      <div class="step-item" id="step3"><div class="step-circle">3</div>Paiement</div>
+      <div class="step-item" id="step3"><div class="step-circle">3</div>Votre vol</div>
       <div class="step-sep"></div>
-      <div class="step-item" id="step4"><div class="step-circle">4</div>Votre vol</div>
+      <div class="step-item" id="step4"><div class="step-circle">4</div>Paiement</div>
     </div>
     <div class="section-head">
       <div class="section-tag light">Étape 1 · Votre logement résidentiel</div>
@@ -790,6 +823,13 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
       </label>
     </div>
     <p class="choix-note">💡 Disponibilité confirmée en 15 min sur WhatsApp · Facturation certifiée CE 261/2004 / UEMOA N°03/2003</p>
+
+    <!-- BOUTON CONTINUER étape 1 → étape 2 -->
+    <div class="tunnel-nav center" id="tunnelNav1" style="display:none;margin-top:20px">
+      <button class="btn-continuer" onclick="scrollTo2()">
+        Continuer — Ajouter un transport ? →
+      </button>
+    </div>
 
     <!-- QUESTION TRANSPORT -->
     <div class="trp-question" id="transportQuestion" style="display:none">
@@ -874,59 +914,25 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
       </label>
     </div>
     <p class="aller-note">* Tous les tarifs sont aller simple uniquement · Péage pont HKB inclus selon destination</p>
+
+    <!-- NAVIGATION TUNNEL étape 2 -->
+    <div class="tunnel-nav" id="tunnelNav2" style="display:none;margin-top:28px">
+      <button class="btn-revenir" onclick="scrollToSection('catalogue-logements')">
+        ← Revenir au logement
+      </button>
+      <button class="btn-continuer" id="btnContinuer2" onclick="scrollToSection('demande')">
+        Continuer — Renseigner mon vol →
+      </button>
+    </div>
+    <p class="etape-hint" id="tunnelHint2" style="display:none">Votre véhicule est sélectionné ✅ Renseignez maintenant votre vol.</p>
   </div>
 </section>
 
-<!-- ══ SECTION 5 — PANIER / RÉCAPITULATIF ══ -->
-<section class="facture-section" id="facture-selection">
-  <div class="container">
-    <div class="section-head" style="margin-bottom:28px">
-      <div class="section-tag light">Étape 3 · Votre sélection</div>
-      <h2>Récapitulatif &amp; Paiement</h2>
-      <p>Vérifiez votre pack avant de procéder au paiement sécurisé.</p>
-    </div>
-    <div class="recap-box" id="recapBox" aria-live="polite">
-      <div class="recap-title">📋 Votre Pack SOS Escale</div>
-      <div class="recap-rows">
-        <div class="recap-row"><span class="recap-label">🏨 Hébergement</span><span class="recap-val" id="recapH">Aucun sélectionné</span></div>
-        <div class="recap-row" id="recapRowTrp" style="display:none"><span class="recap-label">🚗 Transport</span><span class="recap-val" id="recapT">—</span></div>
-        <div class="recap-row"><span class="recap-label">📄 Réclamation</span><span class="recap-val green">✅ Incluse · Commission 25% si succès</span></div>
-        <div class="recap-row" id="recapNR" style="display:none"><span class="recap-label" style="color:var(--gray-t);font-weight:500;font-size:.82rem">Détail</span><span style="font-size:.82rem;color:var(--gray-t);text-align:right" id="recapDet"></span></div>
-      </div>
-      <div class="recap-total" id="recapTotRow" style="display:none">
-        <span class="recap-total-lbl">💰 Total à payer</span>
-        <div style="text-align:right">
-          <div class="recap-total-amt" id="recapFcfa">—</div>
-          <span class="recap-total-eur" id="recapEur"></span>
-          <span style="font-size:.68rem;color:rgba(255,255,255,.5);display:block;margin-top:2px">Nuit(s) : <strong id="recapNV">1</strong></span>
-        </div>
-      </div>
-      <!-- CGU -->
-      <div class="recap-cgu" id="recapCguWrap">
-        <input type="checkbox" id="v-cgu"/>
-        <div>
-          <label class="recap-cgu-text" for="v-cgu">J'ai lu et j'accepte les <a href="#cgu-pack">Conditions Générales du Pack SOS Escale Réseau</a>, notamment le <strong>mandat de réclamation</strong> confié à SOS PASSAGER (commission 25% sur indemnité obtenue, sans frais si échec).</label>
-          <div class="recap-cgu-err" id="cguErr">⚠️ Vous devez accepter les conditions générales pour continuer.</div>
-        </div>
-      </div>
-    </div>
-    <button class="btn-pay" id="btnPay" disabled>
-      <span class="btn-pay-icon">🔒</span>
-      <span class="btn-pay-txt"><strong id="btnPayTxt">Connectez-vous pour réserver</strong><small id="btnPaySub">Sélectionnez un hébergement</small></span>
-    </button>
-    <div class="facture-mention">
-      <span style="font-size:1.3rem;flex-shrink:0">📄</span>
-      <span class="facture-mention-txt">Une facture certifiée vous sera envoyée par <strong>WhatsApp et/ou par e-mail</strong> pour constituer votre dossier de remboursement auprès de votre compagnie aérienne.</span>
-    </div>
-    <p class="facture-hint">⚡ Confirmation immédiate · Prise en charge à la sortie du terminal</p>
-  </div>
-</section>
-
-<!-- ══ SECTION 6 — FORMULAIRE VOYAGEUR ══ -->
+<!-- ══ SECTION 5 — FORMULAIRE VOYAGEUR ══ -->
 <section class="form-section" id="demande">
   <div class="container">
     <div class="section-head">
-      <div class="section-tag light">Étape 4 · Votre profil voyageur</div>
+      <div class="section-tag light">Étape 3 · Votre profil voyageur</div>
       <h2>Formulaire de demande d'assistance</h2>
       <p>Renseignez votre vol — notre équipe vous contacte sous <strong>15 minutes</strong>.</p>
     </div>
@@ -1023,6 +1029,69 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
         <button type="submit" class="btn-submit">Valider mon Profil Voyageur &amp; Activer le Pack 🚀</button>
         <div class="form-success" id="successVoyageur" role="alert">✅ Demande envoyée ! Notre équipe vous contacte sous 15 minutes sur WhatsApp &amp; e-mail.</div>
       </form>
+
+      <!-- NAVIGATION TUNNEL étape 3 -->
+      <div class="tunnel-nav" style="margin-top:20px;padding-top:20px;border-top:1px solid var(--gray-2)">
+        <button class="btn-revenir" onclick="scrollToSection('section-transport')">
+          ← Revenir au transport
+        </button>
+        <button class="btn-continuer" onclick="scrollToSection('facture-selection')">
+          Continuer — Voir le récapitulatif →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECTION 6 — RÉCAPITULATIF &amp; PAIEMENT ══ -->
+<section class="facture-section" id="facture-selection">
+  <div class="container">
+    <div class="section-head" style="margin-bottom:28px">
+      <div class="section-tag light">Étape 4 · Récapitulatif &amp; Paiement</div>
+      <h2>Récapitulatif &amp; Paiement</h2>
+      <p>Vérifiez votre pack avant de procéder au paiement sécurisé.</p>
+    </div>
+    <div class="recap-box" id="recapBox" aria-live="polite">
+      <div class="recap-title">📋 Votre Pack SOS Escale</div>
+      <div class="recap-rows">
+        <div class="recap-row"><span class="recap-label">🏨 Hébergement</span><span class="recap-val" id="recapH">Aucun sélectionné</span></div>
+        <div class="recap-row" id="recapRowTrp" style="display:none"><span class="recap-label">🚗 Transport</span><span class="recap-val" id="recapT">—</span></div>
+        <div class="recap-row"><span class="recap-label">📄 Réclamation</span><span class="recap-val green">✅ Incluse · Commission 25% si succès</span></div>
+        <div class="recap-row" id="recapNR" style="display:none"><span class="recap-label" style="color:var(--gray-t);font-weight:500;font-size:.82rem">Détail</span><span style="font-size:.82rem;color:var(--gray-t);text-align:right" id="recapDet"></span></div>
+      </div>
+      <div class="recap-total" id="recapTotRow" style="display:none">
+        <span class="recap-total-lbl">💰 Total à payer</span>
+        <div style="text-align:right">
+          <div class="recap-total-amt" id="recapFcfa">—</div>
+          <span class="recap-total-eur" id="recapEur"></span>
+          <span style="font-size:.68rem;color:rgba(255,255,255,.5);display:block;margin-top:2px">Nuit(s) : <strong id="recapNV">1</strong></span>
+        </div>
+      </div>
+      <!-- CGU -->
+      <div class="recap-cgu" id="recapCguWrap">
+        <input type="checkbox" id="v-cgu"/>
+        <div>
+          <label class="recap-cgu-text" for="v-cgu">J'ai lu et j'accepte les <a href="#cgu-pack">Conditions Générales du Pack SOS Escale Réseau</a>, notamment le <strong>mandat de réclamation</strong> confié à SOS PASSAGER (commission 25% sur indemnité obtenue, sans frais si échec).</label>
+          <div class="recap-cgu-err" id="cguErr">⚠️ Vous devez accepter les conditions générales pour continuer.</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-pay" id="btnPay" disabled>
+      <span class="btn-pay-icon">🔒</span>
+      <span class="btn-pay-txt"><strong id="btnPayTxt">Connectez-vous pour réserver</strong><small id="btnPaySub">Sélectionnez un hébergement</small></span>
+    </button>
+    <div class="facture-mention">
+      <span style="font-size:1.3rem;flex-shrink:0">📄</span>
+      <span class="facture-mention-txt">Une facture certifiée vous sera envoyée par <strong>WhatsApp et/ou par e-mail</strong> pour constituer votre dossier de remboursement auprès de votre compagnie aérienne.</span>
+    </div>
+    <p class="facture-hint">⚡ Confirmation immédiate · Prise en charge à la sortie du terminal</p>
+
+    <!-- NAVIGATION TUNNEL étape 4 -->
+    <div class="tunnel-nav" style="margin-top:8px">
+      <button class="btn-revenir" onclick="scrollToSection('demande')">
+        ← Modifier mon profil voyageur
+      </button>
+      <span style="font-size:.75rem;color:var(--gray-t);text-align:right;line-height:1.4">🔒 Paiement sécurisé SSL<br/>Données cryptées</span>
     </div>
   </div>
 </section>
@@ -1109,6 +1178,156 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
   </div>
 </section>
 
+
+<!-- ══ SECTION PARTENAIRES ══ -->
+<section class="partners-section" id="partenaires-officiels">
+  <div style="max-width:1100px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:36px">
+      <div style="display:inline-block;background:rgba(29,185,84,.2);border:1px solid rgba(29,185,84,.4);color:#4ADE80;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;padding:5px 14px;border-radius:20px;margin-bottom:14px">🤝 Réseau Certifié</div>
+      <h2>Nos Partenaires Officiels</h2>
+      <p>SOS Passager s'appuie sur un réseau certifié de partenaires en Europe et en Afrique</p>
+    </div>
+
+    <!-- TRANSPORT -->
+    <div class="partners-cat">
+      <div class="partners-cat-title">🚗 Transport · Chauffeurs certifiés</div>
+      <div class="partners-grid">
+        <div class="partner-card">
+          <span class="partner-icon">🟡</span>
+          <div>
+            <div class="partner-name">Yango</div>
+            <div class="partner-zone">Abidjan · Dakar · Bamako · Douala · Yaoundé</div>
+            <span class="partner-badge active">Partenaire actif</span>
+          </div>
+        </div>
+        <div class="partner-card">
+          <span class="partner-icon">⚫</span>
+          <div>
+            <div class="partner-name">Uber</div>
+            <div class="partner-zone">France · Belgique · Maroc · Dakar · Abidjan</div>
+            <span class="partner-badge active">Partenaire actif</span>
+          </div>
+        </div>
+        <div class="partner-card">
+          <span class="partner-icon">🟢</span>
+          <div>
+            <div class="partner-name">Bolt</div>
+            <div class="partner-zone">France · Belgique · Portugal · Europe</div>
+            <span class="partner-badge active">Partenaire actif</span>
+          </div>
+        </div>
+        <div class="partner-card">
+          <span class="partner-icon">🔴</span>
+          <div>
+            <div class="partner-name">Heetch</div>
+            <div class="partner-zone">France · Maroc · Algérie · Nuit &amp; aéroports</div>
+            <span class="partner-badge active">Partenaire actif</span>
+          </div>
+        </div>
+        <div class="partner-card">
+          <span class="partner-icon">🔵</span>
+          <div>
+            <div class="partner-name">InDriver</div>
+            <div class="partner-zone">UEMOA · CEMAC · Prix négociés</div>
+            <span class="partner-badge active">Partenaire actif</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAIEMENT -->
+    <div class="partners-cat">
+      <div class="partners-cat-title">💳 Paiement · Solutions sécurisées</div>
+      <div class="partners-grid">
+        <div class="partner-card">
+          <span class="partner-icon">🔵</span>
+          <div>
+            <div class="partner-name">Wave</div>
+            <div class="partner-zone">Côte d'Ivoire · Sénégal · Mali · Burkina</div>
+            <span class="partner-badge active">Partenaire actif</span>
+          </div>
+        </div>
+        <div class="partner-card">
+          <span class="partner-icon">🟠</span>
+          <div>
+            <div class="partner-name">Orange Money</div>
+            <div class="partner-zone">UEMOA · CEMAC · Maroc</div>
+            <span class="partner-badge active">Partenaire actif</span>
+          </div>
+        </div>
+        <div class="partner-card">
+          <span class="partner-icon">🟡</span>
+          <div>
+            <div class="partner-name">MTN MoMo</div>
+            <div class="partner-zone">Cameroun · Ghana · Nigeria · CEMAC</div>
+            <span class="partner-badge active">Partenaire actif</span>
+          </div>
+        </div>
+        <div class="partner-card">
+          <span class="partner-icon">💳</span>
+          <div>
+            <div class="partner-name">Visa · Mastercard</div>
+            <div class="partner-zone">Europe · International</div>
+            <span class="partner-badge active">Accepté</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICES ASSOCIÉS -->
+    <div class="partners-cat">
+      <div class="partners-cat-title">🍽️ Services associés · Confort à l'hébergement</div>
+      <div class="partners-grid">
+        <div class="partner-card">
+          <span class="partner-icon">🟣</span>
+          <div>
+            <div class="partner-name">Glovo</div>
+            <div class="partner-zone">Repas livré à votre hébergement · France · Maroc · CI</div>
+            <span class="partner-badge active">Service disponible</span>
+          </div>
+        </div>
+        <div class="partner-card">
+          <span class="partner-icon">🔴</span>
+          <div>
+            <div class="partner-name">Jumia Food</div>
+            <div class="partner-zone">Livraison repas · Afrique de l'Ouest</div>
+            <span class="partner-badge active">Service disponible</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ASSURANCE -->
+    <div class="partners-cat">
+      <div class="partners-cat-title">🛡️ Assurance · Protection voyageur</div>
+      <div class="partners-grid">
+        <div class="partner-card coming">
+          <span class="partner-icon">🛡️</span>
+          <div>
+            <div class="partner-name">Assureur Partenaire</div>
+            <div class="partner-zone">Couverture Europe &amp; Afrique</div>
+            <span class="partner-badge soon">Partenariat en cours</span>
+          </div>
+        </div>
+        <div class="partner-card coming">
+          <span class="partner-icon">📋</span>
+          <div>
+            <div class="partner-name">Assistance Juridique</div>
+            <div class="partner-zone">CE 261/2004 · UEMOA · CEMAC</div>
+            <span class="partner-badge soon">Partenariat en cours</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="partners-note">
+      Vous êtes un partenaire (VTC, hébergeur, assureur, fintech) et souhaitez rejoindre le réseau SOS Passager ?<br/>
+      <a href="mailto:franckvanie@yahoo.de" style="color:#4ADE80;font-weight:700">franckvanie@yahoo.de</a> ·
+      <a href="https://wa.me/22505036057255" style="color:#4ADE80;font-weight:700" target="_blank">WhatsApp +225 05 03 60 57 25</a>
+    </p>
+  </div>
+</section>
+
 <!-- ══ FOOTER ══ -->
 <footer>
   <div class="footer-brand">SOS <span>Passager</span> Escale Réseau</div>
@@ -1125,7 +1344,15 @@ footer{background:var(--navy);color:rgba(255,255,255,.7);padding:36px 20px;text-
 
 /* ── Hamburger ── */
 var mb=document.getElementById('menuBtn'),mn=document.getElementById('mobileMenu');
-if(mb&&mn){mb.addEventListener('click',function(){var o=mn.classList.toggle('open');mb.classList.toggle('open',o);mb.setAttribute('aria-expanded',String(o));});}
+if(mb&&mn){
+  mb.addEventListener('click',function(){var o=mn.classList.toggle('open');mb.classList.toggle('open',o);mb.setAttribute('aria-expanded',String(o));});
+  /* Fermeture automatique au clic sur un lien mobile */
+  mn.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click',function(){
+      mn.classList.remove('open');mb.classList.remove('open');mb.setAttribute('aria-expanded','false');
+    });
+  });
+}
 
 /* ── Bulle WhatsApp ── */
 var waBtn=document.getElementById('waBtn'),waMenu=document.getElementById('waMenu'),waWrap=document.getElementById('waWrap');
@@ -1234,6 +1461,22 @@ if(bR)bR.addEventListener('click',function(){
 
 /* Smooth scroll */
 function smoothTo(id,off){var t=document.getElementById(id);if(!t)return;var top=t.getBoundingClientRect().top+window.pageYOffset-(70+(off||0));window.scrollTo({top:top,behavior:'smooth'});}
+/* ══ SCROLL PRÉCIS — offset navbar 70px ══ */
+function scrollToSection(id,extra){
+  var el=document.getElementById(id);
+  if(!el)return;
+  var offset=70+(extra||0);
+  var top=el.getBoundingClientRect().top+window.pageYOffset-offset;
+  window.scrollTo({top:top,behavior:'smooth'});
+}
+
+/* Continuer étape 1 → transport */
+function scrollTo2(){
+  var ts=document.getElementById('section-transport');
+  if(ts)ts.style.display='block';
+  scrollToSection('section-transport');
+}
+
 
 /* ── Cartes Hôtel ── */
 function setupHotelCards(){
@@ -1251,6 +1494,8 @@ function setupHotelCards(){
       if(bo)bo.classList.remove('sel');if(bn)bn.classList.remove('sel');
       var ts=document.getElementById('section-transport');if(ts)ts.classList.remove('visible');
       updateRecap();updateSteps();
+      /* Afficher bouton Continuer étape 1 */
+      var tn1=document.getElementById('tunnelNav1');if(tn1)tn1.style.display='flex';
       if(window._showTrpQ)window._showTrpQ();
     });
   });
@@ -1287,8 +1532,12 @@ function setupTransportCards(){
       card.classList.add('is-selected');radio.checked=true;
       S.transport={label:radio.value,fcfa:parseInt(radio.getAttribute('data-fcfa')||'0',10),eur:parseInt(radio.getAttribute('data-eur')||'0',10)};
       updateRecap();updateSteps();
-      setTimeout(function(){smoothTo('facture-selection',0);toast('🚗 Transport sélectionné ! Vérifiez votre récapitulatif 📋');
-        setTimeout(function(){smoothTo('demande',10);},1200);
+      /* Afficher boutons tunnel étape 2 */
+      var tn2=document.getElementById('tunnelNav2');if(tn2)tn2.style.display='flex';
+      var th2=document.getElementById('tunnelHint2');if(th2)th2.style.display='block';
+      setTimeout(function(){
+        scrollToSection('demande');
+        toast('🚗 Transport sélectionné ! Renseignez maintenant votre vol ✅');
       },300);
     });
   });
