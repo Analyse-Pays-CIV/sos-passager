@@ -630,6 +630,50 @@
     @keyframes spin{to{transform:rotate(360deg);}}
     .pay-processing p { font-size:.88rem; font-weight:600; color:var(--blue-dark); }
 
+    /* ════ QUESTION TRANSPORT OPTIONNEL ════ */
+    .transport-question {
+      background:var(--white); border:2px solid var(--gray-3);
+      border-radius:16px; padding:24px 28px; margin:28px 0 0;
+      text-align:center;
+    }
+    .transport-question h3 {
+      font-size:1.1rem; font-weight:800; color:var(--blue-dark);
+      margin-bottom:8px;
+    }
+    .transport-question p {
+      font-size:.85rem; color:var(--gray-text); margin-bottom:20px; line-height:1.6;
+    }
+    .transport-choice-btns {
+      display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+    }
+    .trp-yes-btn, .trp-no-btn {
+      display:flex; align-items:center; gap:10px;
+      border-radius:12px; padding:14px 24px;
+      font-size:.92rem; font-weight:800; cursor:pointer;
+      border:2px solid transparent; transition:all .18s;
+      flex:1; max-width:240px; justify-content:center;
+    }
+    .trp-yes-btn {
+      background:var(--blue-light); color:var(--blue-dark);
+      border-color:var(--blue);
+    }
+    .trp-yes-btn:hover { background:var(--blue); color:#fff; }
+    .trp-yes-btn.selected { background:var(--blue); color:#fff; }
+    .trp-no-btn {
+      background:var(--gray-1); color:var(--gray-text);
+      border-color:var(--gray-3);
+    }
+    .trp-no-btn:hover { background:var(--gray-2); color:var(--dark); border-color:var(--gray-text); }
+    .trp-no-btn.selected { background:var(--gray-2); color:var(--dark); border-color:var(--dark); }
+    .transport-note-aller {
+      font-size:.76rem; color:var(--gray-text); margin-top:12px;
+      font-style:italic;
+    }
+
+    /* Section transport masquée par défaut */
+    .transport-section { background:var(--gray-1); padding:64px 0 56px; border-top:2px solid var(--blue-light); display:none; }
+    .transport-section.visible { display:block; }
+
     @media(max-width:500px){.modal-body{padding:14px 16px 22px;}.modal-head{padding:18px 16px 0;}.mfield-row{grid-template-columns:1fr;}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
 
@@ -1018,6 +1062,28 @@
 
     </div><!-- /hotel-grid -->
     <p class="choix-note">💡 Disponibilité confirmée en 15 min sur WhatsApp · Facturation certifiée CE 261/2004 / UEMOA N°03/2003 pour remboursement compagnie aérienne.</p>
+
+    <!-- ══ QUESTION TRANSPORT OPTIONNEL ══ -->
+    <div class="transport-question" id="transportQuestion" style="display:none;">
+      <h3>🚗 Avez-vous besoin d'un véhicule depuis l'aéroport ?</h3>
+      <p>
+        Tarif <strong>aller simple</strong> · Prise en charge à la sortie du terminal en 10 min<br/>
+        Péage inclus · Partenaire certifié (Yango / Uber selon le pays)
+      </p>
+      <div class="transport-choice-btns">
+        <button type="button" class="trp-yes-btn" id="btnTrpOui">
+          ✅ Oui, je veux un véhicule
+        </button>
+        <button type="button" class="trp-no-btn" id="btnTrpNon">
+          ❌ Non merci, je me débrouille
+        </button>
+      </div>
+      <p class="transport-note-aller">
+        * Prix aller simple uniquement — péage et frais inclus selon destination
+      </p>
+    </div>
+    <!-- ══════════════════════════════════ -->
+
   </div>
 </section>
 
@@ -1116,13 +1182,19 @@
       <p>Vérifiez votre pack avant de procéder au paiement sécurisé.</p>
     </div>
     <div class="recap-box" id="recapBox" aria-live="polite">
-      <div class="recap-title">📋 Facture de sélection</div>
+      <div class="recap-title">📋 Votre Pack SOS Escale</div>
       <div class="recap-rows">
         <div class="recap-row"><span class="recap-label">🏨 Hébergement</span><span class="recap-val" id="recapH">Aucun sélectionné</span></div>
-        <div class="recap-row"><span class="recap-label">🚗 Transport</span><span class="recap-val" id="recapT">Aucun sélectionné</span></div>
+        <div class="recap-row" id="recapRowTransport" style="display:none"><span class="recap-label">🚗 Transport</span><span class="recap-val" id="recapT">—</span></div>
+        <div class="recap-row">
+          <span class="recap-label">📄 Réclamation</span>
+          <span class="recap-val filled" style="color:var(--green-dark);font-style:normal;">
+            Incluse · Commission 25% si succès uniquement
+          </span>
+        </div>
       </div>
       <div class="recap-total-row" id="recapTotRow" style="display:none">
-        <span class="recap-total-label">💰 Total estimé</span>
+        <span class="recap-total-label">💰 Total à payer aujourd'hui</span>
         <div>
           <div class="recap-total-amt" id="recapFcfa">—</div>
           <span class="recap-total-eur" id="recapEur"></span>
@@ -1133,6 +1205,40 @@
         <span id="recapDet" style="font-style:italic"></span>
       </div>
     </div>
+    <!-- ── MANDAT DE REPRÉSENTATION — CASE OBLIGATOIRE AVANT PAIEMENT ── -->
+    <div style="
+      background:#FFF8E6; border:2px solid #F59E0B;
+      border-radius:12px; padding:16px 18px; margin-bottom:14px;
+    ">
+      <label for="v-mandat" style="
+        display:flex; align-items:flex-start; gap:14px;
+        cursor:pointer; user-select:none;
+      ">
+        <input type="checkbox" id="v-mandat" name="mandat_accepte" value="oui" required
+               style="margin-top:3px; width:18px; height:18px; accent-color:#F59E0B; flex-shrink:0;" />
+        <span style="font-size:.82rem; color:#1A2538; line-height:1.6;">
+          <strong style="display:block; font-size:.88rem; color:#92400E; margin-bottom:4px;">
+            ⚖️ Mandat de réclamation — Obligatoire pour bénéficier du tarif préférentiel
+          </strong>
+          En bénéficiant du tarif préférentiel du Pack SOS Escale Réseau (hébergement + transport),
+          je mandate expressément <strong>SOS PASSAGER / Ivoire Consulting</strong> pour engager en mon nom
+          toutes les démarches amiables et judiciaires nécessaires à l'obtention d'une indemnisation
+          auprès de ma compagnie aérienne, en application du Règlement
+          <strong>CE 261/2004</strong> et/ou du Règlement <strong>UEMOA N°03/2003/CM/UEMOA</strong>.<br/>
+          Commission : <strong>25% TTC</strong> sur les sommes obtenues.
+          <strong style="color:#1DB954;">Aucun frais si échec.</strong>
+          <span style="display:block; margin-top:6px; font-size:.76rem; color:#5A6A7E;">
+            Ce mandat est consenti librement en contrepartie du tarif préférentiel.
+            Je reste libre de le révoquer par écrit, auquel cas le prix plein marché s'applique.
+          </span>
+        </span>
+      </label>
+      <div id="mandat-err" style="display:none; color:#C0392B; font-size:.78rem; font-weight:700; margin-top:8px; padding-left:32px;">
+        ⚠️ Vous devez accepter le mandat de réclamation pour bénéficier du tarif préférentiel.
+      </div>
+    </div>
+    <!-- ──────────────────────────────────────────────── -->
+
     <button class="btn-pay" id="btnPay" disabled>
       <span class="btn-pay-icon">🔒</span>
       <span class="btn-pay-text"><strong>Connectez-vous pour réserver</strong><small>Sélectionnez un hébergement et un transport</small></span>
@@ -1209,15 +1315,24 @@
       <div style="font-size:.76rem;color:rgba(255,255,255,.5);margin-top:8px;line-height:1.5;">+ tarif réel Yango · + commission réclamation si succès</div>
     </div>
 
-    <!-- Bouton activation pack -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+    <!-- Boutons activation pack -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:460px;">
+
       <a href="https://wa.me/22505036057255?text=Bonjour%2C%20je%20souhaite%20activer%20le%20Pack%20SOS%20Complet%20(logement%2C%20transport%20et%20r%C3%A9clamation)"
          target="_blank" rel="noopener"
-         style="display:inline-flex;align-items:center;gap:10px;background:var(--green);color:#fff;text-decoration:none;border-radius:14px;padding:16px 28px;font-size:1rem;font-weight:800;box-shadow:0 6px 24px rgba(29,185,84,.4);transition:background .18s;width:100%;max-width:420px;justify-content:center;"
-         onmouseover="this.style.background='#158A3E'" onmouseout="this.style.background='#1DB954'">
-        🎯 Activer le Pack SOS Complet →
+         style="display:flex;align-items:center;justify-content:center;gap:10px;background:#25D366;color:#fff;text-decoration:none;border-radius:14px;padding:15px 28px;font-size:.95rem;font-weight:800;box-shadow:0 6px 24px rgba(37,211,102,.4);width:100%;transition:background .18s;"
+         onmouseover="this.style.background='#1EB857'" onmouseout="this.style.background='#25D366'">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.374 0 0 5.373 0 12c0 2.116.549 4.107 1.508 5.838L0 24l6.335-1.48A11.933 11.933 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.37l-.36-.214-3.727.977.996-3.645-.235-.374A9.817 9.817 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+        <span>💬 Activer via WhatsApp</span>
       </a>
-      <p style="font-size:.74rem;color:rgba(255,255,255,.5);margin:0;">
+
+      <a href="mailto:franckvanie@yahoo.de?subject=Pack%20SOS%20Complet%20%E2%80%94%20Demande%20d%27activation&body=Bonjour%2C%0A%0AJe%20souhaite%20activer%20le%20Pack%20SOS%20Complet%20(logement%20%2B%20transport%20%2B%20r%C3%A9clamation).%0A%0AVoici%20ma%20situation%20%3A%0A-%20Nom%20%2F%20Pr%C3%A9nom%20%3A%0A-%20N%C2%B0%20de%20vol%20%3A%0A-%20A%C3%A9roport%20actuel%20%3A%0A-%20Motif%20(annulation%2C%20retard%2C%20surbooking)%20%3A%0A%0AMerci"
+         style="display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(255,255,255,.12);color:#fff;text-decoration:none;border-radius:14px;padding:13px 28px;font-size:.9rem;font-weight:700;border:1.5px solid rgba(255,255,255,.3);width:100%;transition:background .18s;"
+         onmouseover="this.style.background='rgba(255,255,255,.2)'" onmouseout="this.style.background='rgba(255,255,255,.12)'">
+        📧 Activer par e-mail
+      </a>
+
+      <p style="font-size:.74rem;color:rgba(255,255,255,.5);margin:0;text-align:center;">
         📄 Facture certifiée envoyée par WhatsApp et/ou e-mail · Sans frais de réclamation si échec
       </p>
     </div>
@@ -1565,6 +1680,113 @@
   </div>
 </section>
 
+<!-- ══════════════════════════════════════
+     CGU PACK SOS ESCALE RÉSEAU
+     Conditions Générales d'Utilisation
+══════════════════════════════════════ -->
+<section style="background:var(--gray-1);padding:48px 20px;border-top:2px solid var(--blue-light);" id="cgu-pack">
+  <div style="max-width:760px;margin:0 auto;">
+
+    <div style="text-align:center;margin-bottom:28px;">
+      <div class="section-tag">⚖️ Cadre légal</div>
+      <h2 style="font-size:1.3rem;font-weight:800;color:var(--blue-dark);margin-bottom:8px;">
+        Conditions Générales du Pack SOS Escale Réseau
+      </h2>
+      <p style="font-size:.85rem;color:var(--gray-text);">
+        Version en vigueur · SOS PASSAGER / Ivoire Consulting · Freiburg im Breisgau, Allemagne
+      </p>
+    </div>
+
+    <div style="background:var(--white);border:1.5px solid var(--gray-3);border-radius:16px;padding:28px 32px;display:flex;flex-direction:column;gap:20px;">
+
+      <div>
+        <h3 style="font-size:.92rem;font-weight:800;color:var(--blue-dark);margin-bottom:8px;">
+          Article 1 — Objet du Pack SOS Escale Réseau
+        </h3>
+        <p style="font-size:.83rem;color:var(--gray-text);line-height:1.7;">
+          Le Pack SOS Escale Réseau est un service d'assistance immédiate proposé par
+          <strong>SOS PASSAGER / Ivoire Consulting</strong> (Burgackerweg 4, 79104 Freiburg im Breisgau, Allemagne)
+          aux passagers aériens dont le vol a été retardé, annulé ou dont l'embarquement a été refusé.
+          Il comprend : la mise à disposition d'un hébergement résidentiel partenaire, un transport
+          aéroport via chauffeur Yango, et la gestion du dossier de réclamation d'indemnisation.
+        </p>
+      </div>
+
+      <div style="border-top:1px solid var(--gray-2);padding-top:18px;">
+        <h3 style="font-size:.92rem;font-weight:800;color:var(--blue-dark);margin-bottom:8px;">
+          Article 2 — Mandat de représentation lié au tarif préférentiel
+        </h3>
+        <div style="background:#FFF8E6;border-left:4px solid #F59E0B;border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:12px;">
+          <p style="font-size:.83rem;color:#1A2538;line-height:1.7;margin:0;">
+            En bénéficiant du tarif préférentiel du Pack SOS Escale Réseau, le client mandate
+            expressément <strong>SOS PASSAGER / Ivoire Consulting</strong> pour engager en son nom
+            toutes les démarches amiables et judiciaires nécessaires à l'obtention d'une indemnisation
+            auprès de la compagnie aérienne opérant le vol perturbé, en application du
+            <strong>Règlement CE 261/2004</strong> et/ou du
+            <strong>Règlement N°03/2003/CM/UEMOA</strong>.
+          </p>
+        </div>
+        <p style="font-size:.83rem;color:var(--gray-text);line-height:1.7;">
+          Ce mandat est consenti librement et volontairement en contrepartie du tarif préférentiel accordé.
+          SOS PASSAGER percevra une commission de <strong>25% TTC</strong> sur les sommes effectivement obtenues.
+          <strong style="color:#1DB954;">Aucun frais n'est dû en cas d'échec.</strong>
+        </p>
+        <p style="font-size:.83rem;color:var(--gray-text);line-height:1.7;">
+          Le client reste libre de révoquer ce mandat à tout moment par écrit adressé à
+          <strong>franckvanie@yahoo.de</strong>, auquel cas le tarif préférentiel cesse de s'appliquer
+          et le prix plein marché devient exigible pour les prestations déjà fournies.
+        </p>
+      </div>
+
+      <div style="border-top:1px solid var(--gray-2);padding-top:18px;">
+        <h3 style="font-size:.92rem;font-weight:800;color:var(--blue-dark);margin-bottom:8px;">
+          Article 3 — Tarification
+        </h3>
+        <p style="font-size:.83rem;color:var(--gray-text);line-height:1.7;">
+          Le Pack SOS Escale Réseau est facturé <strong>à partir de 25 000 FCFA / 38 €</strong>
+          (hébergement inclus). Le transport est facturé au tarif réel Yango du moment.
+          La commission de réclamation est de <strong>25% TTC</strong> sur les indemnités obtenues,
+          prélevée uniquement en cas de succès. Aucun frais anticipé n'est exigé pour la réclamation.
+        </p>
+      </div>
+
+      <div style="border-top:1px solid var(--gray-2);padding-top:18px;">
+        <h3 style="font-size:.92rem;font-weight:800;color:var(--blue-dark);margin-bottom:8px;">
+          Article 4 — Facturation et justificatifs
+        </h3>
+        <p style="font-size:.83rem;color:var(--gray-text);line-height:1.7;">
+          Une facture certifiée est émise pour chaque Pack SOS Escale Réseau et transmise au client
+          par <strong>WhatsApp et/ou par e-mail</strong> dans les 24h suivant la prestation.
+          Cette facture constitue un justificatif officiel pour la demande de remboursement des frais
+          d'assistance auprès de la compagnie aérienne, conformément à l'Article 9 du Règlement CE 261/2004.
+        </p>
+      </div>
+
+      <div style="border-top:1px solid var(--gray-2);padding-top:18px;">
+        <h3 style="font-size:.92rem;font-weight:800;color:var(--blue-dark);margin-bottom:8px;">
+          Article 5 — Droit applicable
+        </h3>
+        <p style="font-size:.83rem;color:var(--gray-text);line-height:1.7;">
+          Les présentes conditions sont régies par le <strong>droit allemand</strong>.
+          Tout litige sera soumis aux juridictions compétentes de <strong>Freiburg im Breisgau, Allemagne</strong>.
+          Pour les prestations relevant du droit UEMOA, le Règlement N°03/2003/CM/UEMOA s'applique
+          conjointement aux présentes conditions.
+        </p>
+      </div>
+
+      <div style="border-top:1px solid var(--gray-2);padding-top:18px;text-align:center;">
+        <p style="font-size:.78rem;color:var(--gray-text);">
+          <strong>SOS PASSAGER / Ivoire Consulting</strong> · Burgackerweg 4, 79104 Freiburg im Breisgau, Allemagne<br/>
+          Contact : <a href="mailto:franckvanie@yahoo.de" style="color:var(--blue);">franckvanie@yahoo.de</a> ·
+          WhatsApp Europe : <a href="https://wa.me/4917734314460" style="color:var(--blue);">+49 177 343 14 60</a> ·
+          WhatsApp Afrique : <a href="https://wa.me/22505036057255" style="color:var(--blue);">+225 05 03 60 57 25</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ══ FOOTER ══ -->
 <footer>
   <div class="footer-brand">SOS <span>Passager</span> Escale Réseau</div>
@@ -1773,9 +1995,21 @@ function setupHotelCards(){
       cards.forEach(function(c){c.classList.remove('is-selected');});
       card.classList.add('is-selected');radio.checked=true;
       S.hotel={label:radio.value,fcfa:parseInt(radio.getAttribute('data-fcfa')||'0',10),eur:parseInt(radio.getAttribute('data-eur')||'0',10)};
+      /* Réinitialiser transport si on change de logement */
+      S.transport=null;
+      var recapRowTrp=document.getElementById('recapRowTransport');
+      if(recapRowTrp) recapRowTrp.style.display='none';
+      /* Réinitialiser boutons question */
+      var btnO=document.getElementById('btnTrpOui');
+      var btnN=document.getElementById('btnTrpNon');
+      if(btnO) btnO.classList.remove('selected');
+      if(btnN) btnN.classList.remove('selected');
+      /* Masquer section transport */
+      var trpSec=document.getElementById('section-transport');
+      if(trpSec) trpSec.classList.remove('visible');
       updateRecap();updateSteps();
-      /* VAGUE 5 — Scroll vers section transport après sélection logement */
-      setTimeout(function(){smoothTo('section-transport',0);toast('🏨 Logement sélectionné ! Choisissez maintenant votre transport 🚗');},300);
+      /* Afficher la question transport */
+      if(window._showTransportQuestion) window._showTransportQuestion();
     });
   });
 }
@@ -1833,18 +2067,39 @@ function updateRecap(){
   var rNR=document.getElementById('recapNR');
   var rNV=document.getElementById('recapNV');
   var rD=document.getElementById('recapDet');
-  if(rH){if(S.hotel){rH.textContent=S.hotel.label.split('—')[0].trim();rH.classList.add('filled');}else{rH.textContent='Aucun sélectionné';rH.classList.remove('filled');}}
-  if(rT){if(S.transport){rT.textContent=S.transport.label.split('(')[0].trim();rT.classList.add('filled');}else{rT.textContent='Aucun sélectionné';rT.classList.remove('filled');}}
-  if(S.hotel&&S.transport){
-    var tF=(S.hotel.fcfa*S.nuits)+S.transport.fcfa;
-    var tE=(S.hotel.eur*S.nuits)+S.transport.eur;
-    if(rRow)rRow.style.display='flex';if(rNR)rNR.style.display='flex';
+  var rRowTrp=document.getElementById('recapRowTransport');
+
+  /* Hébergement */
+  if(rH){
+    if(S.hotel){rH.textContent=S.hotel.label.split('—')[0].trim();rH.classList.add('filled');}
+    else{rH.textContent='Aucun sélectionné';rH.classList.remove('filled');}
+  }
+
+  /* Transport (optionnel) */
+  if(S.transport){
+    if(rRowTrp) rRowTrp.style.display='flex';
+    if(rT){rT.textContent=S.transport.label.split('(')[0].trim()+' — aller simple';rT.classList.add('filled');}
+  } else {
+    if(rRowTrp) rRowTrp.style.display='none';
+  }
+
+  /* Total — logement seul OU logement + transport */
+  if(S.hotel){
+    var tF=(S.hotel.fcfa*S.nuits)+(S.transport?S.transport.fcfa:0);
+    var tE=(S.hotel.eur*S.nuits)+(S.transport?S.transport.eur:0);
+    if(rRow)rRow.style.display='flex';
+    if(rNR)rNR.style.display='flex';
     if(rF)rF.textContent=fmtF(tF);
     if(rE&&tE>0)rE.textContent='≈ '+tE+' €';
     if(rNV)rNV.textContent=S.nuits;
-    if(rD)rD.textContent=fmtF(S.hotel.fcfa)+' × '+S.nuits+' nuit(s) + '+fmtF(S.transport.fcfa);
-  }else{
-    if(rRow)rRow.style.display='none';if(rNR)rNR.style.display='none';
+    if(rD){
+      rD.textContent=S.transport
+        ? fmtF(S.hotel.fcfa)+' × '+S.nuits+' nuit(s) + '+fmtF(S.transport.fcfa)+' transport'
+        : fmtF(S.hotel.fcfa)+' × '+S.nuits+' nuit(s) — sans transport';
+    }
+  } else {
+    if(rRow)rRow.style.display='none';
+    if(rNR)rNR.style.display='none';
   }
   updatePayBtn();
 }
@@ -1861,7 +2116,8 @@ function updateSteps(){
 var btnPay=document.getElementById('btnPay');
 function updatePayBtn(){
   if(!btnPay)return;
-  var ready=!!(S.user&&S.hotel&&S.transport);
+  /* Transport est OPTIONNEL — seul le logement est requis */
+  var ready=!!(S.user&&S.hotel);
   btnPay.disabled=!ready;
   var icon=btnPay.querySelector('.btn-pay-icon');
   var strong=btnPay.querySelector('strong');
@@ -1870,25 +2126,46 @@ function updatePayBtn(){
     if(icon)icon.textContent='🔒';
     if(strong)strong.textContent='Connectez-vous pour réserver';
     if(small)small.textContent='Créez un compte gratuit en 30 secondes';
-  }else if(!S.hotel||!S.transport){
+  }else if(!S.hotel){
     if(icon)icon.textContent='🛒';
-    if(strong)strong.textContent='Complétez votre sélection';
-    if(small)small.textContent='Étape 1 : Hébergement · Étape 2 : Transport';
+    if(strong)strong.textContent='Choisissez votre logement';
+    if(small)small.textContent='Sélectionnez une formule d\'hébergement ci-dessus';
   }else{
     var n=getNuits();
-    var tF=(S.hotel.fcfa*n)+S.transport.fcfa;
-    var tE=(S.hotel.eur*n)+S.transport.eur;
+    var tF=(S.hotel.fcfa*n)+(S.transport?S.transport.fcfa:0);
+    var tE=(S.hotel.eur*n)+(S.transport?S.transport.eur:0);
+    var packLabel=S.transport ? 'Pack Logement + Transport' : 'Pack Logement seul';
     if(icon)icon.textContent='💳';
     if(strong)strong.textContent='Procéder au paiement — '+fmtF(tF);
-    if(small)small.textContent=(tE>0?'≈ '+tE+' €  · ':'' )+'Paiement sécurisé SSL';
+    if(small)small.textContent=packLabel+(tE>0?' · ≈ '+tE+' €':'')+' · Réclamation incluse';
   }
 }
 
 if(btnPay)btnPay.addEventListener('click',function(){
   if(!S.user){openM('authModal');return;}
   if(!S.hotel||!S.transport)return;
+  /* Vérifier que le mandat est coché */
+  var mandat = document.getElementById('v-mandat');
+  var mandatErr = document.getElementById('mandat-err');
+  if(mandat && !mandat.checked){
+    if(mandatErr) mandatErr.style.display='block';
+    mandat.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  if(mandatErr) mandatErr.style.display='none';
   openPayM();
 });
+
+/* Masquer l'erreur mandat dès que l'utilisateur coche */
+(function(){
+  var mandat = document.getElementById('v-mandat');
+  var mandatErr = document.getElementById('mandat-err');
+  if(mandat && mandatErr){
+    mandat.addEventListener('change', function(){
+      if(mandat.checked) mandatErr.style.display='none';
+    });
+  }
+})();
 
 /* ══ MODAL PAIEMENT ══ */
 function openPayM(){
@@ -1983,6 +2260,76 @@ setupHotelCards();
 setupTransportCards();
 applyAuth();
 updateRecap();
+
+/* ══════════════════════════════════════════════════════
+   TRANSPORT OPTIONNEL — Question OUI / NON
+   Après sélection logement → question apparaît
+   OUI → section transport visible + scroll
+   NON → section transport masquée + panier logement seul
+══════════════════════════════════════════════════════ */
+(function(){
+  var btnOui = document.getElementById('btnTrpOui');
+  var btnNon = document.getElementById('btnTrpNon');
+  var trpSection = document.getElementById('section-transport');
+  var trpQuestion = document.getElementById('transportQuestion');
+  var recapRowTrp = document.getElementById('recapRowTransport');
+
+  /* Réinitialiser le choix transport */
+  function resetTransportChoice(){
+    if(btnOui){ btnOui.classList.remove('selected'); }
+    if(btnNon){ btnNon.classList.remove('selected'); }
+  }
+
+  /* OUI — affiche la section transport */
+  if(btnOui){
+    btnOui.addEventListener('click', function(){
+      resetTransportChoice();
+      btnOui.classList.add('selected');
+      if(trpSection){ trpSection.classList.add('visible'); }
+      /* Scroll fluide vers section transport */
+      setTimeout(function(){
+        if(trpSection){
+          var top = trpSection.getBoundingClientRect().top + window.pageYOffset - 75;
+          window.scrollTo({top:top, behavior:'smooth'});
+          toast('🚗 Choisissez votre véhicule ci-dessous →');
+        }
+      }, 200);
+    });
+  }
+
+  /* NON — masque transport, met à jour panier logement seul */
+  if(btnNon){
+    btnNon.addEventListener('click', function(){
+      resetTransportChoice();
+      btnNon.classList.add('selected');
+      /* Masquer section transport */
+      if(trpSection){ trpSection.classList.remove('visible'); }
+      /* Réinitialiser transport dans l'état */
+      S.transport = null;
+      /* Masquer ligne transport dans panier */
+      if(recapRowTrp) recapRowTrp.style.display = 'none';
+      /* Recalculer panier — logement seul */
+      updateRecap();
+      /* Scroll vers panier */
+      setTimeout(function(){
+        smoothTo('facture-selection', 0);
+        toast('🏨 Pack logement seul — réclamation incluse ✅');
+      }, 200);
+    });
+  }
+
+  /* Exposer pour usage dans setupHotelCards */
+  window._showTransportQuestion = function(){
+    if(trpQuestion){
+      trpQuestion.style.display = 'block';
+      /* Scroll vers la question */
+      setTimeout(function(){
+        var top = trpQuestion.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({top:top, behavior:'smooth'});
+      }, 200);
+    }
+  };
+})();
 
 /* ══ BULLE WHATSAPP — MENU POP-UP ══ */
 (function(){
